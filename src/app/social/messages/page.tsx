@@ -38,15 +38,6 @@ export default function MessagesPage() {
     const [searchQuery, setSearchQuery] = useState("");
     const [filterType, setFilterType] = useState<'all' | 'unread' | 'groups'>('all');
 
-    const filteredChats = chats.filter(chat => {
-        const matchesSearch = chat.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-            chat.lastMessage.toLowerCase().includes(searchQuery.toLowerCase());
-        const matchesFilter = filterType === 'all' || 
-            (filterType === 'unread' && chat.unread > 0) ||
-            (filterType === 'groups' && chat.name.includes('Team') || chat.name.includes('Community'));
-        return matchesSearch && matchesFilter;
-    });
-
     const chats: Chat[] = [
         { id: 1, name: "Alex Rivers", lastMessage: "The water quality data is ready for review.", time: "10:45 AM", unread: 2, avatar: "AR", status: 'online', isVerified: true },
         { id: 2, name: "Elena Eco", lastMessage: "Did you see the new petition?", time: "9:30 AM", unread: 0, avatar: "EE", status: 'online', isVerified: true },
@@ -64,6 +55,15 @@ export default function MessagesPage() {
         { id: 14, name: "Civilization Protocol Science Lab", lastMessage: "New ML model published", time: "3 weeks ago", unread: 0, avatar: "VS", status: 'offline', isVerified: true },
         { id: 15, name: "TokenHub Admin", lastMessage: "Your investment proposal approved", time: "1 month ago", unread: 0, avatar: "TH", status: 'offline', isVerified: true },
     ];
+
+    const filteredChats = chats.filter(chat => {
+        const matchesSearch = chat.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+            chat.lastMessage.toLowerCase().includes(searchQuery.toLowerCase());
+        const matchesFilter = filterType === 'all' || 
+            (filterType === 'unread' && chat.unread > 0) ||
+            (filterType === 'groups' && chat.name.includes('Team') || chat.name.includes('Community'));
+        return matchesSearch && matchesFilter;
+    });
 
     const messagesByChat: Record<number, Message[]> = {
         1: [

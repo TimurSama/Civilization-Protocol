@@ -25,6 +25,8 @@ interface Friend {
 export default function FriendsPage() {
     const { t, isRTL } = useLanguage();
     const [searchQuery, setSearchQuery] = useState("");
+    const [statusFilter, setStatusFilter] = useState("all");
+    const [roleFilter, setRoleFilter] = useState("all");
 
     const friends: Friend[] = [
         { id: 1, name: "Alex Rivers", role: "Water Engineer", status: 'online', avatar: "AR", location: "London, UK", reputation: 98, isVerified: true },

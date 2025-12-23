@@ -5,7 +5,7 @@ import {
     Heart, Shield, Activity,
     Database, Users, Lock,
     ArrowRight, ExternalLink,
-    Stethoscope, Microscope
+    Stethoscope, Microscope, Globe
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useLanguage } from "@/context/LanguageContext";

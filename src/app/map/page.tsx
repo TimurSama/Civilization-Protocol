@@ -9,7 +9,7 @@ import {
     TreePine, Heart, FlaskConical,
     Waves, Building2, Users,
     TrendingUp, ChevronRight, Maximize2, Minimize2,
-    X, ExternalLink
+    X, ExternalLink, Activity
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useLanguage } from "@/context/LanguageContext";
