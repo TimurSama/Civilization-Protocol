@@ -1,0 +1,84 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+venv/
+env/
+ENV/
+.venv
+pip-log.txt
+pip-delete-this-directory.txt
+*.egg-info/
+dist/
+build/
+*.egg
+
+# Node
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnp/
+.pnp.js
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.cursor/
+
+# Environment variables
+.env
+.env.local
+.env.*.local
+
+# OS
+.DS_Store
+Thumbs.db
+*.log
+*.tmp
+
+# User data and system files
+AppData/
+Contacts/
+Desktop/
+Documents/
+Downloads/
+Favorites/
+Music/
+Pictures/
+Saved Games/
+Searches/
+Videos/
+NTUSER.DAT*
+ntuser.dat*
+*.ini
+
+# History and config files
+.bash_history
+.python_history
+.node_repl_history
+.gitconfig
+.viminfo
+.lesshst
+
+# AI/Editor configs
+.antigravity/
+.claude/
+.claude.json
+.claude.json.backup
+.codegpt/
+.codeium/
+.continue/
+.gemini/
+.ollama/
+.windsurf/
+
+# Data files (if sensitive)
+data/users.json
+webapp/app/data/users.json
+
