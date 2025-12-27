@@ -1,0 +1,11 @@
+services:
+  - type: web
+    name: civilization-protocol
+    runtime: python3
+    buildCommand: pip install -r requirements.txt
+    startCommand: uvicorn webapp.app.main:app --host 0.0.0.0 --port $PORT
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.11.0
+    healthCheckPath: /
+
