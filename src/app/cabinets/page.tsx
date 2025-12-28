@@ -15,7 +15,7 @@ import Link from "next/link";
 interface CabinetType {
     id: string;
     label: string;
-    icon: any;
+    icon: React.ComponentType<{ size?: number; className?: string }>;
     color: string;
     bgColor: string;
     borderColor: string;

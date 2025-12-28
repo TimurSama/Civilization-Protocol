@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/lib/db';
-import { getUserIdFromRequest, getPagination } from '@/lib/api-utils';
+import { getUserIdFromRequest } from '@/lib/api-utils';
 
 // GET - Получение списка чатов
 export async function GET(request: NextRequest) {

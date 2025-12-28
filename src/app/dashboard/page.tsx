@@ -727,7 +727,8 @@ export default function DashboardPage() {
     );
 }
 
-function MetricCard({ icon: Icon, label, value, desc, color, disabled }: any) {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+function MetricCard({ icon: Icon, label, value, desc, color, disabled }: { icon: React.ComponentType<{ size?: number; className?: string }>; label: string; value: string; desc?: string; color?: string; disabled?: boolean }) {
     return (
         <div className={cn(
             "glass-card p-4 transition-all group relative",

@@ -12,6 +12,7 @@ import Link from "next/link";
 import { useLanguage } from "@/context/LanguageContext";
 
 // Domain configurations
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const domainConfigs: Record<string, any> = {
   ecology: {
     icon: Leaf,
@@ -207,7 +208,7 @@ const translations: Record<string, Record<string, string>> = {
   }
 };
 
-const colorClasses: Record<string, any> = {
+const colorClasses: Record<string, { text: string; bg: string; border: string }> = {
   emerald: { text: "text-emerald-400", bg: "bg-emerald-500/20", border: "border-emerald-500/30" },
   yellow: { text: "text-yellow-400", bg: "bg-yellow-500/20", border: "border-yellow-500/30" },
   rose: { text: "text-rose-400", bg: "bg-rose-500/20", border: "border-rose-500/30" },
@@ -349,7 +350,7 @@ export default function EcosystemDomainPage() {
             {t.plannedFeatures}
           </h3>
           <div className="space-y-4">
-            {config.features.map((feature: any, i: number) => (
+            {config.features.map((feature, i: number) => (
               <motion.div
                 key={feature.key}
                 initial={{ opacity: 0, x: -20 }}
@@ -380,7 +381,7 @@ export default function EcosystemDomainPage() {
             {t.expectedMetrics}
           </h3>
           <div className="space-y-4">
-            {config.stats.map((stat: any, i: number) => (
+            {config.stats.map((stat, i: number) => (
               <motion.div
                 key={i}
                 initial={{ opacity: 0, x: 20 }}

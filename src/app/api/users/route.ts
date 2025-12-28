@@ -184,7 +184,7 @@ export async function GET(request: NextRequest) {
         },
       },
     });
-  } catch (error) {
+  } catch {
     return NextResponse.json(
       { success: false, error: 'Failed to fetch users' },
       { status: 500 }
@@ -255,7 +255,7 @@ export async function POST(request: NextRequest) {
       { success: true, data: { user: newUser } },
       { status: 201 }
     );
-  } catch (error) {
+  } catch {
     return NextResponse.json(
       { success: false, error: 'Failed to create user' },
       { status: 500 }
@@ -295,7 +295,7 @@ export async function PUT(request: NextRequest) {
       success: true,
       data: { user: users[userIndex] },
     });
-  } catch (error) {
+  } catch {
     return NextResponse.json(
       { success: false, error: 'Failed to update user' },
       { status: 500 }

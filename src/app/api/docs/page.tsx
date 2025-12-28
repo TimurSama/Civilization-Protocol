@@ -4,8 +4,8 @@ import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   Code, ChevronRight, ChevronDown, Copy, Check,
-  Lock, Globe, Zap, Database, Users, MessageSquare, Vote,
-  Wallet, Shield, Search, Filter, Book, ExternalLink, Server
+  Lock, Globe, Zap, Users, MessageSquare, Vote,
+  Wallet, Shield, Search, Book, ExternalLink, Server
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
