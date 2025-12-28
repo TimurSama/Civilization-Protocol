@@ -1,0 +1,25 @@
+{
+  "repository": {
+    "owner": "TimurSama",
+    "name": "Civilization-Protocol",
+    "url": "https://github.com/TimurSama/Civilization-Protocol"
+  },
+  "monitoring": {
+    "enabled": true,
+    "checkInterval": 30,
+    "workflows": [
+      "Deploy to Vercel",
+      "Build Check & Type Safety"
+    ]
+  },
+  "api": {
+    "baseUrl": "https://api.github.com",
+    "endpoints": {
+      "runs": "/repos/TimurSama/Civilization-Protocol/actions/runs",
+      "workflows": "/repos/TimurSama/Civilization-Protocol/actions/workflows",
+      "jobs": "/repos/TimurSama/Civilization-Protocol/actions/runs/{run_id}/jobs"
+    }
+  },
+  "notes": "Токен должен быть установлен через переменную окружения GITHUB_TOKEN. НЕ коммитьте токен в репозиторий!"
+}
+
