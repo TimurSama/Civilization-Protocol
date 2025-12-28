@@ -1,4 +1,4 @@
-# PowerShell скрипт для мониторинга статуса деплоя через GitHub API
+﻿# PowerShell скрипт для мониторинга статуса деплоя через GitHub API
 
 $REPO_OWNER = "TimurSama"
 $REPO_NAME = "Civilization-Protocol"
@@ -55,10 +55,12 @@ try {
             $jobsResponse = Invoke-RestMethod -Uri "https://api.github.com/repos/$REPO_OWNER/$REPO_NAME/actions/runs/$runId/jobs" -Headers $headers
             $failedJobs = $jobsResponse.jobs | Where-Object { $_.conclusion -eq "failure" }
             
-            foreach ($job in $failedJobs) {
-                Write-Host "Job: $($job.name)" -ForegroundColor Red
-                Write-Host "URL: $($job.html_url)"
-                Write-Host ""
+            if ($failedJobs.Count -gt 0) {
+                foreach ($job in $failedJobs) {
+                    Write-Host "Job: $($job.name)" -ForegroundColor Red
+                    Write-Host "URL: $($job.html_url)"
+                    Write-Host ""
+                }
             }
         }
     } else {
