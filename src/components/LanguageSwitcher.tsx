@@ -7,9 +7,17 @@ import { Globe, ChevronDown } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 const languages = [
-    { code: "ru", name: "Русский", flag: "🇷🇺" },
     { code: "en", name: "English", flag: "🇺🇸" },
+    { code: "ru", name: "Русский", flag: "🇷🇺" },
     { code: "ar", name: "العربية", flag: "🇦🇪" },
+    { code: "es", name: "Español", flag: "🇪🇸" },
+    { code: "de", name: "Deutsch", flag: "🇩🇪" },
+    { code: "pt", name: "Português", flag: "🇵🇹" },
+    { code: "pl", name: "Polski", flag: "🇵🇱" },
+    { code: "ja", name: "日本語", flag: "🇯🇵" },
+    { code: "ko", name: "한국어", flag: "🇰🇷" },
+    { code: "zh", name: "中文", flag: "🇨🇳" },
+    { code: "fr", name: "Français", flag: "🇫🇷" },
 ];
 
 export default function LanguageSwitcher() {

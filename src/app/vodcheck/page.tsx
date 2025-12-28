@@ -1,8 +1,9 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Activity, Droplets, Thermometer, Wind, AlertCircle, Search, Filter, TrendingUp, TrendingDown, MapPin, Clock, Download, Share2 } from "lucide-react";
+import { Activity, Droplets, Thermometer, Wind, AlertCircle, Search, Filter, TrendingUp, TrendingDown, MapPin, Clock, Download, Share2, Plus, FileText } from "lucide-react";
 import { useState } from "react";
+import WaterQualityReportForm from "@/components/WaterQualityReportForm";
 
 const qualityMetrics = [
     { label: "pH Level", value: "7.2", status: "Good", color: "text-green-400", icon: Droplets, trend: "+0.1" },
@@ -18,6 +19,7 @@ const qualityMetrics = [
 export default function VODCheckPage() {
     const [selectedLocation, setSelectedLocation] = useState("Река Волга, Сектор 4");
     const [timeRange, setTimeRange] = useState<'1H' | '24H' | '7D' | '1M'>('24H');
+    const [showReportForm, setShowReportForm] = useState(false);
 
     const locations = [
         { name: "Река Волга, Сектор 4", lat: 56.33, lon: 44.00, status: "Online", quality: 92 },
@@ -38,6 +40,16 @@ export default function VODCheckPage() {
 
     return (
         <div className="max-w-7xl mx-auto px-4 py-8">
+            {/* Water Quality Report Form */}
+            <WaterQualityReportForm
+                isOpen={showReportForm}
+                onClose={() => setShowReportForm(false)}
+                onSubmit={(report) => {
+                    console.log("Report submitted:", report);
+                    // Here you would send to API
+                }}
+            />
+
             <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6 mb-12">
                 <div>
                     <h1 className="text-4xl font-black mb-2">VOD Check</h1>
@@ -45,6 +57,13 @@ export default function VODCheckPage() {
                 </div>
 
                 <div className="flex gap-4 w-full md:w-auto">
+                    <button
+                        onClick={() => setShowReportForm(true)}
+                        className="px-4 py-2 bg-cyan-glow text-ocean-deep font-bold rounded-xl hover:scale-105 transition-transform flex items-center gap-2"
+                    >
+                        <Plus size={18} />
+                        <span className="hidden sm:inline">Создать отчёт</span>
+                    </button>
                     <div className="relative flex-1 md:w-64">
                         <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-500" size={18} />
                         <input

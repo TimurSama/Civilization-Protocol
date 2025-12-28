@@ -13,11 +13,11 @@ interface LanguageContextType {
 const LanguageContext = createContext<LanguageContextType | undefined>(undefined);
 
 export function LanguageProvider({ children }: { children: React.ReactNode }) {
-    const [language, setLanguage] = useState<Language>("ru");
+    const [language, setLanguage] = useState<Language>("en");
 
     useEffect(() => {
         const savedLang = localStorage.getItem("Civilization Protocol-lang") as Language;
-        if (savedLang && (savedLang === "ru" || savedLang === "en" || savedLang === "ar")) {
+        if (savedLang && ["en", "ru", "ar", "es", "de", "pt", "pl", "ja", "ko", "zh", "fr"].includes(savedLang)) {
             setLanguage(savedLang);
         }
     }, []);
@@ -31,6 +31,12 @@ export function LanguageProvider({ children }: { children: React.ReactNode }) {
     const t = (path: string) => {
         const keys = path.split(".");
         let current: any = translations[language];
+
+        // Fallback to English if language doesn't exist
+        if (!current) {
+            current = translations.en;
+            console.warn(`Language ${language} not found, falling back to English`);
+        }
 
         for (const key of keys) {
             if (current[key] === undefined) {

@@ -6,7 +6,8 @@ import {
     Building2, Wallet, Brain, Shield,
     BookOpen, Gamepad2, Users, Share2,
     TreePine, Heart, FlaskConical,
-    LogOut, MessageSquare, Globe, Zap
+    LogOut, MessageSquare, Globe, Zap, TrendingUp, Code,
+    ChevronDown, Sparkles, Map, Droplets
 } from "lucide-react";
 import Link from "next/link";
 import { useWallet } from "@/context/WalletContext";
@@ -100,6 +101,7 @@ export default function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
                     {/* ОСНОВНОЕ */}
                     <Section title="ОСНОВНОЕ">
                         <MenuItem href="/" icon={<Home size={18} />} label="Главная" onClose={onClose} />
+                        <MenuItem href="/interactive-presentation" icon={<Zap size={18} />} label="🎮 Презентация" onClose={onClose} />
                         <MenuItem href="/dashboard" icon={<Target size={18} />} label="Dashboard" onClose={onClose} />
                         <MenuItem href="/map" icon={<Globe size={18} />} label="Карта" onClose={onClose} />
                         <MenuItem href="/tokenhub" icon={<Coins size={18} />} label="TokenHub" onClose={onClose} />
@@ -109,10 +111,10 @@ export default function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
                     {/* ЭКОСИСТЕМА */}
                     <Section title="ЭКОСИСТЕМА">
                         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '6px' }}>
-                            <MenuItem href="/ecology" icon={<TreePine size={16} />} label="Экология" onClose={onClose} compact />
-                            <MenuItem href="/energy" icon={<Zap size={16} />} label="Энергия" onClose={onClose} compact />
-                            <MenuItem href="/health" icon={<Heart size={16} />} label="Здоровье" onClose={onClose} compact />
-                            <MenuItem href="/science" icon={<FlaskConical size={16} />} label="Наука" onClose={onClose} compact />
+                            <MenuItem href="/ecosystem/ecology" icon={<TreePine size={16} />} label="Экология" onClose={onClose} compact badge="Soon" />
+                            <MenuItem href="/ecosystem/energy" icon={<Zap size={16} />} label="Энергия" onClose={onClose} compact badge="Soon" />
+                            <MenuItem href="/ecosystem/health" icon={<Heart size={16} />} label="Здоровье" onClose={onClose} compact badge="Soon" />
+                            <MenuItem href="/ecosystem/science" icon={<FlaskConical size={16} />} label="Наука" onClose={onClose} compact badge="Soon" />
                         </div>
                     </Section>
 
@@ -137,8 +139,10 @@ export default function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
                     {/* ФИНАНСЫ */}
                     <Section title="ФИНАНСЫ">
                         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '6px' }}>
+                            <MenuItem href="/wallet" icon={<Wallet size={16} />} label="Кошелёк" onClose={onClose} compact />
+                            <MenuItem href="/tokenomics" icon={<Droplets size={16} />} label="Tokenomics" onClose={onClose} compact />
                             <MenuItem href="/exchange" icon={<Coins size={16} />} label="Exchange" onClose={onClose} compact />
-                            <MenuItem href="/missions" icon={<Target size={16} />} label="Миссии" onClose={onClose} compact />
+                            <MenuItem href="/invest" icon={<TrendingUp size={16} />} label="Инвестиции" onClose={onClose} compact />
                         </div>
                     </Section>
 
@@ -161,13 +165,33 @@ export default function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
                         </div>
                     </Section>
 
+                    {/* НАГРАДЫ */}
+                    <Section title="НАГРАДЫ">
+                        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '6px' }}>
+                            <MenuItem href="/rewards" icon={<Coins size={16} />} label="Награды" onClose={onClose} compact />
+                            <MenuItem href="/missions" icon={<Target size={16} />} label="Миссии" onClose={onClose} compact />
+                        </div>
+                    </Section>
+
+                    {/* ПРЕЗЕНТАЦИИ */}
+                    <Section title="ПРЕЗЕНТАЦИИ">
+                        <div style={{ display: 'grid', gridTemplateColumns: '1fr', gap: '6px' }}>
+                            <MenuItem href="/presentations" icon={<Sparkles size={16} />} label="Все презентации" onClose={onClose} />
+                            <MenuItem href="/interactive-presentation" icon={<Globe size={16} />} label="Интерактивная" onClose={onClose} badge="Main" />
+                            <MenuItem href="/presentations/game" icon={<Gamepad2 size={16} />} label="Игра: Спаси экологию" onClose={onClose} />
+                            <MenuItem href="/presentations/diplomatic" icon={<Building2 size={16} />} label="Для ООН и политиков" onClose={onClose} />
+                            <MenuItem href="/presentations/investors" icon={<TrendingUp size={16} />} label="Для инвесторов" onClose={onClose} />
+                        </div>
+                    </Section>
+
                     {/* ДОПОЛНИТЕЛЬНО */}
                     <Section title="ДОПОЛНИТЕЛЬНО">
                         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '6px' }}>
                             <MenuItem href="/vodcheck" icon={<Shield size={16} />} label="VODCheck" onClose={onClose} compact />
-                            <MenuItem href="/standards" icon={<BookOpen size={16} />} label="Standards" onClose={onClose} compact />
-                            <MenuItem href="/presentation" icon={<Target size={16} />} label="Presentation" onClose={onClose} compact />
+                            <MenuItem href="/roadmap" icon={<Target size={16} />} label="Roadmap" onClose={onClose} compact />
+                            <MenuItem href="/landing" icon={<Home size={16} />} label="Landing" onClose={onClose} compact />
                             <MenuItem href="/whitepaper" icon={<BookOpen size={16} />} label="Whitepaper" onClose={onClose} compact />
+                            <MenuItem href="/api/docs" icon={<Code size={16} />} label="API Docs" onClose={onClose} compact />
                         </div>
                     </Section>
                 </div>
@@ -272,12 +296,13 @@ function Section({ title, children }: { title: string; children: React.ReactNode
 }
 
 // MenuItem Component
-function MenuItem({ href, icon, label, onClose, compact = false }: {
+function MenuItem({ href, icon, label, onClose, compact = false, badge }: {
     href: string;
     icon: React.ReactNode;
     label: string;
     onClose: () => void;
     compact?: boolean;
+    badge?: string;
 }) {
     return (
         <Link
@@ -295,11 +320,29 @@ function MenuItem({ href, icon, label, onClose, compact = false }: {
                 fontWeight: 500,
                 background: 'rgba(255,255,255,0.02)',
                 border: '1px solid rgba(255,255,255,0.05)',
-                transition: 'all 0.2s ease'
+                transition: 'all 0.2s ease',
+                position: 'relative'
             }}
         >
             <span style={{ color: '#94a3b8' }}>{icon}</span>
             <span>{label}</span>
+            {badge && (
+                <span style={{
+                    position: 'absolute',
+                    right: '8px',
+                    top: '50%',
+                    transform: 'translateY(-50%)',
+                    fontSize: '9px',
+                    fontWeight: 700,
+                    padding: '2px 6px',
+                    borderRadius: '4px',
+                    background: 'rgba(234, 179, 8, 0.2)',
+                    color: '#eab308',
+                    border: '1px solid rgba(234, 179, 8, 0.3)'
+                }}>
+                    {badge}
+                </span>
+            )}
         </Link>
     );
 }

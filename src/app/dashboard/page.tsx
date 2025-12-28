@@ -7,13 +7,51 @@ import {
     AlertTriangle, TrendingUp, Globe, Info,
     FlaskConical, Zap, Heart, TreePine,
     ChevronRight, Building2, Factory, Waves,
-    Download, Calendar, Filter, BarChart3
+    Download, Calendar, Filter, BarChart3,
+    PieChart, LineChart, ArrowUp, ArrowDown,
+    MapPin, Users, DollarSign, Target,
+    Shield, Database, Cpu, Satellite
 } from "lucide-react";
 import Globe3D from "@/components/Globe3D";
 import { useWaterData } from "@/lib/iot-service";
 import { waterGISData } from "@/lib/gis-data";
 import AIAnalyticsEngine from "@/components/AIAnalyticsEngine";
+import ExportButton from "@/components/ExportButton";
 import { cn } from "@/lib/utils";
+
+// Данные по странам
+const countryStats = [
+    { name: "Узбекистан", flag: "🇺🇿", objects: 245, quality: 72, investment: 12.5, trend: "+8%" },
+    { name: "Казахстан", flag: "🇰🇿", objects: 189, quality: 68, investment: 8.2, trend: "+5%" },
+    { name: "Кыргызстан", flag: "🇰🇬", objects: 78, quality: 75, investment: 3.1, trend: "+12%" },
+    { name: "Таджикистан", flag: "🇹🇯", objects: 92, quality: 65, investment: 4.5, trend: "+6%" },
+    { name: "Туркменистан", flag: "🇹🇲", objects: 56, quality: 61, investment: 2.8, trend: "+3%" },
+];
+
+// Исторические данные для графиков
+const historicalData = {
+    day: [65, 68, 72, 70, 75, 78, 80, 82, 79, 76, 74, 72],
+    week: [68, 70, 72, 74, 76, 75, 78],
+    month: [65, 68, 70, 72, 75, 78, 80, 82, 84, 86, 85, 88, 90, 89, 91, 92, 93, 91, 90, 92, 94, 95, 93, 92, 90, 88, 87, 89, 90, 91],
+    year: [60, 62, 65, 68, 70, 72, 75, 78, 80, 82, 85, 88],
+};
+
+// AI-прогнозы
+const aiPredictions = [
+    { metric: "Качество воды", current: 72, predicted: 85, confidence: 92, horizon: "6 мес" },
+    { metric: "Эффективность", current: 65, predicted: 82, confidence: 88, horizon: "1 год" },
+    { metric: "Снижение потерь", current: 30, predicted: 15, confidence: 85, horizon: "6 мес" },
+    { metric: "IoT покрытие", current: 45, predicted: 90, confidence: 95, horizon: "2 года" },
+];
+
+// Сравнение регионов
+const regionComparison = [
+    { region: "Центральная Азия", quality: 72, coverage: 45, investment: 31, score: 68 },
+    { region: "Европа", quality: 92, coverage: 85, investment: 78, score: 88 },
+    { region: "Ближний Восток", quality: 68, coverage: 55, investment: 42, score: 58 },
+    { region: "Азия", quality: 75, coverage: 62, investment: 58, score: 72 },
+    { region: "Африка", quality: 52, coverage: 25, investment: 18, score: 42 },
+];
 
 export default function DashboardPage() {
     const metrics = useWaterData();
@@ -145,33 +183,30 @@ export default function DashboardPage() {
                         <Filter size={12} />
                         Фильтры
                     </button>
-                    <button
-                        onClick={() => {
-                            // Экспорт данных
-                            const data = filteredGIS.map(p => ({
-                                name: p.name,
-                                type: p.type,
-                                status: p.status,
-                                value: p.value,
-                                region: p.region || 'N/A',
-                                description: p.description
-                            }));
-                            const csv = [
-                                Object.keys(data[0]).join(','),
-                                ...data.map(d => Object.values(d).join(','))
-                            ].join('\n');
-                            const blob = new Blob([csv], { type: 'text/csv' });
-                            const url = URL.createObjectURL(blob);
-                            const a = document.createElement('a');
-                            a.href = url;
-                            a.download = `Civilization Protocol-dashboard-${timeRange}-${new Date().toISOString().split('T')[0]}.csv`;
-                            a.click();
+                    <ExportButton
+                        data={filteredGIS.map(p => ({
+                            name: p.name,
+                            type: p.type,
+                            status: p.status,
+                            value: p.value,
+                            region: p.region || 'N/A',
+                            description: p.description
+                        }))}
+                        jsonData={{
+                            exportedAt: new Date().toISOString(),
+                            timeRange,
+                            region: selectedRegion,
+                            metrics: {
+                                avgQuality: avgQuality,
+                                totalObjects: filteredGIS.length,
+                                countries: countryStats
+                            },
+                            data: filteredGIS
                         }}
-                        className="px-4 py-2 glass rounded-lg text-[10px] font-black uppercase tracking-widest flex items-center gap-2 hover:bg-white/10 transition-all"
-                    >
-                        <Download size={12} />
-                        Экспорт CSV
-                    </button>
+                        elementId="dashboard-content"
+                        filename={`vodeco-dashboard-${timeRange}`}
+                        formats={["csv", "json", "pdf"]}
+                    />
                 </div>
             </div>
 
@@ -224,7 +259,7 @@ export default function DashboardPage() {
                 </motion.div>
             )}
 
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            <div id="dashboard-content" className="grid grid-cols-1 lg:grid-cols-3 gap-8">
                 {/* Left Column: Metrics */}
                 <div className="space-y-6">
                     <div className="grid grid-cols-2 gap-4">
@@ -321,6 +356,230 @@ export default function DashboardPage() {
                 </div>
             </div>
 
+            {/* Charts & Analytics Section */}
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mt-8">
+                {/* Historical Trend Chart */}
+                <div className="glass-card">
+                    <div className="flex justify-between items-center mb-6">
+                        <h3 className="text-lg font-bold flex items-center gap-2">
+                            <LineChart className="text-cyan-400" size={20} />
+                            Динамика качества воды
+                        </h3>
+                        <div className="flex gap-1">
+                            {(['day', 'week', 'month', 'year'] as const).map((r) => (
+                                <button
+                                    key={r}
+                                    onClick={() => setTimeRange(r)}
+                                    className={cn(
+                                        "px-2 py-1 text-[9px] font-bold rounded uppercase",
+                                        timeRange === r ? "bg-cyan-500 text-ocean-deep" : "text-slate-500 hover:text-white"
+                                    )}
+                                >
+                                    {r === 'day' ? 'Д' : r === 'week' ? 'Н' : r === 'month' ? 'М' : 'Г'}
+                                </button>
+                            ))}
+                        </div>
+                    </div>
+                    
+                    {/* SVG Chart */}
+                    <div className="h-48 relative">
+                        <svg viewBox="0 0 400 120" className="w-full h-full">
+                            {/* Grid lines */}
+                            {[0, 25, 50, 75, 100].map((y, i) => (
+                                <g key={i}>
+                                    <line x1="40" y1={100 - y} x2="380" y2={100 - y} stroke="rgba(255,255,255,0.05)" />
+                                    <text x="35" y={104 - y} textAnchor="end" fill="#64748b" fontSize="8">{y}%</text>
+                                </g>
+                            ))}
+                            
+                            {/* Line chart */}
+                            <motion.path
+                                d={`M ${historicalData[timeRange].map((v, i) => 
+                                    `${40 + (i * (340 / (historicalData[timeRange].length - 1)))},${100 - v}`
+                                ).join(' L ')}`}
+                                fill="none"
+                                stroke="#22d3ee"
+                                strokeWidth="2"
+                                initial={{ pathLength: 0 }}
+                                animate={{ pathLength: 1 }}
+                                transition={{ duration: 1.5 }}
+                            />
+                            
+                            {/* Area fill */}
+                            <motion.path
+                                d={`M 40,100 L ${historicalData[timeRange].map((v, i) => 
+                                    `${40 + (i * (340 / (historicalData[timeRange].length - 1)))},${100 - v}`
+                                ).join(' L ')} L 380,100 Z`}
+                                fill="url(#areaGradient)"
+                                initial={{ opacity: 0 }}
+                                animate={{ opacity: 1 }}
+                                transition={{ delay: 0.5 }}
+                            />
+                            
+                            {/* Dots */}
+                            {historicalData[timeRange].map((v, i) => (
+                                <motion.circle
+                                    key={i}
+                                    cx={40 + (i * (340 / (historicalData[timeRange].length - 1)))}
+                                    cy={100 - v}
+                                    r="3"
+                                    fill="#22d3ee"
+                                    initial={{ scale: 0 }}
+                                    animate={{ scale: 1 }}
+                                    transition={{ delay: 0.1 * i }}
+                                />
+                            ))}
+                            
+                            <defs>
+                                <linearGradient id="areaGradient" x1="0" y1="0" x2="0" y2="1">
+                                    <stop offset="0%" stopColor="#22d3ee" stopOpacity="0.3" />
+                                    <stop offset="100%" stopColor="#22d3ee" stopOpacity="0" />
+                                </linearGradient>
+                            </defs>
+                        </svg>
+                    </div>
+                    
+                    <div className="flex justify-between mt-4 text-xs text-slate-500">
+                        <span>Начало периода</span>
+                        <span className="text-cyan-400 font-bold">
+                            +{historicalData[timeRange][historicalData[timeRange].length - 1] - historicalData[timeRange][0]}% за период
+                        </span>
+                        <span>Сейчас</span>
+                    </div>
+                </div>
+
+                {/* AI Predictions */}
+                <div className="glass-card">
+                    <h3 className="text-lg font-bold flex items-center gap-2 mb-6">
+                        <Cpu className="text-purple-400" size={20} />
+                        AI Прогнозы
+                    </h3>
+                    <div className="space-y-4">
+                        {aiPredictions.map((pred, i) => (
+                            <motion.div
+                                key={pred.metric}
+                                className="p-4 rounded-xl bg-white/[0.02] border border-white/5"
+                                initial={{ opacity: 0, x: -20 }}
+                                animate={{ opacity: 1, x: 0 }}
+                                transition={{ delay: i * 0.1 }}
+                            >
+                                <div className="flex justify-between items-start mb-2">
+                                    <div>
+                                        <div className="text-sm font-bold">{pred.metric}</div>
+                                        <div className="text-[10px] text-slate-500">Горизонт: {pred.horizon}</div>
+                                    </div>
+                                    <div className="text-right">
+                                        <div className="flex items-center gap-1 text-green-400">
+                                            <ArrowUp size={12} />
+                                            <span className="font-bold">{pred.predicted}%</span>
+                                        </div>
+                                        <div className="text-[10px] text-slate-500">с {pred.current}%</div>
+                                    </div>
+                                </div>
+                                <div className="flex items-center gap-2">
+                                    <div className="flex-1 h-1.5 bg-white/5 rounded-full overflow-hidden">
+                                        <motion.div
+                                            className="h-full bg-gradient-to-r from-purple-500 to-cyan-500"
+                                            initial={{ width: 0 }}
+                                            animate={{ width: `${pred.confidence}%` }}
+                                            transition={{ duration: 1, delay: 0.5 + i * 0.1 }}
+                                        />
+                                    </div>
+                                    <span className="text-[10px] text-slate-400">{pred.confidence}% уверенность</span>
+                                </div>
+                            </motion.div>
+                        ))}
+                    </div>
+                </div>
+            </div>
+
+            {/* Country Stats & Region Comparison */}
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mt-8">
+                {/* Country Statistics */}
+                <div className="glass-card">
+                    <h3 className="text-lg font-bold flex items-center gap-2 mb-6">
+                        <MapPin className="text-emerald-400" size={20} />
+                        Статистика по странам
+                    </h3>
+                    <div className="space-y-3">
+                        {countryStats.map((country, i) => (
+                            <motion.div
+                                key={country.name}
+                                className="flex items-center gap-4 p-3 rounded-xl bg-white/[0.02] hover:bg-white/[0.04] transition-colors"
+                                initial={{ opacity: 0, y: 10 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                transition={{ delay: i * 0.1 }}
+                            >
+                                <div className="text-2xl">{country.flag}</div>
+                                <div className="flex-1">
+                                    <div className="font-bold text-sm">{country.name}</div>
+                                    <div className="text-[10px] text-slate-500">{country.objects} объектов</div>
+                                </div>
+                                <div className="text-center px-3">
+                                    <div className="text-sm font-bold text-cyan-400">{country.quality}%</div>
+                                    <div className="text-[9px] text-slate-500">Качество</div>
+                                </div>
+                                <div className="text-center px-3">
+                                    <div className="text-sm font-bold">${country.investment}M</div>
+                                    <div className="text-[9px] text-slate-500">Инвестиции</div>
+                                </div>
+                                <div className="text-green-400 text-sm font-bold flex items-center gap-1">
+                                    <ArrowUp size={12} />
+                                    {country.trend}
+                                </div>
+                            </motion.div>
+                        ))}
+                    </div>
+                </div>
+
+                {/* Region Comparison */}
+                <div className="glass-card">
+                    <h3 className="text-lg font-bold flex items-center gap-2 mb-6">
+                        <PieChart className="text-yellow-400" size={20} />
+                        Сравнение регионов
+                    </h3>
+                    <div className="space-y-4">
+                        {regionComparison.map((region, i) => (
+                            <motion.div
+                                key={region.region}
+                                className="relative"
+                                initial={{ opacity: 0, x: 20 }}
+                                animate={{ opacity: 1, x: 0 }}
+                                transition={{ delay: i * 0.1 }}
+                            >
+                                <div className="flex justify-between items-center mb-2">
+                                    <span className="text-sm font-bold">{region.region}</span>
+                                    <span className={cn(
+                                        "text-sm font-black",
+                                        region.score >= 80 ? "text-green-400" :
+                                        region.score >= 60 ? "text-yellow-400" :
+                                        region.score >= 40 ? "text-orange-400" : "text-red-400"
+                                    )}>{region.score}%</span>
+                                </div>
+                                <div className="h-2 bg-white/5 rounded-full overflow-hidden">
+                                    <motion.div
+                                        className={cn(
+                                            "h-full rounded-full",
+                                            region.score >= 80 ? "bg-green-500" :
+                                            region.score >= 60 ? "bg-yellow-500" :
+                                            region.score >= 40 ? "bg-orange-500" : "bg-red-500"
+                                        )}
+                                        initial={{ width: 0 }}
+                                        animate={{ width: `${region.score}%` }}
+                                        transition={{ duration: 1, delay: 0.3 + i * 0.1 }}
+                                    />
+                                </div>
+                                <div className="flex justify-between mt-1 text-[9px] text-slate-500">
+                                    <span>Качество: {region.quality}%</span>
+                                    <span>Покрытие: {region.coverage}%</span>
+                                    <span>Инвестиции: {region.investment}%</span>
+                                </div>
+                            </motion.div>
+                        ))}
+                    </div>
+                </div>
+            </div>
+
             {/* Infrastructure Details */}
             <div className="grid grid-cols-1 lg:grid-cols-4 gap-8 mt-8">
                 <div className="lg:col-span-3 glass-card">
@@ -351,8 +610,8 @@ export default function DashboardPage() {
                     </div>
 
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        {filteredGIS.map((point) => (
-                            <div key={point.id} className="p-4 rounded-2xl bg-white/[0.02] border border-white/5 hover:bg-white/[0.04] transition-all group">
+                        {filteredGIS.slice(0, 8).map((point) => (
+                            <div key={point.id} className="p-4 rounded-2xl bg-white/[0.02] border border-white/5 hover:bg-white/[0.04] transition-all group cursor-pointer">
                                 <div className="flex justify-between items-start mb-4">
                                     <div className="flex items-center gap-3">
                                         <div className={cn(
@@ -386,10 +645,57 @@ export default function DashboardPage() {
                             </div>
                         ))}
                     </div>
+                    
+                    {filteredGIS.length > 8 && (
+                        <div className="mt-6 text-center">
+                            <button className="px-6 py-2 text-sm font-bold text-cyan-400 hover:bg-cyan-500/10 rounded-xl transition-colors">
+                                Показать все {filteredGIS.length} объектов
+                            </button>
+                        </div>
+                    )}
                 </div>
 
                 <div className="lg:col-span-1 space-y-6">
                     <AIAnalyticsEngine />
+                    
+                    {/* Platform Stats */}
+                    <div className="glass-card p-6">
+                        <h4 className="text-sm font-black uppercase tracking-widest text-purple-400 mb-4 flex items-center gap-2">
+                            <Database size={14} />
+                            Платформа VODeco
+                        </h4>
+                        <div className="space-y-3">
+                            <div className="flex justify-between items-center p-2 rounded-lg bg-white/[0.02]">
+                                <span className="text-xs text-slate-400 flex items-center gap-2">
+                                    <Satellite size={12} className="text-cyan-400" />
+                                    IoT датчиков
+                                </span>
+                                <span className="text-sm font-black">2,847</span>
+                            </div>
+                            <div className="flex justify-between items-center p-2 rounded-lg bg-white/[0.02]">
+                                <span className="text-xs text-slate-400 flex items-center gap-2">
+                                    <Users size={12} className="text-green-400" />
+                                    Пользователей
+                                </span>
+                                <span className="text-sm font-black">12,459</span>
+                            </div>
+                            <div className="flex justify-between items-center p-2 rounded-lg bg-white/[0.02]">
+                                <span className="text-xs text-slate-400 flex items-center gap-2">
+                                    <Target size={12} className="text-yellow-400" />
+                                    Проектов
+                                </span>
+                                <span className="text-sm font-black">156</span>
+                            </div>
+                            <div className="flex justify-between items-center p-2 rounded-lg bg-white/[0.02]">
+                                <span className="text-xs text-slate-400 flex items-center gap-2">
+                                    <Shield size={12} className="text-purple-400" />
+                                    Транзакций
+                                </span>
+                                <span className="text-sm font-black">1.2M</span>
+                            </div>
+                        </div>
+                    </div>
+                    
                     <div className="glass-card p-6 border-cyan-500/20 bg-cyan-500/[0.02]">
                         <h4 className="text-sm font-black uppercase tracking-widest text-cyan-400 mb-4">VOD Token Impact</h4>
                         <div className="space-y-4">
@@ -401,6 +707,10 @@ export default function DashboardPage() {
                                 <span className="text-xs text-slate-400">Стейкинг</span>
                                 <span className="text-sm font-black">450M VOD</span>
                             </div>
+                            <div className="flex justify-between items-center">
+                                <span className="text-xs text-slate-400">Награды/день</span>
+                                <span className="text-sm font-black text-green-400">+125K VOD</span>
+                            </div>
                             <div className="h-1.5 w-full bg-white/5 rounded-full overflow-hidden mt-4">
                                 <motion.div
                                     initial={{ width: 0 }}
@@ -408,6 +718,7 @@ export default function DashboardPage() {
                                     className="h-full bg-cyan-500 shadow-[0_0_10px_rgba(34,211,238,0.5)]"
                                 />
                             </div>
+                            <div className="text-[10px] text-slate-500 text-center">65% в стейкинге</div>
                         </div>
                     </div>
                 </div>

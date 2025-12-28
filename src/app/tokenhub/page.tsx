@@ -15,6 +15,7 @@ import {
 import { cn } from "@/lib/utils";
 import { useLanguage } from "@/context/LanguageContext";
 import { translations } from "@/lib/i18n";
+import BuyTokenWidget from "@/components/BuyTokenWidget";
 
 interface Project {
     id: number;
@@ -232,7 +233,7 @@ export default function ProjectHubPage() {
         },
         {
             id: 14,
-            title: "Blockchain Integration (TON/VOD)",
+            title: "Blockchain Integration (VOD)",
             region: "global",
             author: "Civilization Protocol Foundation",
             authorType: "industrial",
@@ -242,7 +243,7 @@ export default function ProjectHubPage() {
             status: "Active",
             progress: 38,
             esg: 98,
-            description: "Интеграция с TON Network. Смарт-контракты на FunC/Tact для управления токенами и данными."
+            description: "Интеграция с EVM-сетями. Смарт-контракты на Solidity для управления токенами и данными."
         },
         {
             id: 15,
@@ -424,13 +425,18 @@ export default function ProjectHubPage() {
         <div className={cn("min-h-screen bg-ocean-deep py-24 px-4", isRTL && "text-right")}>
             <div className="max-w-7xl mx-auto">
                 {/* Header */}
-                <div className="mb-12">
+                <div className="mb-8">
                     <h1 className="text-5xl font-black text-white mb-4 tracking-tighter">
                         {t("projecthub.title")}
                     </h1>
                     <p className="text-slate-400 text-lg max-w-2xl">
                         {t("projecthub.subtitle")}
                     </p>
+                </div>
+
+                {/* Buy Token Banner */}
+                <div className="mb-8">
+                    <BuyTokenWidget variant="banner" source="tokenhub" />
                 </div>
 
                 {/* Filters Bar */}
@@ -460,7 +466,7 @@ export default function ProjectHubPage() {
                                     className="w-full bg-white/5 border border-white/10 rounded-xl py-3 px-4 text-sm appearance-none focus:outline-none focus:border-cyan-500/50 transition-all"
                                 >
                                     <option value="all">{t("common.categories")}: {t("common.all")}</option>
-                                    {Object.keys(translations.ru.projecthub.sectors).map((key) => (
+                                    {Object.keys(translations.en.projecthub.sectors).map((key) => (
                                         <option key={key} value={key}>{t(`projecthub.sectors.${key}`)}</option>
                                     ))}
                                 </select>
@@ -477,7 +483,7 @@ export default function ProjectHubPage() {
                                     className="w-full bg-white/5 border border-white/10 rounded-xl py-3 px-4 text-sm appearance-none focus:outline-none focus:border-cyan-500/50 transition-all"
                                 >
                                     <option value="all">{t("common.regions")}: {t("common.all")}</option>
-                                    {Object.keys(translations.ru.projecthub.regions).map((key) => (
+                                    {Object.keys(translations.en.projecthub.regions).map((key) => (
                                         <option key={key} value={key}>{t(`projecthub.regions.${key}`)}</option>
                                     ))}
                                 </select>
@@ -494,7 +500,7 @@ export default function ProjectHubPage() {
                                     className="w-full bg-white/5 border border-white/10 rounded-xl py-3 px-4 text-sm appearance-none focus:outline-none focus:border-cyan-500/50 transition-all"
                                 >
                                     <option value="all">{t("common.authors")}: {t("common.all")}</option>
-                                    {Object.keys(translations.ru.projecthub.author_types).map((key) => (
+                                    {Object.keys(translations.en.projecthub.author_types).map((key) => (
                                         <option key={key} value={key}>{t(`projecthub.author_types.${key}`)}</option>
                                     ))}
                                 </select>

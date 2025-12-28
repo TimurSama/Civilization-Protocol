@@ -1,194 +1,252 @@
 "use client";
 
-import { useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 import {
-    User, Shield, Briefcase,
-    Globe, Newspaper, TrendingUp,
-    Settings, CheckCircle2, AlertCircle,
-    FileText, BarChart3, Users,
-    MessageSquare, Download, Share2,
-    Lock, Unlock, Zap, Droplets
+    User, Shield, HardHat,
+    Globe, Beaker, TrendingUp,
+    Settings, CheckCircle2, Building2,
+    ArrowRight, Droplets, Activity,
+    Lock, Sparkles, ChevronRight
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useLanguage } from "@/context/LanguageContext";
+import Link from "next/link";
 
-type Role = 'activist' | 'media' | 'investor' | 'gov' | 'business' | 'admin';
-
-interface CabinetRole {
-    id: Role;
+interface CabinetType {
+    id: string;
     label: string;
     icon: any;
     color: string;
+    bgColor: string;
+    borderColor: string;
     description: string;
+    features: string[];
+    stats: { label: string; value: string }[];
+    access: "public" | "verified" | "restricted";
 }
 
 export default function CabinetsPage() {
-    const { t, isRTL } = useLanguage();
-    const [selectedRole, setSelectedRole] = useState<Role>('activist');
-    const [isVerified, setIsVerified] = useState(false);
+    const { isRTL } = useLanguage();
 
-    const roles: CabinetRole[] = [
-        { id: 'activist', label: "Общественный деятель", icon: Users, color: "text-emerald-400", description: "Инструменты для мониторинга, петиций и голосования в DAO." },
-        { id: 'media', label: "СМИ и Журналисты", icon: Newspaper, color: "text-blue-400", description: "Доступ к верифицированным данным, пресс-релизам и экспорт аналитики." },
-        { id: 'investor', label: "Инвестор", icon: TrendingUp, color: "text-cyan-400", description: "Управление портфелем, ROI аналитика и доступ к меморандумам." },
-        { id: 'gov', label: "Гос. структуры", icon: Globe, color: "text-purple-400", description: "Региональная статистика, контроль комплаенса и экстренные оповещения." },
-        { id: 'business', label: "Бизнес и ESG", icon: Briefcase, color: "text-amber-400", description: "ESG отчетность, B2B маркетплейс и оптимизация ресурсов." },
-        { id: 'admin', label: "Администратор", icon: Shield, color: "text-rose-400", description: "Управление системой, верификация пользователей и глобальные параметры." },
+    const cabinets: CabinetType[] = [
+        { 
+            id: 'citizen', 
+            label: "Гражданский кабинет", 
+            icon: User, 
+            color: "text-cyan-400",
+            bgColor: "bg-cyan-500/10",
+            borderColor: "border-cyan-500/30",
+            description: "Мониторинг качества воды, участие в DAO голосованиях, миссии и достижения.", 
+            features: ["Мониторинг воды", "Отчёты", "Миссии", "Достижения"],
+            stats: [{ label: "Пользователей", value: "12,456" }],
+            access: "public"
+        },
+        { 
+            id: 'government', 
+            label: "Правительственный кабинет", 
+            icon: Building2, 
+            color: "text-blue-400",
+            bgColor: "bg-blue-500/10",
+            borderColor: "border-blue-500/30",
+            description: "Управление политиками, межрегиональная координация и SDG отчётность.", 
+            features: ["Региональный обзор", "Политики", "Кризис-центр", "SDG отчёты"],
+            stats: [{ label: "Регионов", value: "24" }],
+            access: "verified"
+        },
+        { 
+            id: 'infrastructure', 
+            label: "Инфраструктурный кабинет", 
+            icon: HardHat, 
+            color: "text-orange-400",
+            bgColor: "bg-orange-500/10",
+            borderColor: "border-orange-500/30",
+            description: "Мониторинг IoT-датчиков, предиктивное обслуживание и управление активами.", 
+            features: ["Управление активами", "IoT мониторинг", "Обслуживание", "Оповещения"],
+            stats: [{ label: "IoT узлов", value: "2,456" }],
+            access: "verified"
+        },
+        { 
+            id: 'investor', 
+            label: "Инвестиционный кабинет", 
+            icon: TrendingUp, 
+            color: "text-emerald-400",
+            bgColor: "bg-emerald-500/10",
+            borderColor: "border-emerald-500/30",
+            description: "ESG-портфель, доходность токенов VOD и анализ экологических рынков.", 
+            features: ["Портфель", "Проекты", "Рынок", "ESG отчёт"],
+            stats: [{ label: "Объём инвестиций", value: "$4.5M" }],
+            access: "verified"
+        },
+        { 
+            id: 'science', 
+            label: "Научный кабинет", 
+            icon: Beaker, 
+            color: "text-purple-400",
+            bgColor: "bg-purple-500/10",
+            borderColor: "border-purple-500/30",
+            description: "OpenData API, исследовательские проекты и коллаборации учёных.", 
+            features: ["Исследования", "Data Lake", "ML модели", "API"],
+            stats: [{ label: "Датасетов", value: "4.2 TB" }],
+            access: "verified"
+        },
+        { 
+            id: 'operator', 
+            label: "Операторский кабинет", 
+            icon: Settings, 
+            color: "text-slate-400",
+            bgColor: "bg-slate-500/10",
+            borderColor: "border-slate-500/30",
+            description: "Системный контроль, управление инцидентами и техническая поддержка.", 
+            features: ["Контроль", "Алерты", "Логи", "Поддержка"],
+            stats: [{ label: "Uptime", value: "99.99%" }],
+            access: "restricted"
+        },
+        { 
+            id: 'admin', 
+            label: "Административный кабинет", 
+            icon: Shield, 
+            color: "text-red-400",
+            bgColor: "bg-red-500/10",
+            borderColor: "border-red-500/30",
+            description: "Конфигурация системы, управление ролями и аудит безопасности.", 
+            features: ["Пользователи", "Роли", "Аудит", "Настройки"],
+            stats: [{ label: "Безопасность", value: "Max" }],
+            access: "restricted"
+        },
     ];
 
-    const renderCabinetContent = () => {
-        if (!isVerified && selectedRole !== 'activist') {
-            return (
-                <div className="flex flex-col items-center justify-center py-20 text-center">
-                    <div className="w-20 h-20 rounded-full bg-white/5 flex items-center justify-center mb-6 border border-white/10">
-                        <Lock className="text-slate-500" size={32} />
-                    </div>
-                    <h2 className="text-2xl font-black text-white mb-2">Требуется верификация</h2>
-                    <p className="text-slate-400 max-w-md mb-8">
-                        Для доступа к кабинету {roles.find(r => r.id === selectedRole)?.label} необходимо подтвердить вашу личность или статус организации.
-                    </p>
-                    <button
-                        onClick={() => setIsVerified(true)}
-                        className="px-8 py-3 bg-cyan-500 text-ocean-deep font-black rounded-xl hover:bg-cyan-400 transition-all shadow-lg shadow-cyan-500/20"
-                    >
-                        Начать верификацию
-                    </button>
-                </div>
-            );
-        }
-
-        switch (selectedRole) {
-            case 'activist':
-                return (
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                        <div className="md:col-span-2 space-y-6">
-                            <div className="glass-card p-6 border-white/5">
-                                <h3 className="text-lg font-black text-white mb-4 flex items-center gap-2">
-                                    <MessageSquare size={20} className="text-emerald-400" />
-                                    Активные петиции
-                                </h3>
-                                <div className="space-y-4">
-                                    {[1, 2].map(i => (
-                                        <div key={i} className="p-4 bg-white/5 rounded-xl border border-white/5 hover:border-emerald-500/30 transition-all">
-                                            <div className="flex justify-between items-start mb-2">
-                                                <h4 className="font-bold text-sm">Очистка бассейна реки Амударья</h4>
-                                                <span className="text-[10px] font-black text-emerald-400 uppercase">85% собрано</span>
-                                            </div>
-                                            <div className="h-1.5 w-full bg-white/5 rounded-full overflow-hidden mb-4">
-                                                <div className="h-full bg-emerald-500 w-[85%]" />
-                                            </div>
-                                            <button className="text-[10px] font-black text-slate-500 uppercase hover:text-white transition-colors">Поддержать</button>
-                                        </div>
-                                    ))}
-                                </div>
-                            </div>
-                        </div>
-                        <div className="space-y-6">
-                            <div className="glass-card p-6 border-white/5">
-                                <h3 className="text-sm font-black text-slate-500 uppercase mb-4 tracking-widest">Ваш вклад</h3>
-                                <div className="text-3xl font-black text-white mb-1">1,240 VOD</div>
-                                <div className="text-[10px] text-emerald-400 font-bold">+12% за месяц</div>
-                            </div>
-                        </div>
-                    </div>
-                );
-            case 'investor':
-                return (
-                    <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-                        <div className="glass-card p-6 border-white/5 bg-cyan-500/[0.02]">
-                            <TrendingUp className="text-cyan-400 mb-4" size={24} />
-                            <div className="text-[10px] font-black text-slate-500 uppercase mb-1">Портфель</div>
-                            <div className="text-2xl font-black text-white">$1.2M</div>
-                        </div>
-                        <div className="glass-card p-6 border-white/5">
-                            <BarChart3 className="text-purple-400 mb-4" size={24} />
-                            <div className="text-[10px] font-black text-slate-500 uppercase mb-1">ROI (YTD)</div>
-                            <div className="text-2xl font-black text-white">+18.4%</div>
-                        </div>
-                        <div className="md:col-span-2 glass-card p-6 border-white/5">
-                            <h3 className="text-sm font-black text-slate-500 uppercase mb-4">Доступные меморандумы</h3>
-                            <div className="space-y-3">
-                                <div className="flex justify-between items-center p-3 bg-white/5 rounded-xl">
-                                    <span className="text-xs font-bold">Civilization Protocol Core Series A</span>
-                                    <Download size={16} className="text-cyan-400 cursor-pointer" />
-                                </div>
-                                <div className="flex justify-between items-center p-3 bg-white/5 rounded-xl">
-                                    <span className="text-xs font-bold">Water Infrastructure Fund</span>
-                                    <Download size={16} className="text-cyan-400 cursor-pointer" />
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                );
-            default:
-                return (
-                    <div className="glass-card p-20 text-center border-white/5">
-                        <Zap className="text-cyan-400 mx-auto mb-6 animate-pulse" size={48} />
-                        <h2 className="text-2xl font-black text-white mb-2">Кабинет в разработке</h2>
-                        <p className="text-slate-400">Этот раздел будет доступен в следующем обновлении экосистемы Civilization Protocol.</p>
-                    </div>
-                );
-        }
-    };
-
     return (
-        <div className={cn("min-h-screen bg-ocean-deep py-24 px-4", isRTL && "text-right")}>
+        <div className={cn("min-h-screen py-12 px-4", isRTL && "text-right")}>
             <div className="max-w-7xl mx-auto">
                 {/* Header */}
-                <div className="flex flex-col md:flex-row md:items-end justify-between gap-8 mb-12">
-                    <div>
-                        <h1 className="text-5xl font-black text-white mb-4 tracking-tighter">
-                            Профессиональные Кабинеты
-                        </h1>
-                        <p className="text-slate-400 text-lg max-w-2xl">
-                            Специализированные инструменты для каждой роли в экосистеме Civilization Protocol.
-                        </p>
+                <motion.div 
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    className="text-center mb-16"
+                >
+                    <div className="inline-flex items-center gap-2 px-4 py-2 bg-cyan-500/10 border border-cyan-500/20 rounded-full mb-6">
+                        <Sparkles className="text-cyan-400" size={16} />
+                        <span className="text-xs font-bold text-cyan-400 uppercase tracking-widest">Специализированные инструменты</span>
                     </div>
-                    {isVerified && (
-                        <div className="flex items-center gap-3 px-4 py-2 bg-emerald-500/10 border border-emerald-500/20 rounded-xl">
-                            <CheckCircle2 className="text-emerald-400" size={18} />
-                            <span className="text-xs font-black text-emerald-400 uppercase tracking-widest">Верифицирован</span>
-                        </div>
-                    )}
-                </div>
+                    <h1 className="text-5xl md:text-6xl font-black text-white mb-6 tracking-tighter">
+                        Профессиональные <span className="text-cyan-glow">Кабинеты</span>
+                    </h1>
+                    <p className="text-slate-400 text-lg max-w-3xl mx-auto">
+                        Каждый кабинет предоставляет специализированные инструменты и данные для вашей роли в экосистеме VODeco.
+                        Выберите кабинет для доступа к персонализированному функционалу.
+                    </p>
+                </motion.div>
 
-                {/* Role Selector */}
-                <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 mb-12">
-                    {roles.map(role => (
-                        <button
-                            key={role.id}
-                            onClick={() => {
-                                setSelectedRole(role.id);
-                                if (role.id === 'activist') setIsVerified(false);
-                            }}
-                            className={cn(
-                                "p-6 glass-card border-white/5 transition-all flex flex-col items-center text-center gap-4 group",
-                                selectedRole === role.id ? "bg-white/10 border-white/20 shadow-xl" : "bg-white/[0.01] hover:bg-white/[0.03]"
-                            )}
+                {/* Cabinets Grid */}
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
+                    {cabinets.map((cabinet, index) => (
+                        <motion.div
+                            key={cabinet.id}
+                            initial={{ opacity: 0, y: 20 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ delay: index * 0.1 }}
                         >
-                            <role.icon className={cn("transition-transform group-hover:scale-110", selectedRole === role.id ? role.color : "text-slate-600")} size={32} />
-                            <div>
-                                <div className={cn("text-[10px] font-black uppercase tracking-tighter mb-1", selectedRole === role.id ? "text-white" : "text-slate-500")}>
-                                    {role.label}
+                            <Link href={`/cabinets/${cabinet.id}`}>
+                                <div className={cn(
+                                    "glass-card p-6 h-full transition-all duration-300 group cursor-pointer",
+                                    "hover:shadow-xl hover:shadow-cyan-500/10 hover:border-white/20",
+                                    "relative overflow-hidden"
+                                )}>
+                                    {/* Background Glow */}
+                                    <div className={cn("absolute top-0 right-0 w-40 h-40 blur-[80px] opacity-20 rounded-full transition-opacity group-hover:opacity-40", cabinet.bgColor)} />
+                                    
+                                    {/* Header */}
+                                    <div className="flex items-start justify-between mb-4 relative">
+                                        <div className={cn("w-14 h-14 rounded-2xl flex items-center justify-center border", cabinet.bgColor, cabinet.borderColor)}>
+                                            <cabinet.icon className={cabinet.color} size={28} />
+                                        </div>
+                                        <div className="flex items-center gap-2">
+                                            {cabinet.access === "public" ? (
+                                                <span className="px-2 py-1 bg-green-500/10 border border-green-500/20 rounded text-[10px] font-bold text-green-400 uppercase">
+                                                    Открыт
+                                                </span>
+                                            ) : cabinet.access === "verified" ? (
+                                                <span className="px-2 py-1 bg-yellow-500/10 border border-yellow-500/20 rounded text-[10px] font-bold text-yellow-400 uppercase flex items-center gap-1">
+                                                    <CheckCircle2 size={10} /> Верификация
+                                                </span>
+                                            ) : (
+                                                <span className="px-2 py-1 bg-red-500/10 border border-red-500/20 rounded text-[10px] font-bold text-red-400 uppercase flex items-center gap-1">
+                                                    <Lock size={10} /> Ограничен
+                                                </span>
+                                            )}
+                                        </div>
+                                    </div>
+
+                                    {/* Content */}
+                                    <h3 className="text-xl font-black text-white mb-2 group-hover:text-cyan-glow transition-colors">
+                                        {cabinet.label}
+                                    </h3>
+                                    <p className="text-sm text-slate-400 mb-4 line-clamp-2">
+                                        {cabinet.description}
+                                    </p>
+
+                                    {/* Features */}
+                                    <div className="flex flex-wrap gap-2 mb-4">
+                                        {cabinet.features.map((feature, i) => (
+                                            <span key={i} className="px-2 py-1 bg-white/5 rounded text-[10px] font-bold text-slate-400">
+                                                {feature}
+                                            </span>
+                                        ))}
+                                    </div>
+
+                                    {/* Stats & Action */}
+                                    <div className="flex items-center justify-between pt-4 border-t border-white/5">
+                                        <div>
+                                            <div className="text-[10px] text-slate-500 uppercase tracking-widest">{cabinet.stats[0].label}</div>
+                                            <div className={cn("text-lg font-black", cabinet.color)}>{cabinet.stats[0].value}</div>
+                                        </div>
+                                        <div className={cn("w-10 h-10 rounded-xl flex items-center justify-center transition-all", cabinet.bgColor, "group-hover:scale-110")}>
+                                            <ChevronRight className={cabinet.color} size={20} />
+                                        </div>
+                                    </div>
                                 </div>
-                            </div>
-                        </button>
+                            </Link>
+                        </motion.div>
                     ))}
                 </div>
 
-                {/* Cabinet Content */}
-                <AnimatePresence mode="wait">
-                    <motion.div
-                        key={selectedRole + (isVerified ? '-v' : '-u')}
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        exit={{ opacity: 0, y: -20 }}
-                        transition={{ duration: 0.3 }}
-                    >
-                        {renderCabinetContent()}
-                    </motion.div>
-                </AnimatePresence>
+                {/* Quick Access Cards */}
+                <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.8 }}
+                    className="glass-card p-8 relative overflow-hidden"
+                >
+                    <div className="absolute top-0 right-0 w-80 h-80 blur-[120px] opacity-20 rounded-full bg-gradient-to-br from-cyan-500 to-blue-500" />
+                    
+                    <div className="relative grid grid-cols-1 md:grid-cols-3 gap-8">
+                        <div className="md:col-span-2">
+                            <h3 className="text-2xl font-black text-white mb-4">
+                                Быстрый доступ к ключевым функциям
+                            </h3>
+                            <p className="text-slate-400 mb-6">
+                                Независимо от вашей роли, вы можете получить доступ к основным инструментам мониторинга 
+                                и участия в экосистеме VODeco.
+                            </p>
+                            <div className="flex flex-wrap gap-4">
+                                <Link href="/dashboard" className="px-6 py-3 bg-cyan-500/10 border border-cyan-500/30 rounded-xl font-bold text-cyan-400 hover:bg-cyan-500/20 transition-colors flex items-center gap-2">
+                                    <Activity size={18} /> Dashboard
+                                </Link>
+                                <Link href="/dao" className="px-6 py-3 bg-blue-500/10 border border-blue-500/30 rounded-xl font-bold text-blue-400 hover:bg-blue-500/20 transition-colors flex items-center gap-2">
+                                    <Globe size={18} /> DAO Голосования
+                                </Link>
+                                <Link href="/missions" className="px-6 py-3 bg-purple-500/10 border border-purple-500/30 rounded-xl font-bold text-purple-400 hover:bg-purple-500/20 transition-colors flex items-center gap-2">
+                                    <Sparkles size={18} /> Миссии
+                                </Link>
+                            </div>
+                        </div>
+                        <div className="flex items-center justify-center">
+                            <div className="w-32 h-32 rounded-full bg-gradient-to-br from-cyan-500/20 to-blue-500/20 flex items-center justify-center border border-cyan-500/30 animate-pulse">
+                                <Droplets className="text-cyan-400" size={48} />
+                            </div>
+                        </div>
+                    </div>
+                </motion.div>
             </div>
         </div>
     );

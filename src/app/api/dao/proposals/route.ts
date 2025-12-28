@@ -1,90 +1,153 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { prisma } from '@/lib/db';
+import { getUserIdFromRequest, getPagination } from '@/lib/api-utils';
 
-// Mock data - в будущем будет заменено на реальную БД
-const proposals = [
-    {
-        id: "VOD-124",
-        title: "Модернизация очистных сооружений в секторе A-1",
-        desc: "Предложение по внедрению новых графеновых фильтров для повышения эффективности очистки на 25%.",
-        status: "Active",
-        votesFor: 124500,
-        votesAgainst: 12000,
-        timeLeft: "2 дня",
-        author: "VODPROM",
-        category: "Инфраструктура",
-        createdAt: new Date().toISOString(),
-    },
-    {
-        id: "VOD-125",
-        title: "Модернизация очистных сооружений в Бухаре",
-        desc: "Предложение по замене старых фильтров на новые мембранные системы с IoT-датчиками.",
-        status: "Active",
-        votesFor: 245000,
-        votesAgainst: 18000,
-        timeLeft: "3 дня",
-        author: "VODPROM",
-        category: "Инфраструктура",
-        createdAt: new Date().toISOString(),
-    }
-];
-
+// GET - Получение предложений DAO
 export async function GET(request: NextRequest) {
-    const searchParams = request.nextUrl.searchParams;
+  try {
+    const { searchParams } = new URL(request.url);
+    const { limit, skip } = getPagination(searchParams);
     const category = searchParams.get('category');
     const status = searchParams.get('status');
-
-    let filtered = proposals;
-
-    if (category && category !== 'all') {
-        filtered = filtered.filter(p => p.category === category);
+    
+    const where: any = {};
+    if (category) where.category = category;
+    if (status) where.status = status;
+    
+    const [proposals, total] = await Promise.all([
+      prisma.daoProposal.findMany({
+        where,
+        include: {
+          author: {
+            select: {
+              id: true,
+              name: true,
+              avatar: true,
+              role: true,
+              verified: true,
+            },
+          },
+          _count: {
+            select: { votes: true },
+          },
+        },
+        orderBy: { createdAt: 'desc' },
+        skip,
+        take: limit,
+      }),
+      prisma.daoProposal.count({ where }),
+    ]);
+    
+    // Проверяем голоса текущего пользователя
+    const userId = getUserIdFromRequest(request);
+    let userVotes: { [key: string]: string } = {};
+    
+    if (userId) {
+      const votes = await prisma.daoVote.findMany({
+        where: {
+          userId,
+          proposalId: { in: proposals.map(p => p.id) },
+        },
+        select: { proposalId: true, vote: true },
+      });
+      userVotes = Object.fromEntries(votes.map(v => [v.proposalId, v.vote]));
     }
-
-    if (status && status !== 'all') {
-        filtered = filtered.filter(p => p.status.toLowerCase() === status.toLowerCase());
-    }
-
-    return NextResponse.json({ proposals: filtered });
+    
+    const formattedProposals = proposals.map(proposal => ({
+      ...proposal,
+      totalVotes: proposal.votesFor + proposal.votesAgainst + proposal.votesAbstain,
+      votersCount: proposal._count.votes,
+      userVote: userVotes[proposal.id] || null,
+    }));
+    
+    return NextResponse.json({
+      success: true,
+      proposals: formattedProposals,
+      pagination: {
+        total,
+        pages: Math.ceil(total / limit),
+      },
+    });
+  } catch (error) {
+    console.error('Get proposals error:', error);
+    return NextResponse.json(
+      { success: false, error: 'Ошибка сервера' },
+      { status: 500 }
+    );
+  }
 }
 
+// POST - Создание предложения
 export async function POST(request: NextRequest) {
-    try {
-        const body = await request.json();
-        const { title, desc, author, category } = body;
-
-        // Валидация
-        if (!title || !desc || !author || !category) {
-            return NextResponse.json(
-                { error: 'Missing required fields' },
-                { status: 400 }
-            );
-        }
-
-        // Создание нового предложения
-        const newProposal = {
-            id: `VOD-${Date.now()}`,
-            title,
-            desc,
-            status: "Pending",
-            votesFor: 0,
-            votesAgainst: 0,
-            timeLeft: "Ожидает начала",
-            author,
-            category,
-            createdAt: new Date().toISOString(),
-        };
-
-        // В реальном приложении здесь будет сохранение в БД
-        proposals.push(newProposal);
-
-        return NextResponse.json({ proposal: newProposal }, { status: 201 });
-    } catch (error) {
-        return NextResponse.json(
-            { error: 'Invalid request body' },
-            { status: 400 }
-        );
+  try {
+    const userId = getUserIdFromRequest(request);
+    if (!userId) {
+      return NextResponse.json(
+        { success: false, error: 'Требуется авторизация' },
+        { status: 401 }
+      );
     }
+    
+    const body = await request.json();
+    const { title, description, category, budgetRequested, endDays = 7 } = body;
+    
+    if (!title || !description || !category) {
+      return NextResponse.json(
+        { success: false, error: 'Заголовок, описание и категория обязательны' },
+        { status: 400 }
+      );
+    }
+    
+    // Проверяем баланс для создания предложения (минимум 100 VOD)
+    const user = await prisma.user.findUnique({
+      where: { id: userId },
+    });
+    
+    if (!user || user.vodBalance < 100) {
+      return NextResponse.json(
+        { success: false, error: 'Недостаточно VOD для создания предложения (минимум 100)' },
+        { status: 400 }
+      );
+    }
+    
+    const endDate = new Date();
+    endDate.setDate(endDate.getDate() + endDays);
+    
+    const proposal = await prisma.daoProposal.create({
+      data: {
+        authorId: userId,
+        title,
+        description,
+        category,
+        budgetRequested: budgetRequested || null,
+        endDate,
+      },
+      include: {
+        author: {
+          select: {
+            id: true,
+            name: true,
+            avatar: true,
+          },
+        },
+      },
+    });
+    
+    // XP за создание предложения
+    await prisma.user.update({
+      where: { id: userId },
+      data: { xp: { increment: 100 } },
+    });
+    
+    return NextResponse.json({
+      success: true,
+      proposal,
+    });
+  } catch (error) {
+    console.error('Create proposal error:', error);
+    return NextResponse.json(
+      { success: false, error: 'Ошибка сервера' },
+      { status: 500 }
+    );
+  }
 }
-
-
-
-

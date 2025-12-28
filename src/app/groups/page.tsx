@@ -1,435 +1,503 @@
 "use client";
 
-import { useState } from "react";
-import { motion } from "framer-motion";
-import { Users, Search, Plus, Globe, BookOpen, Briefcase, Droplets, ChevronRight } from "lucide-react";
+import { useState, useEffect, useCallback } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { 
+    Users, Search, Plus, Globe, BookOpen, Briefcase, Droplets, 
+    ChevronRight, Loader2, RefreshCw, X, Lock, Unlock,
+    MessageSquare, TrendingUp, Calendar
+} from "lucide-react";
+import { cn } from "@/lib/utils";
+import { useAuth } from "@/context/AuthContext";
+import { useGroups } from "@/hooks/useApi";
+import Link from "next/link";
 
-const groups = [
-    {
-        id: 1,
-        name: "Исследователи водной экологии",
-        type: "Исследовательская",
-        desc: "Группа ученых и исследователей, занимающихся изучением водных экосистем и разработкой инновационных решений.",
-        members: 156,
-        projects: 23,
-        activity: "Высокая",
-        icon: BookOpen,
-        color: "text-cyan-glow",
-    },
-    {
-        id: 2,
-        name: "Экологический активизм",
-        type: "Общественная",
-        desc: "Сообщество активистов, борющихся за сохранение водных ресурсов и защиту окружающей среды.",
-        members: 342,
-        projects: 45,
-        activity: "Очень высокая",
-        icon: Globe,
-        color: "text-green-400",
-    },
-    {
-        id: 3,
-        name: "Водоочистные сооружения Москвы",
-        type: "Объект",
-        desc: "Группа управления и мониторинга водоочистных сооружений в Москве. Интеграция с системой Civilization Protocol.",
-        members: 28,
-        projects: 8,
-        activity: "Средняя",
-        icon: Droplets,
-        color: "text-blue-400",
-    },
-    {
-        id: 4,
-        name: "Инвесторы Civilization Protocol",
-        type: "Бизнес",
-        desc: "Сообщество инвесторов и стейкхолдеров платформы Civilization Protocol. Обсуждение проектов и инвестиционных возможностей.",
-        members: 856,
-        projects: 67,
-        activity: "Очень высокая",
-        icon: Briefcase,
-        color: "text-amber-400",
-    },
-    {
-        id: 5,
-        name: "Центральная Азия Water Network",
-        type: "Региональная",
-        desc: "Сеть специалистов по водным ресурсам Центральной Азии. Совместные проекты и обмен опытом.",
-        members: 234,
-        projects: 34,
-        activity: "Высокая",
-        icon: Globe,
-        color: "text-purple-400",
-    },
-    {
-        id: 6,
-        name: "IoT Sensors Operators",
-        type: "Техническая",
-        desc: "Группа операторов IoT датчиков. Обсуждение технических вопросов, калибровки и обслуживания.",
-        members: 89,
-        projects: 12,
-        activity: "Средняя",
-        icon: Droplets,
-        color: "text-cyan-400",
-    },
-    {
-        id: 7,
-        name: "Aral Sea Restoration",
-        type: "Экологическая",
-        desc: "Программа восстановления Аральского моря. Координация усилий волонтеров и экспертов.",
-        members: 567,
-        projects: 15,
-        activity: "Очень высокая",
-        icon: Globe,
-        color: "text-emerald-400",
-    },
-    {
-        id: 8,
-        name: "DAO Governance Council",
-        type: "Управление",
-        desc: "Совет по управлению DAO. Обсуждение предложений и координация голосований.",
-        members: 124,
-        projects: 8,
-        activity: "Высокая",
-        icon: Users,
-        color: "text-indigo-400",
-    },
-    {
-        id: 9,
-        name: "Water Quality Analysts",
-        type: "Профессиональная",
-        desc: "Сообщество аналитиков качества воды. Обмен методиками и результатами исследований.",
-        members: 198,
-        projects: 28,
-        activity: "Высокая",
-        icon: BookOpen,
-        color: "text-blue-400",
-    },
-    {
-        id: 10,
-        name: "Blockchain Developers VOD",
-        type: "Техническая",
-        desc: "Разработчики блокчейн решений для Civilization Protocol. Смарт-контракты, интеграции, SDK.",
-        members: 67,
-        projects: 19,
-        activity: "Средняя",
-        icon: Briefcase,
-        color: "text-purple-400",
-    },
-    {
-        id: 11,
-        name: "Education & Training",
-        type: "Образовательная",
-        desc: "Образовательные программы и курсы по устойчивому водопользованию. Сертификация.",
-        members: 423,
-        projects: 14,
-        activity: "Высокая",
-        icon: BookOpen,
-        color: "text-yellow-400",
-    },
-    {
-        id: 12,
-        name: "UN-Water Partnership",
-        type: "Партнерство",
-        desc: "Официальная группа партнерства с UN-Water. SDG 6 отчетность и координация.",
-        members: 45,
-        projects: 6,
-        activity: "Средняя",
-        icon: Globe,
-        color: "text-cyan-400",
-    },
-    {
-        id: 13,
-        name: "Smart Cities Water",
-        type: "Городская",
-        desc: "Интеграция Civilization Protocol в умные города. Управление водной инфраструктурой мегаполисов.",
-        members: 178,
-        projects: 22,
-        activity: "Высокая",
-        icon: Briefcase,
-        color: "text-indigo-400",
-    },
-    {
-        id: 14,
-        name: "Desalination Experts",
-        type: "Профессиональная",
-        desc: "Эксперты по опреснению воды. Технологии, экономика, экология опреснительных установок.",
-        members: 92,
-        projects: 11,
-        activity: "Средняя",
-        icon: Droplets,
-        color: "text-blue-400",
-    },
-    {
-        id: 15,
-        name: "Carbon Credits & Ecology",
-        type: "Экологическая",
-        desc: "Углеродные кредиты и экологические инициативы. Интеграция с Regen Network.",
-        members: 312,
-        projects: 38,
-        activity: "Очень высокая",
-        icon: Globe,
-        color: "text-emerald-400",
-    },
-    {
-        id: 16,
-        name: "AI & Machine Learning",
-        type: "Техническая",
-        desc: "ML модели для прогнозирования и анализа водных ресурсов. AI Analytics Engine.",
-        members: 145,
-        projects: 25,
-        activity: "Высокая",
-        icon: BookOpen,
-        color: "text-purple-400",
-    },
-    {
-        id: 17,
-        name: "Mobile App Developers",
-        type: "Разработка",
-        desc: "Разработчики мобильных приложений Civilization Protocol. VOD Check и другие приложения.",
-        members: 78,
-        projects: 9,
-        activity: "Средняя",
-        icon: Briefcase,
-        color: "text-cyan-400",
-    },
-    {
-        id: 18,
-        name: "Gaming & Gamification",
-        type: "Игровая",
-        desc: "Геймификация экологических инициатив. Квесты, NFT-награды, лидерборды.",
-        members: 234,
-        projects: 16,
-        activity: "Высокая",
-        icon: Users,
-        color: "text-pink-400",
-    },
-    {
-        id: 19,
-        name: "Women in Water",
-        type: "Социальная",
-        desc: "Поддержка женщин в водном секторе. Наставничество, карьерные возможности.",
-        members: 189,
-        projects: 12,
-        activity: "Средняя",
-        icon: Users,
-        color: "text-rose-400",
-    },
-    {
-        id: 20,
-        name: "Youth Water Leaders",
-        type: "Молодежная",
-        desc: "Молодежное лидерство в водном секторе. Образование, стажировки, проекты.",
-        members: 456,
-        projects: 31,
-        activity: "Очень высокая",
-        icon: Users,
-        color: "text-cyan-400",
-    },
-    {
-        id: 21,
-        name: "Rural Water Solutions",
-        type: "Социальная",
-        desc: "Решения для сельских районов. Доступ к чистой воде в удаленных регионах.",
-        members: 267,
-        projects: 27,
-        activity: "Высокая",
-        icon: Globe,
-        color: "text-emerald-400",
-    },
-    {
-        id: 22,
-        name: "Transboundary Water",
-        type: "Международная",
-        desc: "Управление трансграничными водными ресурсами. Международное сотрудничество.",
-        members: 134,
-        projects: 18,
-        activity: "Средняя",
-        icon: Globe,
-        color: "text-blue-400",
-    },
-    {
-        id: 23,
-        name: "Water Finance & Economics",
-        type: "Экономическая",
-        desc: "Финансирование водных проектов. Экономические модели и инвестиции.",
-        members: 201,
-        projects: 33,
-        activity: "Высокая",
-        icon: Briefcase,
-        color: "text-amber-400",
-    },
-    {
-        id: 24,
-        name: "Emergency Response",
-        type: "Кризисная",
-        desc: "Быстрое реагирование на водные кризисы. Координация помощи и ресурсов.",
-        members: 89,
-        projects: 7,
-        activity: "Средняя",
-        icon: Droplets,
-        color: "text-red-400",
-    },
-    {
-        id: 25,
-        name: "Water Data Standards",
-        type: "Стандартизация",
-        desc: "Разработка стандартов данных о воде. ISO, ГОСТ, международные стандарты.",
-        members: 112,
-        projects: 13,
-        activity: "Средняя",
-        icon: BookOpen,
-        color: "text-indigo-400",
-    },
+interface Group {
+    id: string;
+    name: string;
+    type: string;
+    description: string;
+    memberCount: number;
+    projectCount: number;
+    activity: string;
+    isPrivate: boolean;
+    category: string;
+    isMember: boolean;
+    createdAt: string;
+}
+
+// Демо-данные
+const demoGroups: Group[] = [
+    { id: "1", name: "Исследователи водной экологии", type: "research", description: "Группа ученых и исследователей, занимающихся изучением водных экосистем и разработкой инновационных решений.", memberCount: 156, projectCount: 23, activity: "Высокая", isPrivate: false, category: "science", isMember: false, createdAt: new Date().toISOString() },
+    { id: "2", name: "Экологический активизм", type: "community", description: "Сообщество активистов, борющихся за сохранение водных ресурсов и защиту окружающей среды.", memberCount: 342, projectCount: 45, activity: "Очень высокая", isPrivate: false, category: "ecology", isMember: true, createdAt: new Date().toISOString() },
+    { id: "3", name: "Водоочистные сооружения Москвы", type: "object", description: "Группа управления и мониторинга водоочистных сооружений в Москве.", memberCount: 28, projectCount: 8, activity: "Средняя", isPrivate: true, category: "infrastructure", isMember: false, createdAt: new Date().toISOString() },
+    { id: "4", name: "Инвесторы VODeco", type: "business", description: "Сообщество инвесторов и стейкхолдеров платформы VODeco.", memberCount: 856, projectCount: 67, activity: "Очень высокая", isPrivate: false, category: "business", isMember: true, createdAt: new Date().toISOString() },
+    { id: "5", name: "Центральная Азия Water Network", type: "regional", description: "Сеть специалистов по водным ресурсам Центральной Азии.", memberCount: 234, projectCount: 34, activity: "Высокая", isPrivate: false, category: "regional", isMember: false, createdAt: new Date().toISOString() },
+    { id: "6", name: "IoT Sensors Operators", type: "technical", description: "Группа операторов IoT датчиков. Обсуждение технических вопросов.", memberCount: 89, projectCount: 12, activity: "Средняя", isPrivate: false, category: "tech", isMember: false, createdAt: new Date().toISOString() },
+    { id: "7", name: "Aral Sea Restoration", type: "ecological", description: "Программа восстановления Аральского моря.", memberCount: 567, projectCount: 15, activity: "Очень высокая", isPrivate: false, category: "ecology", isMember: true, createdAt: new Date().toISOString() },
+    { id: "8", name: "DAO Governance Council", type: "governance", description: "Совет по управлению DAO. Обсуждение предложений.", memberCount: 124, projectCount: 8, activity: "Высокая", isPrivate: true, category: "governance", isMember: false, createdAt: new Date().toISOString() },
+    { id: "9", name: "Water Quality Analysts", type: "professional", description: "Сообщество аналитиков качества воды.", memberCount: 198, projectCount: 28, activity: "Высокая", isPrivate: false, category: "science", isMember: false, createdAt: new Date().toISOString() },
+    { id: "10", name: "Blockchain Developers VOD", type: "technical", description: "Разработчики блокчейн решений для VODeco.", memberCount: 67, projectCount: 19, activity: "Средняя", isPrivate: false, category: "tech", isMember: false, createdAt: new Date().toISOString() },
+    { id: "11", name: "Education & Training", type: "educational", description: "Образовательные программы по устойчивому водопользованию.", memberCount: 423, projectCount: 14, activity: "Высокая", isPrivate: false, category: "education", isMember: false, createdAt: new Date().toISOString() },
+    { id: "12", name: "UN-Water Partnership", type: "partnership", description: "Официальная группа партнерства с UN-Water.", memberCount: 45, projectCount: 6, activity: "Средняя", isPrivate: true, category: "international", isMember: false, createdAt: new Date().toISOString() },
 ];
 
+const getIcon = (type: string) => {
+    switch (type) {
+        case 'research':
+        case 'educational':
+        case 'professional':
+            return BookOpen;
+        case 'business':
+        case 'technical':
+            return Briefcase;
+        case 'community':
+        case 'ecological':
+        case 'regional':
+        case 'international':
+            return Globe;
+        case 'object':
+            return Droplets;
+        default:
+            return Users;
+    }
+};
+
+const getColor = (type: string) => {
+    switch (type) {
+        case 'research': return 'text-cyan-400';
+        case 'community': return 'text-green-400';
+        case 'object': return 'text-blue-400';
+        case 'business': return 'text-amber-400';
+        case 'regional': return 'text-purple-400';
+        case 'technical': return 'text-cyan-400';
+        case 'ecological': return 'text-emerald-400';
+        case 'governance': return 'text-indigo-400';
+        case 'professional': return 'text-blue-400';
+        case 'educational': return 'text-yellow-400';
+        case 'partnership': return 'text-cyan-400';
+        case 'international': return 'text-blue-400';
+        default: return 'text-cyan-400';
+    }
+};
+
 export default function GroupsPage() {
+    const { user, isAuthenticated } = useAuth();
+    const { getGroups, createGroup, joinGroup, loading: apiLoading } = useGroups();
+    
+    const [groups, setGroups] = useState<Group[]>([]);
+    const [loading, setLoading] = useState(true);
     const [searchQuery, setSearchQuery] = useState("");
-    const [categoryFilter, setCategoryFilter] = useState<string>("all");
-    const [activityFilter, setActivityFilter] = useState<string>("all");
+    const [categoryFilter, setCategoryFilter] = useState<string | null>(null);
+    const [tabFilter, setTabFilter] = useState<'all' | 'my' | 'discover'>('all');
+    const [showCreateModal, setShowCreateModal] = useState(false);
+    const [joinLoading, setJoinLoading] = useState<string | null>(null);
+    
+    // Форма создания группы
+    const [newName, setNewName] = useState('');
+    const [newDescription, setNewDescription] = useState('');
+    const [newType, setNewType] = useState('community');
+    const [newCategory, setNewCategory] = useState('general');
+    const [newIsPrivate, setNewIsPrivate] = useState(false);
+
+    const categories = [
+        { id: null, label: "Все" },
+        { id: "science", label: "Наука" },
+        { id: "ecology", label: "Экология" },
+        { id: "business", label: "Бизнес" },
+        { id: "tech", label: "Технологии" },
+        { id: "governance", label: "Управление" },
+        { id: "education", label: "Образование" },
+        { id: "regional", label: "Региональные" },
+    ];
+
+    const loadGroups = useCallback(async () => {
+        try {
+            const params: { category?: string } = {};
+            if (categoryFilter) params.category = categoryFilter;
+            
+            const result = await getGroups(params);
+            if (result && result.groups && result.groups.length > 0) {
+                setGroups(result.groups);
+            } else {
+                setGroups(demoGroups);
+            }
+        } catch (error) {
+            console.error('Error loading groups:', error);
+            setGroups(demoGroups);
+        } finally {
+            setLoading(false);
+        }
+    }, [getGroups, categoryFilter]);
+
+    useEffect(() => {
+        loadGroups();
+    }, [loadGroups]);
+
+    const handleJoinGroup = async (groupId: string) => {
+        if (!isAuthenticated) return;
+        
+        setJoinLoading(groupId);
+        const result = await joinGroup(groupId);
+        if (result) {
+            setGroups(prev => prev.map(g => 
+                g.id === groupId ? { ...g, isMember: !g.isMember, memberCount: g.isMember ? g.memberCount - 1 : g.memberCount + 1 } : g
+            ));
+        }
+        setJoinLoading(null);
+    };
+
+    const handleCreateGroup = async () => {
+        if (!newName.trim()) return;
+        
+        const result = await createGroup({
+            name: newName,
+            description: newDescription,
+            type: newType,
+            category: newCategory,
+        });
+        
+        if (result) {
+            setShowCreateModal(false);
+            setNewName('');
+            setNewDescription('');
+            setNewType('community');
+            setNewCategory('general');
+            setNewIsPrivate(false);
+            loadGroups();
+        }
+    };
 
     const filteredGroups = groups.filter(g => {
         const matchesSearch = g.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-            g.desc.toLowerCase().includes(searchQuery.toLowerCase());
-        const matchesCategory = categoryFilter === "all" || g.type === categoryFilter;
-        const matchesActivity = activityFilter === "all" || 
-            (activityFilter === "high" && (g.activity === "Высокая" || g.activity === "Очень высокая")) ||
-            (activityFilter === "medium" && g.activity === "Средняя");
-        return matchesSearch && matchesCategory && matchesActivity;
+            g.description.toLowerCase().includes(searchQuery.toLowerCase());
+        const matchesCategory = !categoryFilter || g.category === categoryFilter;
+        const matchesTab = tabFilter === 'all' ||
+            (tabFilter === 'my' && g.isMember) ||
+            (tabFilter === 'discover' && !g.isMember);
+        return matchesSearch && matchesCategory && matchesTab;
     });
 
-    const categories = Array.from(new Set(groups.map(g => g.type)));
+    const myGroupsCount = groups.filter(g => g.isMember).length;
+    const totalMembers = groups.reduce((acc, g) => acc + g.memberCount, 0);
 
     return (
-        <div className="max-w-7xl mx-auto px-4 py-8">
-            <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6 mb-12">
-                <div>
-                    <h1 className="text-4xl font-black mb-2">Группы и Сообщества</h1>
-                    <p className="text-slate-400">Объединяйтесь в сообщества по интересам и проектам</p>
+        <div className="min-h-screen bg-ocean-deep py-24 px-4">
+            <div className="max-w-6xl mx-auto">
+                {/* Header */}
+                <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-8">
+                    <div>
+                        <h1 className="text-4xl font-black text-white mb-2 tracking-tighter">Группы и сообщества</h1>
+                        <p className="text-slate-400">
+                            {groups.length} групп • {totalMembers.toLocaleString()} участников
+                        </p>
+                    </div>
+                    <div className="flex gap-3">
+                        <button 
+                            onClick={() => loadGroups()}
+                            disabled={loading}
+                            className="p-3 glass border-white/10 rounded-xl hover:bg-white/5 transition-all"
+                        >
+                            <RefreshCw size={20} className={loading ? 'animate-spin' : ''} />
+                        </button>
+                        {isAuthenticated && (
+                            <button 
+                                onClick={() => setShowCreateModal(true)}
+                                className="px-6 py-3 bg-cyan-500 text-ocean-deep font-black rounded-xl hover:bg-cyan-400 transition-all flex items-center gap-2"
+                            >
+                                <Plus size={18} /> Создать группу
+                            </button>
+                        )}
+                    </div>
                 </div>
 
-                <button className="px-6 py-3 bg-cyan-glow text-ocean-deep font-bold rounded-xl flex items-center gap-2 hover:scale-105 transition-transform shadow-[0_0_20px_rgba(34,211,238,0.3)]">
-                    <Plus size={20} /> Создать группу
-                </button>
-            </div>
+                {/* Tabs */}
+                <div className="flex gap-2 mb-6 overflow-x-auto pb-2">
+                    <button
+                        onClick={() => setTabFilter('all')}
+                        className={cn(
+                            "px-4 py-2 rounded-xl text-sm font-bold transition-all whitespace-nowrap",
+                            tabFilter === 'all' ? "bg-cyan-500 text-ocean-deep" : "bg-white/5 text-slate-400 hover:bg-white/10"
+                        )}
+                    >
+                        Все группы ({groups.length})
+                    </button>
+                    <button
+                        onClick={() => setTabFilter('my')}
+                        className={cn(
+                            "px-4 py-2 rounded-xl text-sm font-bold transition-all whitespace-nowrap",
+                            tabFilter === 'my' ? "bg-cyan-500 text-ocean-deep" : "bg-white/5 text-slate-400 hover:bg-white/10"
+                        )}
+                    >
+                        Мои группы ({myGroupsCount})
+                    </button>
+                    <button
+                        onClick={() => setTabFilter('discover')}
+                        className={cn(
+                            "px-4 py-2 rounded-xl text-sm font-bold transition-all whitespace-nowrap",
+                            tabFilter === 'discover' ? "bg-cyan-500 text-ocean-deep" : "bg-white/5 text-slate-400 hover:bg-white/10"
+                        )}
+                    >
+                        Найти новые
+                    </button>
+                </div>
 
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-                {/* Groups List */}
-                <div className="lg:col-span-2 space-y-6">
-                    <div className="space-y-4 mb-8">
-                        <div className="relative">
-                            <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-500" size={20} />
-                            <input
-                                type="text"
-                                placeholder="Поиск групп по названию или типу..."
-                                value={searchQuery}
-                                onChange={(e) => setSearchQuery(e.target.value)}
-                                className="w-full pl-12 pr-4 py-4 glass rounded-2xl text-sm focus:outline-none focus:ring-1 focus:ring-cyan-glow/50"
-                            />
-                        </div>
-                        <div className="flex flex-wrap gap-2">
-                            <select
-                                value={categoryFilter}
-                                onChange={(e) => setCategoryFilter(e.target.value)}
-                                className="px-4 py-2 bg-white/5 border border-white/10 rounded-xl text-xs font-bold focus:outline-none focus:border-cyan-500/50"
-                            >
-                                <option value="all">Все категории</option>
-                                {categories.map(cat => (
-                                    <option key={cat} value={cat}>{cat}</option>
-                                ))}
-                            </select>
-                            <select
-                                value={activityFilter}
-                                onChange={(e) => setActivityFilter(e.target.value)}
-                                className="px-4 py-2 bg-white/5 border border-white/10 rounded-xl text-xs font-bold focus:outline-none focus:border-cyan-500/50"
-                            >
-                                <option value="all">Вся активность</option>
-                                <option value="high">Высокая</option>
-                                <option value="medium">Средняя</option>
-                            </select>
-                        </div>
+                {/* Search & Filters */}
+                <div className="space-y-4 mb-8">
+                    <div className="relative">
+                        <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-500" size={20} />
+                        <input
+                            type="text"
+                            placeholder="Поиск групп..."
+                            value={searchQuery}
+                            onChange={(e) => setSearchQuery(e.target.value)}
+                            className="w-full bg-white/5 border border-white/10 rounded-xl py-3 pl-12 pr-4 text-sm focus:outline-none focus:border-cyan-500/50 transition-all"
+                        />
                     </div>
-
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        {filteredGroups.map((group, i) => (
-                            <motion.div
-                                key={group.id}
-                                initial={{ opacity: 0, scale: 0.95 }}
-                                animate={{ opacity: 1, scale: 1 }}
-                                transition={{ delay: i * 0.1 }}
-                                className="glass-card group cursor-pointer hover:border-cyan-glow/30 transition-all"
+                    <div className="flex flex-wrap gap-2">
+                        {categories.map(cat => (
+                            <button
+                                key={cat.id || 'all'}
+                                onClick={() => setCategoryFilter(cat.id)}
+                                className={cn(
+                                    "px-4 py-2 rounded-xl text-xs font-bold transition-all",
+                                    categoryFilter === cat.id 
+                                        ? "bg-cyan-500 text-ocean-deep" 
+                                        : "bg-white/5 text-slate-400 hover:bg-white/10"
+                                )}
                             >
-                                <div className="flex justify-between items-start mb-4">
-                                    <div className={`w-12 h-12 rounded-xl bg-white/5 flex items-center justify-center ${group.color}`}>
-                                        <group.icon size={24} />
-                                    </div>
-                                    <span className="text-[10px] font-bold uppercase tracking-widest px-2 py-1 rounded bg-white/5 text-slate-500">
-                                        {group.type}
-                                    </span>
-                                </div>
-
-                                <h3 className="text-lg font-bold mb-2 group-hover:text-cyan-glow transition-colors">{group.name}</h3>
-                                <p className="text-xs text-slate-400 mb-6 line-clamp-2 leading-relaxed">{group.desc}</p>
-
-                                <div className="grid grid-cols-3 gap-2 pt-4 border-t border-white/5">
-                                    <div className="text-center">
-                                        <div className="text-sm font-black">{group.members}</div>
-                                        <div className="text-[8px] text-slate-500 uppercase font-bold">Участников</div>
-                                    </div>
-                                    <div className="text-center">
-                                        <div className="text-sm font-black">{group.projects}</div>
-                                        <div className="text-[8px] text-slate-500 uppercase font-bold">Проектов</div>
-                                    </div>
-                                    <div className="text-center">
-                                        <div className="text-sm font-black text-cyan-glow">{group.activity}</div>
-                                        <div className="text-[8px] text-slate-500 uppercase font-bold">Активность</div>
-                                    </div>
-                                </div>
-                            </motion.div>
+                                {cat.label}
+                            </button>
                         ))}
                     </div>
                 </div>
 
-                {/* Sidebar: Categories & Recommended */}
-                <div className="space-y-6">
-                    <div className="glass-card">
-                        <h3 className="font-bold mb-6">Категории</h3>
-                        <div className="space-y-2">
-                            {[
-                                { name: "Все группы", count: 124, active: true },
-                                { name: "Исследовательские", count: 18 },
-                                { name: "Общественные", count: 42 },
-                                { name: "Бизнес-проекты", count: 35 },
-                                { name: "Объекты", count: 29 },
-                            ].map((cat) => (
-                                <button
-                                    key={cat.name}
-                                    className={`w-full flex items-center justify-between p-3 rounded-xl transition-all ${cat.active ? 'bg-cyan-glow/10 text-cyan-glow border border-cyan-glow/20' : 'hover:bg-white/5 text-slate-400'
-                                        }`}
-                                >
-                                    <span className="text-sm font-bold">{cat.name}</span>
-                                    <span className="text-[10px] font-black opacity-50">{cat.count}</span>
-                                </button>
-                            ))}
-                        </div>
+                {/* Loading */}
+                {loading && (
+                    <div className="flex items-center justify-center py-12">
+                        <Loader2 size={32} className="animate-spin text-cyan-400" />
                     </div>
+                )}
 
-                    <div className="glass-card">
-                        <h3 className="font-bold mb-4">Рекомендации</h3>
-                        <div className="space-y-4">
-                            <div className="flex items-center gap-3 p-2 rounded-lg hover:bg-white/5 transition-colors cursor-pointer group">
-                                <div className="w-10 h-10 rounded-lg bg-blue-400/10 flex items-center justify-center text-blue-400">
-                                    <Briefcase size={20} />
-                                </div>
-                                <div className="flex-1">
-                                    <div className="text-xs font-bold group-hover:text-cyan-glow transition-colors">Инвесторы Civilization Protocol</div>
-                                    <div className="text-[10px] text-slate-500">856 участников</div>
-                                </div>
-                                <ChevronRight size={14} className="text-slate-600" />
-                            </div>
-                        </div>
+                {/* Groups Grid */}
+                {!loading && (
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                        <AnimatePresence>
+                            {filteredGroups.map((group, i) => {
+                                const Icon = getIcon(group.type);
+                                const color = getColor(group.type);
+                                
+                                return (
+                                    <motion.div
+                                        key={group.id}
+                                        initial={{ opacity: 0, y: 20 }}
+                                        animate={{ opacity: 1, y: 0 }}
+                                        exit={{ opacity: 0, y: -20 }}
+                                        transition={{ delay: i * 0.05 }}
+                                        className="glass-card p-6 border-white/5 bg-white/[0.02] group hover:border-cyan-500/30 transition-all"
+                                    >
+                                        <div className="flex items-start gap-4 mb-4">
+                                            <div className={cn("p-3 rounded-xl bg-white/5", color)}>
+                                                <Icon size={24} />
+                                            </div>
+                                            <div className="flex-1 min-w-0">
+                                                <div className="flex items-center gap-2 mb-1">
+                                                    <h3 className="font-bold text-white truncate">{group.name}</h3>
+                                                    {group.isPrivate && <Lock size={12} className="text-slate-500" />}
+                                                </div>
+                                                <p className="text-xs text-slate-500">{group.type}</p>
+                                            </div>
+                                        </div>
+                                        
+                                        <p className="text-sm text-slate-400 mb-4 line-clamp-2">{group.description}</p>
+                                        
+                                        <div className="flex items-center gap-4 text-xs text-slate-500 mb-4">
+                                            <div className="flex items-center gap-1">
+                                                <Users size={12} />
+                                                {group.memberCount}
+                                            </div>
+                                            <div className="flex items-center gap-1">
+                                                <TrendingUp size={12} />
+                                                {group.activity}
+                                            </div>
+                                            <div className="flex items-center gap-1">
+                                                <Briefcase size={12} />
+                                                {group.projectCount} проектов
+                                            </div>
+                                        </div>
+                                        
+                                        <div className="flex gap-2">
+                                            {group.isMember ? (
+                                                <>
+                                                    <Link 
+                                                        href={`/groups/${group.id}`}
+                                                        className="flex-1 py-2 bg-cyan-500 text-ocean-deep text-center font-bold rounded-xl hover:bg-cyan-400 transition-all text-sm"
+                                                    >
+                                                        Открыть
+                                                    </Link>
+                                                    <button
+                                                        onClick={() => handleJoinGroup(group.id)}
+                                                        disabled={joinLoading === group.id}
+                                                        className="px-3 py-2 bg-red-500/20 text-red-400 rounded-xl hover:bg-red-500/30 transition-all text-sm"
+                                                    >
+                                                        {joinLoading === group.id ? <Loader2 size={16} className="animate-spin" /> : 'Выйти'}
+                                                    </button>
+                                                </>
+                                            ) : (
+                                                <button
+                                                    onClick={() => handleJoinGroup(group.id)}
+                                                    disabled={joinLoading === group.id || !isAuthenticated}
+                                                    className="flex-1 py-2 bg-white/5 text-white font-bold rounded-xl hover:bg-white/10 transition-all disabled:opacity-50 text-sm flex items-center justify-center gap-2"
+                                                >
+                                                    {joinLoading === group.id ? (
+                                                        <Loader2 size={16} className="animate-spin" />
+                                                    ) : (
+                                                        <>
+                                                            <Plus size={16} />
+                                                            {group.isPrivate ? 'Запросить' : 'Вступить'}
+                                                        </>
+                                                    )}
+                                                </button>
+                                            )}
+                                        </div>
+                                    </motion.div>
+                                );
+                            })}
+                        </AnimatePresence>
                     </div>
-                </div>
+                )}
+
+                {/* Empty State */}
+                {!loading && filteredGroups.length === 0 && (
+                    <div className="text-center py-12">
+                        <Users size={64} className="mx-auto mb-6 text-slate-600" />
+                        <h3 className="text-xl font-bold text-slate-400 mb-2">Нет результатов</h3>
+                        <p className="text-slate-500">Попробуйте изменить параметры поиска</p>
+                    </div>
+                )}
             </div>
+
+            {/* Create Group Modal */}
+            <AnimatePresence>
+                {showCreateModal && (
+                    <motion.div
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                        className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm"
+                        onClick={() => setShowCreateModal(false)}
+                    >
+                        <motion.div
+                            initial={{ scale: 0.95, opacity: 0 }}
+                            animate={{ scale: 1, opacity: 1 }}
+                            exit={{ scale: 0.95, opacity: 0 }}
+                            className="w-full max-w-md bg-gradient-to-br from-ocean-medium to-ocean-deep rounded-2xl border border-ocean-light/30 shadow-2xl overflow-hidden"
+                            onClick={(e) => e.stopPropagation()}
+                        >
+                            <div className="flex items-center justify-between p-6 border-b border-white/10">
+                                <h3 className="text-xl font-black">Создать группу</h3>
+                                <button onClick={() => setShowCreateModal(false)} className="p-2 hover:bg-white/10 rounded-lg">
+                                    <X size={20} />
+                                </button>
+                            </div>
+                            
+                            <div className="p-6 space-y-4">
+                                <div>
+                                    <label className="text-xs text-slate-500 uppercase tracking-widest mb-2 block">Название</label>
+                                    <input
+                                        type="text"
+                                        value={newName}
+                                        onChange={(e) => setNewName(e.target.value)}
+                                        placeholder="Название группы"
+                                        className="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 focus:border-cyan-500/50 outline-none"
+                                    />
+                                </div>
+                                
+                                <div>
+                                    <label className="text-xs text-slate-500 uppercase tracking-widest mb-2 block">Описание</label>
+                                    <textarea
+                                        value={newDescription}
+                                        onChange={(e) => setNewDescription(e.target.value)}
+                                        placeholder="Описание группы..."
+                                        rows={3}
+                                        className="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 focus:border-cyan-500/50 outline-none resize-none"
+                                    />
+                                </div>
+                                
+                                <div className="grid grid-cols-2 gap-4">
+                                    <div>
+                                        <label className="text-xs text-slate-500 uppercase tracking-widest mb-2 block">Тип</label>
+                                        <select
+                                            value={newType}
+                                            onChange={(e) => setNewType(e.target.value)}
+                                            className="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 focus:border-cyan-500/50 outline-none"
+                                        >
+                                            <option value="community">Сообщество</option>
+                                            <option value="research">Исследовательская</option>
+                                            <option value="technical">Техническая</option>
+                                            <option value="business">Бизнес</option>
+                                            <option value="regional">Региональная</option>
+                                        </select>
+                                    </div>
+                                    <div>
+                                        <label className="text-xs text-slate-500 uppercase tracking-widest mb-2 block">Категория</label>
+                                        <select
+                                            value={newCategory}
+                                            onChange={(e) => setNewCategory(e.target.value)}
+                                            className="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 focus:border-cyan-500/50 outline-none"
+                                        >
+                                            {categories.filter(c => c.id).map(cat => (
+                                                <option key={cat.id} value={cat.id!}>{cat.label}</option>
+                                            ))}
+                                        </select>
+                                    </div>
+                                </div>
+                                
+                                <div className="flex items-center gap-3 p-4 rounded-xl bg-white/5">
+                                    <button
+                                        onClick={() => setNewIsPrivate(!newIsPrivate)}
+                                        className={cn(
+                                            "w-12 h-6 rounded-full transition-all relative",
+                                            newIsPrivate ? "bg-cyan-500" : "bg-white/10"
+                                        )}
+                                    >
+                                        <div className={cn(
+                                            "w-5 h-5 rounded-full bg-white absolute top-0.5 transition-all",
+                                            newIsPrivate ? "left-6" : "left-0.5"
+                                        )} />
+                                    </button>
+                                    <div>
+                                        <div className="font-bold text-sm flex items-center gap-2">
+                                            {newIsPrivate ? <Lock size={14} /> : <Unlock size={14} />}
+                                            {newIsPrivate ? 'Закрытая группа' : 'Открытая группа'}
+                                        </div>
+                                        <p className="text-xs text-slate-500">
+                                            {newIsPrivate ? 'Требуется одобрение для вступления' : 'Любой может вступить'}
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div className="flex gap-4 p-6 border-t border-white/10">
+                                <button
+                                    onClick={() => setShowCreateModal(false)}
+                                    className="flex-1 py-3 glass border-white/10 rounded-xl font-bold hover:bg-white/5"
+                                >
+                                    Отмена
+                                </button>
+                                <button
+                                    onClick={handleCreateGroup}
+                                    disabled={apiLoading || !newName.trim()}
+                                    className="flex-1 py-3 bg-cyan-500 text-ocean-deep rounded-xl font-bold hover:bg-cyan-400 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+                                >
+                                    {apiLoading ? <Loader2 size={18} className="animate-spin" /> : <Plus size={18} />}
+                                    Создать
+                                </button>
+                            </div>
+                        </motion.div>
+                    </motion.div>
+                )}
+            </AnimatePresence>
         </div>
     );
 }

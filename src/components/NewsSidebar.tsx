@@ -44,7 +44,7 @@ export default function NewsSidebar() {
         },
         {
             id: 4,
-            title: "Запуск TON интеграции",
+            title: "Запуск Blockchain интеграции",
             date: "28 февраля 2025",
             type: "Технологии",
             color: "text-purple-400"

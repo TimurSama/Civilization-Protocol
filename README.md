@@ -1,36 +1,252 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# VODeco Platform
 
-## Getting Started
+**VODeco (Value of Data – Water Ecosystem)** — децентрализованная кибер-физическая платформа для управления водными ресурсами через блокчейн-технологии и двойную токеномику.
 
-First, run the development server:
+[![Version](https://img.shields.io/badge/version-2.8.0-blue.svg)](https://github.com/TimurSama/Civilization-Protocol)
+[![Next.js](https://img.shields.io/badge/Next.js-16.0.10-black)](https://nextjs.org/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5.0-blue)](https://www.typescriptlang.org/)
+[![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+🌐 **Website**: [civilization-protocol.vercel.app](https://civilization-protocol.vercel.app)
+
+---
+
+## 📋 О проекте
+
+VODeco — это инновационная платформа, объединяющая:
+- **Блокчейн-технологии** для прозрачности и децентрализации
+- **IoT и AI** для мониторинга водных ресурсов
+- **DAO-управление** для демократического принятия решений
+- **Двойную токеномику** (VODeco + VOD) для экономической стимуляции
+
+### Основные компоненты
+
+#### Токены
+- **VODeco**: Utility-токен для участия в экосистеме
+- **VOD**: Стейблкоин, обеспеченный водой (1 VOD = 1 м³ чистой питьевой воды)
+
+#### DAO
+- Децентрализованное управление
+- Трехуровневая система ролей (Citizen, Investor, Government, Scientist, Operator)
+- Прозрачное голосование и предложения
+
+#### Функциональность
+- Управление водными ресурсами
+- Мониторинг качества воды через IoT
+- Инвестиционные проекты
+- Социальная сеть и репутационная система
+- Gamification (уровни, XP, достижения)
+- NFT для представления долей в водных активах
+
+---
+
+## 🚀 Быстрый старт
+
+### Требования
+
+- **Node.js** 16+ (рекомендуется 20+)
+- **npm** или **yarn**
+- **PostgreSQL** 13+ (или SQLite для разработки)
+
+### Установка
+
+1. **Клонируйте репозиторий**
+   ```bash
+   git clone https://github.com/TimurSama/Civilization-Protocol.git
+   cd Civilization-Protocol
+   ```
+
+2. **Установите зависимости**
+   ```bash
+   npm install
+   ```
+
+3. **Настройте базу данных**
+   ```bash
+   # SQLite (для разработки)
+   npm run db:push
+   
+   # Заполните тестовыми данными (опционально)
+   npm run db:seed
+   ```
+
+4. **Создайте файл `.env.local`**
+   ```env
+   DATABASE_URL="file:./dev.db"
+   JWT_SECRET="your-secret-key"
+   NEXTAUTH_URL="http://localhost:3000"
+   ```
+
+5. **Запустите сервер разработки**
+   ```bash
+   npm run dev
+   ```
+
+6. **Откройте браузер**
+   ```
+   http://localhost:3000
+   ```
+
+---
+
+## 🛠️ Технологический стек
+
+### Frontend
+- **Next.js 16** (App Router)
+- **React 19**
+- **TypeScript**
+- **Tailwind CSS 4**
+- **Framer Motion** (анимации)
+- **Three.js** (3D визуализация)
+- **React Three Fiber** (3D компоненты)
+
+### Backend
+- **Next.js API Routes**
+- **Prisma ORM**
+- **SQLite/PostgreSQL**
+- **JWT** (аутентификация)
+- **bcryptjs** (хеширование паролей)
+
+### Инфраструктура
+- **Vercel** (деплой и хостинг)
+- **GitHub Actions** (CI/CD)
+- **Prisma Studio** (управление БД)
+
+---
+
+## 📁 Структура проекта
+
+```
+civilization-protocol/
+├── src/
+│   ├── app/                 # Next.js App Router страницы
+│   │   ├── api/            # API endpoints
+│   │   ├── dao/            # DAO страницы
+│   │   ├── dashboard/      # Дашборд
+│   │   ├── tokenomics/     # Токеномика
+│   │   └── ...
+│   ├── components/         # React компоненты
+│   ├── context/            # React Context провайдеры
+│   ├── hooks/              # Custom React hooks
+│   └── lib/                # Утилиты и сервисы
+├── prisma/                 # Prisma схема и миграции
+│   ├── schema.prisma       # Схема базы данных
+│   └── seed.ts             # Начальные данные
+├── public/                 # Статические файлы
+├── docs/                   # Документация
+├── .github/                # GitHub Actions workflows
+├── vercel.json             # Конфигурация Vercel
+└── package.json            # Зависимости проекта
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+---
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## 🚢 Деплой
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+### Автоматический деплой на Vercel
 
-## Learn More
+Проект настроен для автоматического деплоя через **Vercel** при каждом push в `main`/`master`.
 
-To learn more about Next.js, take a look at the following resources:
+1. **Подключите репозиторий к Vercel**
+   - Перейдите на [vercel.com](https://vercel.com)
+   - Импортируйте проект из GitHub
+   - Vercel автоматически определит Next.js и настроит деплой
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+2. **Настройте Environment Variables** (если нужно)
+   - В настройках проекта Vercel добавьте переменные окружения
+   - См. `DEPLOYMENT.md` для подробностей
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+3. **Деплой произойдет автоматически**
+   - При каждом push в `main`/`master` → production деплой
+   - При создании Pull Request → preview деплой
 
-## Deploy on Vercel
+Подробнее см. [DEPLOYMENT.md](./DEPLOYMENT.md) и [DEPLOY_QUICKSTART.md](./DEPLOY_QUICKSTART.md).
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+---
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## 📚 Документация
+
+- **[План разработки](./Plan.md)** — детальный план развития платформы
+- **[Документация по деплою](./DEPLOYMENT.md)** — инструкции по развертыванию
+- **[Tokenomics v2.0](./docs/TOKENOMICS_V2.md)** — экономическая модель
+- **[White Paper](./docs/VODeco_WhitePaper_Full.pdf)** — техническая документация
+
+---
+
+## 🧪 Разработка
+
+### Доступные скрипты
+
+```bash
+# Разработка
+npm run dev          # Запуск dev сервера
+
+# Сборка
+npm run build        # Production сборка
+npm start           # Запуск production сервера
+
+# База данных
+npm run db:push     # Применить изменения схемы
+npm run db:seed     # Заполнить тестовыми данными
+npm run db:studio   # Открыть Prisma Studio
+
+# Линтинг
+npm run lint        # Проверка кода ESLint
+```
+
+### Работа с базой данных
+
+```bash
+# Применить изменения в схеме
+npm run db:push
+
+# Открыть Prisma Studio (GUI для БД)
+npm run db:studio
+
+# Создать миграцию (если используете PostgreSQL)
+npx prisma migrate dev --name your_migration_name
+```
+
+---
+
+## 🤝 Участие в разработке
+
+Мы приветствуем вклад в проект! Пожалуйста:
+
+1. Форкните репозиторий
+2. Создайте ветку для вашей функции (`git checkout -b feature/AmazingFeature`)
+3. Зафиксируйте изменения (`git commit -m 'Add some AmazingFeature'`)
+4. Запушьте в ветку (`git push origin feature/AmazingFeature`)
+5. Откройте Pull Request
+
+---
+
+## 📄 Лицензия
+
+Этот проект лицензирован под MIT License — см. файл [LICENSE](LICENSE) для деталей.
+
+---
+
+## 📞 Контакты
+
+- **Website**: [vod.eco](https://vod.eco)
+- **GitHub**: [@TimurSama/Civilization-Protocol](https://github.com/TimurSama/Civilization-Protocol)
+- **Vercel**: [civilization-protocol.vercel.app](https://civilization-protocol.vercel.app)
+
+---
+
+## 🌟 Особенности
+
+- ✅ **Децентрализованное управление** через DAO
+- ✅ **Мониторинг воды** через IoT и AI
+- ✅ **Токенизация** водных ресурсов
+- ✅ **Инвестиционные проекты** с прозрачностью
+- ✅ **Социальная сеть** с репутационной системой
+- ✅ **Gamification** для вовлечения пользователей
+- ✅ **Мультиязычность** (RU, EN, AR)
+- ✅ **3D визуализация** водных объектов
+- ✅ **Мобильная адаптация**
+
+---
+
+**Версия**: 2.8.0 (обновлено 26.12.2024)

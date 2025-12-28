@@ -1,0 +1,510 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+// ============================================
+// ПОЛЬЗОВАТЕЛИ И АУТЕНТИФИКАЦИЯ
+// ============================================
+
+model User {
+  id            String    @id @default(cuid())
+  email         String?   @unique
+  walletAddress String?   @unique
+  password      String?   // Хэш пароля (для email регистрации)
+  name          String
+  avatar        String?
+  bio           String?
+  location      String?
+  website       String?
+  
+  // Telegram авторизация
+  telegramId       String?   @unique
+  telegramUsername String?
+  
+  // Email верификация
+  emailVerified    Boolean   @default(false)
+  emailVerifyToken String?
+  
+  // Роль и статус
+  role          String    @default("citizen") // citizen, investor, government, scientist, operator, admin
+  verified      Boolean   @default(false)
+  isPioneer     Boolean   @default(false)
+  
+  // Уровень и опыт
+  level         Int       @default(1)
+  xp            Int       @default(0)
+  reputation    Int       @default(50)
+  
+  // Токены
+  vodBalance    Float     @default(100) // Приветственный бонус
+  rVodBalance   Float     @default(0)
+  pVodBalance   Float     @default(0)
+  stakedAmount  Float     @default(0)
+  
+  // Настройки
+  language          String    @default("ru")
+  preferredLanguage String    @default("ru")
+  notifications     Boolean   @default(true)
+  privacy           String    @default("public") // public, friends, private
+  
+  // Последний вход
+  lastLogin         DateTime?
+  
+  // Реферальная программа
+  referralCode  String    @unique @default(cuid())
+  referredBy    String?
+  referrer      User?     @relation("Referrals", fields: [referredBy], references: [id])
+  referrals     User[]    @relation("Referrals")
+  
+  // Даты
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  lastActive    DateTime  @default(now())
+  
+  // Связи
+  posts         Post[]
+  comments      Comment[]
+  likes         Like[]
+  
+  sentMessages     Message[]  @relation("SentMessages")
+  receivedMessages Message[]  @relation("ReceivedMessages")
+  
+  friendsInitiated  Friendship[]  @relation("FriendInitiated")
+  friendsReceived   Friendship[]  @relation("FriendReceived")
+  
+  groupMemberships  GroupMember[]
+  createdGroups     Group[]
+  
+  daoVotes       DaoVote[]
+  daoProposals   DaoProposal[]
+  
+  rewards        Reward[]
+  missions       UserMission[]
+  badges         UserBadge[]
+  
+  transactions   Transaction[]
+  stakes         Stake[]
+  
+  reports        WaterReport[]
+  
+  sessions       Session[]
+  
+  @@index([email])
+  @@index([walletAddress])
+  @@index([referralCode])
+}
+
+model Session {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  token     String   @unique
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+  userAgent String?
+  ip        String?
+  
+  @@index([userId])
+  @@index([token])
+}
+
+// ============================================
+// СОЦИАЛЬНАЯ СЕТЬ
+// ============================================
+
+model Post {
+  id          String    @id @default(cuid())
+  authorId    String
+  author      User      @relation(fields: [authorId], references: [id], onDelete: Cascade)
+  
+  content     String
+  images      String?   // JSON массив URL
+  tags        String?   // JSON массив тегов
+  
+  type        String    @default("text") // text, report, proposal, research, news
+  category    String?
+  
+  // Статистика
+  likesCount    Int     @default(0)
+  commentsCount Int     @default(0)
+  sharesCount   Int     @default(0)
+  viewsCount    Int     @default(0)
+  
+  // Модерация
+  isPinned    Boolean   @default(false)
+  isHot       Boolean   @default(false)
+  status      String    @default("active") // active, hidden, deleted
+  
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  
+  comments    Comment[]
+  likes       Like[]
+  
+  @@index([authorId])
+  @@index([type])
+  @@index([createdAt])
+}
+
+model Comment {
+  id        String   @id @default(cuid())
+  postId    String
+  post      Post     @relation(fields: [postId], references: [id], onDelete: Cascade)
+  authorId  String
+  author    User     @relation(fields: [authorId], references: [id], onDelete: Cascade)
+  
+  content   String
+  
+  // Ответ на другой комментарий
+  parentId  String?
+  parent    Comment? @relation("CommentReplies", fields: [parentId], references: [id])
+  replies   Comment[] @relation("CommentReplies")
+  
+  likesCount Int     @default(0)
+  
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  
+  @@index([postId])
+  @@index([authorId])
+}
+
+model Like {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  postId    String
+  post      Post     @relation(fields: [postId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+  
+  @@unique([userId, postId])
+  @@index([postId])
+}
+
+model Friendship {
+  id         String   @id @default(cuid())
+  userId     String
+  user       User     @relation("FriendInitiated", fields: [userId], references: [id], onDelete: Cascade)
+  friendId   String
+  friend     User     @relation("FriendReceived", fields: [friendId], references: [id], onDelete: Cascade)
+  
+  status     String   @default("pending") // pending, accepted, blocked
+  
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+  
+  @@unique([userId, friendId])
+  @@index([userId])
+  @@index([friendId])
+}
+
+model Message {
+  id         String   @id @default(cuid())
+  senderId   String
+  sender     User     @relation("SentMessages", fields: [senderId], references: [id], onDelete: Cascade)
+  receiverId String
+  receiver   User     @relation("ReceivedMessages", fields: [receiverId], references: [id], onDelete: Cascade)
+  
+  content    String
+  isRead     Boolean  @default(false)
+  
+  createdAt  DateTime @default(now())
+  
+  @@index([senderId])
+  @@index([receiverId])
+  @@index([createdAt])
+}
+
+// ============================================
+// ГРУППЫ
+// ============================================
+
+model Group {
+  id          String   @id @default(cuid())
+  name        String
+  description String?
+  avatar      String?
+  cover       String?
+  
+  type        String   @default("public") // public, private, secret
+  category    String?
+  
+  creatorId   String
+  creator     User     @relation(fields: [creatorId], references: [id])
+  
+  membersCount Int     @default(0)
+  postsCount   Int     @default(0)
+  
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  
+  members     GroupMember[]
+  
+  @@index([creatorId])
+  @@index([category])
+}
+
+model GroupMember {
+  id        String   @id @default(cuid())
+  groupId   String
+  group     Group    @relation(fields: [groupId], references: [id], onDelete: Cascade)
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  role      String   @default("member") // member, moderator, admin
+  
+  joinedAt  DateTime @default(now())
+  
+  @@unique([groupId, userId])
+  @@index([groupId])
+  @@index([userId])
+}
+
+// ============================================
+// DAO И ГОЛОСОВАНИЕ
+// ============================================
+
+model DaoProposal {
+  id          String   @id @default(cuid())
+  authorId    String
+  author      User     @relation(fields: [authorId], references: [id])
+  
+  title       String
+  description String
+  category    String   // infrastructure, governance, funding, research, emergency
+  
+  // Голосование
+  votesFor    Int      @default(0)
+  votesAgainst Int     @default(0)
+  votesAbstain Int     @default(0)
+  quorum      Int      @default(1000) // Минимум голосов
+  
+  // Бюджет (если применимо)
+  budgetRequested Float?
+  
+  status      String   @default("active") // draft, active, passed, rejected, executed
+  
+  startDate   DateTime @default(now())
+  endDate     DateTime
+  executedAt  DateTime?
+  
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  
+  votes       DaoVote[]
+  
+  @@index([authorId])
+  @@index([status])
+  @@index([category])
+}
+
+model DaoVote {
+  id          String   @id @default(cuid())
+  proposalId  String
+  proposal    DaoProposal @relation(fields: [proposalId], references: [id], onDelete: Cascade)
+  userId      String
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  vote        String   // for, against, abstain
+  weight      Float    @default(1) // Вес голоса (зависит от стейка)
+  
+  createdAt   DateTime @default(now())
+  
+  @@unique([proposalId, userId])
+  @@index([proposalId])
+  @@index([userId])
+}
+
+// ============================================
+// НАГРАДЫ И ГЕЙМИФИКАЦИЯ
+// ============================================
+
+model Badge {
+  id          String   @id @default(cuid())
+  name        String   @unique
+  description String
+  icon        String?
+  rarity      String   @default("common") // common, rare, epic, legendary
+  xpReward    Int      @default(0)
+  vodReward   Float    @default(0)
+  
+  // Условие получения
+  requirement String   // JSON с условиями
+  
+  users       UserBadge[]
+}
+
+model UserBadge {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  badgeId   String
+  badge     Badge    @relation(fields: [badgeId], references: [id], onDelete: Cascade)
+  
+  earnedAt  DateTime @default(now())
+  
+  @@unique([userId, badgeId])
+  @@index([userId])
+}
+
+model Mission {
+  id          String   @id @default(cuid())
+  title       String
+  description String
+  type        String   // daily, weekly, achievement, special
+  
+  reward      Float
+  xpReward    Int
+  
+  // Требования
+  requirementType   String // login, report, vote, post, comment, referral, stake
+  requirementTarget Int
+  
+  // Период действия
+  startsAt    DateTime?
+  endsAt      DateTime?
+  
+  isActive    Boolean  @default(true)
+  
+  users       UserMission[]
+}
+
+model UserMission {
+  id          String   @id @default(cuid())
+  userId      String
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  missionId   String
+  mission     Mission  @relation(fields: [missionId], references: [id], onDelete: Cascade)
+  
+  progress    Int      @default(0)
+  status      String   @default("active") // active, completed, expired
+  
+  completedAt DateTime?
+  
+  @@unique([userId, missionId])
+  @@index([userId])
+}
+
+model Reward {
+  id          String   @id @default(cuid())
+  userId      String
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  type        String   // daily, mission, achievement, referral, staking, vote, report
+  amount      Float
+  currency    String   @default("VOD") // VOD, XP
+  
+  description String
+  source      String
+  
+  status      String   @default("pending") // pending, claimed, expired
+  
+  expiresAt   DateTime?
+  claimedAt   DateTime?
+  createdAt   DateTime @default(now())
+  
+  @@index([userId])
+  @@index([status])
+}
+
+// ============================================
+// ТОКЕНЫ И ТРАНЗАКЦИИ
+// ============================================
+
+model Transaction {
+  id          String   @id @default(cuid())
+  userId      String
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  type        String   // transfer, stake, unstake, reward, purchase, vote_reward, referral, mission
+  tokenType   String   @default("VOD") // VOD, R-VOD, P-VOD
+  
+  amount      Float
+  fee         Float    @default(0)
+  
+  fromAddress String?
+  toAddress   String?
+  
+  status      String   @default("confirmed") // pending, confirmed, failed
+  hash        String?
+  
+  description String?
+  
+  createdAt   DateTime @default(now())
+  
+  @@index([userId])
+  @@index([type])
+  @@index([createdAt])
+}
+
+model Stake {
+  id          String   @id @default(cuid())
+  userId      String
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  poolId      String
+  poolName    String
+  
+  amount      Float
+  apy         Float
+  
+  startDate   DateTime @default(now())
+  endDate     DateTime
+  
+  earnedRewards Float  @default(0)
+  
+  status      String   @default("active") // active, completed, withdrawn
+  
+  @@index([userId])
+  @@index([poolId])
+}
+
+// ============================================
+// ВОДНЫЕ ОТЧЁТЫ
+// ============================================
+
+model WaterReport {
+  id          String   @id @default(cuid())
+  authorId    String
+  author      User     @relation(fields: [authorId], references: [id], onDelete: Cascade)
+  
+  // Локация
+  latitude    Float
+  longitude   Float
+  location    String   // Название места
+  region      String?
+  
+  // Данные
+  ph          Float?
+  turbidity   Float?
+  temperature Float?
+  pollution   String?  // low, medium, high
+  quality     Int?     // 0-100
+  
+  description String?
+  images      String?  // JSON массив URL
+  
+  // Верификация
+  isVerified  Boolean  @default(false)
+  verifiedBy  String?
+  verifiedAt  DateTime?
+  
+  // Награда
+  rewardAmount Float   @default(0)
+  rewardClaimed Boolean @default(false)
+  
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  
+  @@index([authorId])
+  @@index([region])
+  @@index([createdAt])
+}

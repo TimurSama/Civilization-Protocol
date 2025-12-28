@@ -160,7 +160,7 @@ const missions = [
     {
         id: 11,
         title: "Разработка смарт-контракта для DAO",
-        desc: "Создание и аудит смарт-контракта для управления казной DAO. Интеграция с TON Network.",
+        desc: "Создание и аудит смарт-контракта для управления казной DAO. Интеграция с EVM-сетями.",
         reward: "2200 Civilization Protocol",
         xp: "+4000 XP",
         sbt: "Smart Contract Dev",
