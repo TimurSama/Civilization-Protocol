@@ -298,8 +298,8 @@ export async function POST(request: NextRequest) {
         }
         
         // Создаём стейк
-        const unlockDate = new Date();
-        unlockDate.setDate(unlockDate.getDate() + pool.lockDays);
+        const endDate = new Date();
+        endDate.setDate(endDate.getDate() + pool.lockDays);
         
         await prisma.user.update({
           where: { id: payload.userId },
@@ -313,6 +313,7 @@ export async function POST(request: NextRequest) {
             poolName: pool.name,
             amount: amount,
             apy: pool.apy,
+            endDate: endDate,
           },
         });
         
