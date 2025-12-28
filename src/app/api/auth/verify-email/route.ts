@@ -112,7 +112,7 @@ export async function PUT(request: NextRequest) {
         userId: user.id,
         type: 'reward',
         amount: 100,
-        token: 'VODG',
+        tokenType: 'VOD',
         status: 'completed',
         description: 'Email verification bonus'
       }

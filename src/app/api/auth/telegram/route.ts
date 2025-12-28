@@ -112,7 +112,7 @@ async function handleTelegramUser(
         userId: user.id,
         type: 'reward',
         amount: 200,
-        token: 'VODG',
+        tokenType: 'VOD',
         status: 'completed',
         description: 'Welcome bonus (Telegram registration)'
       }
@@ -133,7 +133,7 @@ async function handleTelegramUser(
           userId: referrer.id,
           type: 'referral',
           amount: 100,
-          token: 'VODG',
+          tokenType: 'VOD',
           status: 'completed',
           description: `Referral bonus for inviting ${user.name}`
         }
