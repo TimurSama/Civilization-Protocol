@@ -413,7 +413,7 @@ export default function ProjectHubPage() {
         return matchesSearch && matchesRegion && matchesAuthor && matchesSector;
     });
 
-    const sectorIcons: Record<string, any> = {
+    const sectorIcons: Record<string, React.ComponentType<{ size?: number; className?: string }>> = {
         water: Droplets,
         ecology: TreePine,
         energy: Zap,

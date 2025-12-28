@@ -8,9 +8,8 @@ import {
   Droplets, Zap, Activity, Globe, MapPin, BarChart3, FileText, Users,
   AlertTriangle, CheckCircle2, Download, Search, Plus,
   Wallet, Target, Award, MessageSquare, Bell, Cpu, Database,
-  Eye, Lock, Wrench, Gauge, ThermometerSun,
-  Waves, Leaf, BookOpen, GraduationCap, Microscope, FlaskConical, BarChart2,
-  Server, HardDrive, Network, Shield, Key, History, Cog, Play, Pause, RotateCcw,
+  Eye, Lock, Wrench,
+  Waves, Shield, Key, History, Cog, Play, Pause, RotateCcw,
   AlertCircle, Info, ChevronRight, ExternalLink, Copy, Trash2, Edit, Save, LogIn
 } from "lucide-react";
 import { cn } from "@/lib/utils";
@@ -742,7 +741,7 @@ export default function CabinetPage() {
                   { text: language === 'ru' ? "Обновление IoT датчиков" : language === 'ar' ? "تحديث أجهزة استشعار IoT" : "IoT sensors update", time: language === 'ru' ? "15 мин назад" : language === 'ar' ? "قبل 15 دقيقة" : "15 min ago" },
                   { text: language === 'ru' ? "Завершено голосование #124" : language === 'ar' ? "اكتمل التصويت رقم 124" : "Voting #124 completed", time: language === 'ru' ? "1 час назад" : language === 'ar' ? "قبل ساعة" : "1 hour ago" },
                   { text: language === 'ru' ? "Синхронизация данных" : language === 'ar' ? "مزامنة البيانات" : "Data synchronization", time: language === 'ru' ? "3 часа назад" : language === 'ar' ? "قبل 3 ساعات" : "3 hours ago" },
-                ].map((item: any, i: number) => (
+                ].map((item: { text: string; time: string }, i: number) => (
                   <div key={i} className="flex items-start gap-3 text-sm">
                     <div className="w-2 h-2 rounded-full bg-cyan-glow mt-1.5" />
                     <div>

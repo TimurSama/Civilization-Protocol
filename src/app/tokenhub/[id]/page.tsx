@@ -15,6 +15,7 @@ import { useLanguage } from "@/context/LanguageContext";
 import { useAuth } from "@/context/AuthContext";
 
 // Mock project data
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const projectsData: Record<string, any> = {
   "smart-pumping-uzbekistan": {
     id: "smart-pumping-uzbekistan",
@@ -444,6 +445,7 @@ export default function ProjectDetailPage() {
             >
               <h3 className="text-xl font-bold mb-6">{tr.milestones}</h3>
               <div className="space-y-4">
+                {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
                 {project.milestones.map((milestone: any, i: number) => (
                   <div key={i} className="flex items-start gap-4">
                     <div className={cn("w-10 h-10 rounded-full flex items-center justify-center shrink-0",
@@ -480,6 +482,7 @@ export default function ProjectDetailPage() {
             >
               <h3 className="text-xl font-bold mb-6">{tr.team}</h3>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
                 {project.team.map((member: any, i: number) => (
                   <div key={i} className="p-4 bg-white/5 rounded-xl flex items-center gap-4">
                     <div className="w-12 h-12 rounded-full bg-gradient-to-br from-cyan-500 to-blue-500 flex items-center justify-center text-white font-bold">
@@ -503,6 +506,7 @@ export default function ProjectDetailPage() {
             >
               <h3 className="text-xl font-bold mb-6">{tr.keyDocuments}</h3>
               <div className="space-y-3">
+                {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
                 {project.documents.map((doc: any, i: number) => (
                   <div key={i} className="p-4 bg-white/5 rounded-xl flex items-center justify-between hover:bg-white/10 transition-colors cursor-pointer">
                     <div className="flex items-center gap-3">

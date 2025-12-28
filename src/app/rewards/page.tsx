@@ -116,7 +116,7 @@ export default function RewardsPage() {
     setTimeout(() => setCopied(false), 2000);
   };
 
-  const rarityColors: Record<string, any> = {
+  const rarityColors: Record<string, { bg: string; text: string; border: string }> = {
     common: { bg: "bg-slate-500/20", text: "text-slate-400", border: "border-slate-500/30" },
     rare: { bg: "bg-blue-500/20", text: "text-blue-400", border: "border-blue-500/30" },
     epic: { bg: "bg-purple-500/20", text: "text-purple-400", border: "border-purple-500/30" },

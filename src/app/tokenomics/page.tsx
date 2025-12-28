@@ -102,7 +102,7 @@ export default function TokenomicsPage() {
     const tier = presaleTiers[selectedTier];
     const baseTokens = investment / tier.price;
     
-    let bonuses = {
+    const bonuses = {
       tier: baseTokens * (tier.bonus / 100),
       earlyBird: earlyBird ? baseTokens * 0.2 : 0,
       volume: baseTokens * (volume / 100),

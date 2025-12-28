@@ -21,7 +21,7 @@ interface TokenBalance {
   usd: number;
   color: string;
   bg: string;
-  icon: any;
+  icon: React.ComponentType<{ size?: number; className?: string }>;
   change: string;
   staked?: boolean;
 }
