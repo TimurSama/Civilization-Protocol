@@ -72,7 +72,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 userStatus.textContent = `Ошибка: ${data.error}`;
                 userStatus.style.color = 'red';
             }
-        } catch (error) {
+        } catch {
             userStatus.textContent = 'Ошибка при получении токенов';
             userStatus.style.color = 'red';
         }
@@ -101,6 +101,7 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     // Обработчик голосования
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     async function vote(proposalId, option) {
         try {
             const response = await fetch('/api/vote', {
@@ -231,11 +232,13 @@ document.addEventListener('DOMContentLoaded', function() {
     updateProposalsList();
 });
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 function openAssistant() {
     assistantModal.show();
     addMessageToChat('assistant', 'Здравствуйте! Я виртуальный ассистент VODeco. Чем могу помочь?');
 }
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 function sendQuestion() {
     const input = document.getElementById('assistantInput');
     const question = input.value.trim();

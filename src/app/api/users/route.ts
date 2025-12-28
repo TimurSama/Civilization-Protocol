@@ -108,7 +108,7 @@ const mockUsers: User[] = [
   },
 ];
 
-let users: User[] = [...mockUsers];
+const users: User[] = [...mockUsers];
 
 // GET - Получение пользователя/списка пользователей
 export async function GET(request: NextRequest) {

@@ -41,7 +41,7 @@ export async function POST(request: NextRequest) {
     const token = await createSession(user.id, userAgent);
 
     // Возвращаем пользователя без пароля
-    const { password: _, ...userWithoutPassword } = user;
+    const { password, ...userWithoutPassword } = user;
 
     return NextResponse.json({
       success: true,

@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Brain, Cpu, Database, TrendingUp, Zap } from "lucide-react";
+import { Brain, Cpu, TrendingUp, Zap } from "lucide-react";
 
 const features = [
     { title: "Предиктивный анализ", desc: "Прогнозирование дефицита воды на основе исторических данных.", icon: TrendingUp },

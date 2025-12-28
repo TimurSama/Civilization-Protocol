@@ -56,7 +56,7 @@ export async function POST(request: NextRequest) {
             vote: { proposalId, userId, vote },
             counts: voteCounts
         });
-    } catch (error) {
+    } catch {
         return NextResponse.json(
             { error: 'Invalid request body' },
             { status: 400 }

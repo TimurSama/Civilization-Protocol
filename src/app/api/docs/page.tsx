@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import {
-  Code, FileJson, ChevronRight, ChevronDown, Copy, Check,
+  Code, ChevronRight, ChevronDown, Copy, Check,
   Lock, Globe, Zap, Database, Users, MessageSquare, Vote,
   Wallet, Shield, Search, Filter, Book, ExternalLink, Server
 } from "lucide-react";

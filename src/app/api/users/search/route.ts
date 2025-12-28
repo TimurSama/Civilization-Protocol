@@ -10,7 +10,10 @@ export async function GET(request: NextRequest) {
     const query = searchParams.get('q');
     const role = searchParams.get('role');
     
-    const where: any = {};
+    const where: {
+      OR?: Array<{ name?: { contains: string }; email?: { contains: string }; referralCode?: { contains: string } }>;
+      role?: string;
+    } = {};
     
     if (query) {
       where.OR = [

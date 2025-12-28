@@ -9,7 +9,6 @@ import {
   sendEmail,
   EMAIL_TEMPLATES
 } from '@/lib/email-service';
-import { verifyToken } from '@/lib/auth';
 
 // Send verification email
 export async function POST(request: NextRequest) {

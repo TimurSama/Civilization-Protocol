@@ -18,7 +18,7 @@ export async function GET(request: NextRequest) {
     const type = searchParams.get('type');
     const tokenType = searchParams.get('tokenType');
     
-    const where: any = { userId };
+    const where: { userId: string; type?: string; tokenType?: string } = { userId };
     if (type) where.type = type;
     if (tokenType) where.tokenType = tokenType;
     

@@ -20,7 +20,7 @@ import { useAuth } from "@/context/AuthContext";
 import { useLanguage } from "@/context/LanguageContext";
 
 // Multilingual cabinet translations
-const cabinetTranslations: Record<string, Record<string, any>> = {
+const cabinetTranslations: Record<string, Record<string, string>> = {
   en: {
     viewMode: "View Mode",
     viewModeDesc: "You are viewing the cabinet in demo mode. Sign in and verify to access full functionality.",
@@ -84,6 +84,7 @@ const cabinetTranslations: Record<string, Record<string, any>> = {
 };
 
 // Cabinet configurations with full content
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const cabinetConfigs: Record<string, any> = {
   citizen: {
     title: "Гражданский кабинет",
@@ -458,7 +459,7 @@ export default function CabinetPage() {
   }
 
   const Icon = config.icon;
-  const colorClasses: Record<string, any> = {
+  const colorClasses: Record<string, { bg: string; text: string; border: string; glow: string }> = {
     cyan: { bg: "bg-cyan-500/20", text: "text-cyan-400", border: "border-cyan-500/30", glow: "shadow-cyan-500/20" },
     blue: { bg: "bg-blue-500/20", text: "text-blue-400", border: "border-blue-500/30", glow: "shadow-blue-500/20" },
     orange: { bg: "bg-orange-500/20", text: "text-orange-400", border: "border-orange-500/30", glow: "shadow-orange-500/20" },
@@ -630,7 +631,7 @@ export default function CabinetPage() {
 
       {/* Stats Grid */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-        {config.stats.map((stat: any, i: number) => (
+        {config.stats.map((stat, i: number) => (
           <motion.div
             key={i}
             initial={{ opacity: 0, scale: 0.9 }}
@@ -659,7 +660,7 @@ export default function CabinetPage() {
       {/* Tabs & Search */}
       <div className="flex flex-col md:flex-row gap-4 items-center justify-between">
         <div className="flex gap-2 overflow-x-auto pb-2 w-full md:w-auto">
-          {config.tabs?.map((tab: any) => (
+          {config.tabs?.map((tab) => (
             <button
               key={tab.id}
               onClick={() => setActiveTab(tab.id)}
@@ -770,7 +771,8 @@ export default function CabinetPage() {
 }
 
 // Cabinet Content Component
-function CabinetContent({ type, tab, modules, colors }: any) {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+function CabinetContent({ type, tab, modules, colors }: { type: string; tab: string; modules: any; colors: any }) {
   // ========== CITIZEN CABINET ==========
   if (type === "citizen") {
     if (tab === "monitor" && modules?.monitor) {
@@ -781,7 +783,7 @@ function CabinetContent({ type, tab, modules, colors }: any) {
             Качество воды в вашем регионе
           </h3>
           <div className="grid grid-cols-2 gap-4">
-            {modules.monitor.map((item: any, i: number) => (
+            {modules.monitor.map((item, i: number) => (
               <div key={i} className="p-4 bg-white/5 rounded-xl hover:bg-white/10 transition-colors cursor-pointer">
                 <div className="flex justify-between items-start mb-2">
                   <span className="text-sm text-slate-400">{item.title}</span>
