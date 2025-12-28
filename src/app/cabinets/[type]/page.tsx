@@ -9,7 +9,7 @@ import {
   AlertTriangle, CheckCircle2, Download, Search, Plus,
   Wallet, Target, Award, MessageSquare, Bell, Cpu, Database,
   Eye, Lock, Wrench,
-  Waves, Shield, Key, History, Cog, Play, Pause, RotateCcw,
+  Waves, Leaf, Shield, Key, History, Cog, Play, Pause, RotateCcw,
   AlertCircle, Info, ChevronRight, ExternalLink, Copy, Trash2, Edit, Save, LogIn
 } from "lucide-react";
 import { cn } from "@/lib/utils";
