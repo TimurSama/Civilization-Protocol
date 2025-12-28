@@ -819,7 +819,7 @@ function CabinetContent({ type, tab, modules, colors }: { type: string; tab: str
             </button>
           </div>
           <div className="space-y-3">
-            {modules.reports.map((report: any) => (
+            {modules.reports.map((report) => (
               <div key={report.id} className="p-4 bg-white/5 rounded-xl hover:bg-white/10 transition-colors">
                 <div className="flex justify-between items-start mb-2">
                   <div className="font-medium">{report.title}</div>
@@ -849,7 +849,7 @@ function CabinetContent({ type, tab, modules, colors }: { type: string; tab: str
             Активные миссии
           </h3>
           <div className="space-y-4">
-            {modules.missions.map((mission: any, i: number) => (
+            {modules.missions.map((mission, i: number) => (
               <div key={i} className="p-4 bg-white/5 rounded-xl hover:bg-white/10 transition-colors">
                 <div className="flex justify-between items-start mb-2">
                   <span className="font-medium">{mission.title}</span>
@@ -881,7 +881,7 @@ function CabinetContent({ type, tab, modules, colors }: { type: string; tab: str
             Достижения
           </h3>
           <div className="grid grid-cols-2 gap-4">
-            {modules.achievements.map((achievement: any, i: number) => (
+            {modules.achievements.map((achievement, i: number) => (
               <div key={i} className={cn("p-4 rounded-xl border transition-all",
                 achievement.earned ? "bg-gradient-to-br from-cyan-500/10 to-blue-500/10 border-cyan-500/30" : "bg-white/5 border-white/10 opacity-60"
               )}>
@@ -916,7 +916,7 @@ function CabinetContent({ type, tab, modules, colors }: { type: string; tab: str
             Статус регионов
           </h3>
           <div className="space-y-4">
-            {modules.dashboard.map((region: any, i: number) => (
+            {modules.dashboard.map((region, i: number) => (
               <div key={i} className="p-4 bg-white/5 rounded-xl hover:bg-white/10 transition-colors cursor-pointer">
                 <div className="flex items-center gap-4">
                   <div className={cn("w-3 h-3 rounded-full",
@@ -958,7 +958,7 @@ function CabinetContent({ type, tab, modules, colors }: { type: string; tab: str
             <button className="px-4 py-2 bg-blue-500/20 text-blue-400 rounded-lg text-sm font-bold">+ Новая политика</button>
           </div>
           <div className="space-y-3">
-            {modules.policies.map((policy: any) => (
+            {modules.policies.map((policy) => (
               <div key={policy.id} className="p-4 bg-white/5 rounded-xl">
                 <div className="flex justify-between items-start mb-2">
                   <div className="font-medium">{policy.title}</div>
@@ -988,7 +988,7 @@ function CabinetContent({ type, tab, modules, colors }: { type: string; tab: str
             Кризис-центр
           </h3>
           <div className="space-y-3">
-            {modules.crisis.map((crisis: any) => (
+            {modules.crisis.map((crisis) => (
               <div key={crisis.id} className={cn("p-4 rounded-xl border",
                 crisis.severity === "critical" ? "bg-red-500/10 border-red-500/30" :
                 crisis.severity === "high" ? "bg-orange-500/10 border-orange-500/30" : "bg-yellow-500/10 border-yellow-500/30"
@@ -1021,7 +1021,7 @@ function CabinetContent({ type, tab, modules, colors }: { type: string; tab: str
             SDG Отчётность
           </h3>
           <div className="space-y-4">
-            {modules.reports.map((report: any) => (
+            {modules.reports.map((report) => (
               <div key={report.id} className="p-4 bg-white/5 rounded-xl">
                 <div className="flex justify-between items-center mb-3">
                   <div className="font-medium">{report.title}</div>
@@ -1056,7 +1056,7 @@ function CabinetContent({ type, tab, modules, colors }: { type: string; tab: str
             Управление активами
           </h3>
           <div className="space-y-4">
-            {modules.assets.map((asset: any, i: number) => (
+            {modules.assets.map((asset, i: number) => (
               <div key={i} className="p-4 bg-white/5 rounded-xl hover:bg-white/10 transition-colors">
                 <div className="flex items-center gap-4">
                   <div className={cn("w-12 h-12 rounded-xl flex items-center justify-center",
@@ -1094,7 +1094,7 @@ function CabinetContent({ type, tab, modules, colors }: { type: string; tab: str
             IoT Мониторинг
           </h3>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            {modules.iot.map((sensor: any) => (
+            {modules.iot.map((sensor) => (
               <div key={sensor.id} className="p-4 bg-white/5 rounded-xl">
                 <div className="flex justify-between items-start mb-3">
                   <div>
@@ -1132,7 +1132,7 @@ function CabinetContent({ type, tab, modules, colors }: { type: string; tab: str
             <button className="px-4 py-2 bg-orange-500/20 text-orange-400 rounded-lg text-sm font-bold">+ Новая задача</button>
           </div>
           <div className="space-y-3">
-            {modules.maintenance.map((task: any) => (
+            {modules.maintenance.map((task) => (
               <div key={task.id} className="p-4 bg-white/5 rounded-xl">
                 <div className="flex justify-between items-start mb-2">
                   <div>
@@ -1167,7 +1167,7 @@ function CabinetContent({ type, tab, modules, colors }: { type: string; tab: str
             Оповещения
           </h3>
           <div className="space-y-3">
-            {modules.alerts.map((alert: any) => (
+            {modules.alerts.map((alert) => (
               <div key={alert.id} className={cn("p-4 rounded-xl border flex items-start gap-4",
                 alert.type === "critical" ? "bg-red-500/10 border-red-500/30" :
                 alert.type === "warning" ? "bg-yellow-500/10 border-yellow-500/30" : "bg-blue-500/10 border-blue-500/30"
@@ -1204,7 +1204,7 @@ function CabinetContent({ type, tab, modules, colors }: { type: string; tab: str
             Инвестиционный портфель
           </h3>
           <div className="space-y-4">
-            {modules.portfolio.map((item: any, i: number) => (
+            {modules.portfolio.map((item, i: number) => (
               <div key={i} className="p-4 bg-white/5 rounded-xl hover:bg-white/10 transition-colors">
                 <div className="flex justify-between items-start mb-3">
                   <div>
@@ -1235,7 +1235,7 @@ function CabinetContent({ type, tab, modules, colors }: { type: string; tab: str
             Инвестиционные проекты
           </h3>
           <div className="space-y-4">
-            {modules.projects.map((project: any) => (
+            {modules.projects.map((project) => (
               <div key={project.id} className="p-4 bg-white/5 rounded-xl">
                 <div className="flex justify-between items-start mb-3">
                   <div>
@@ -1271,7 +1271,7 @@ function CabinetContent({ type, tab, modules, colors }: { type: string; tab: str
             Рынок токенов
           </h3>
           <div className="space-y-3">
-            {modules.market.map((pair: any, i: number) => (
+            {modules.market.map((pair, i: number) => (
               <div key={i} className="p-4 bg-white/5 rounded-xl flex items-center gap-4">
                 <div className="flex-1">
                   <div className="font-medium">{pair.pair}</div>
@@ -1297,7 +1297,7 @@ function CabinetContent({ type, tab, modules, colors }: { type: string; tab: str
             ESG Отчёт
           </h3>
           <div className="space-y-4">
-            {modules.esg.map((category: any, i: number) => (
+            {modules.esg.map((category, i: number) => (
               <div key={i} className="p-4 bg-white/5 rounded-xl">
                 <div className="flex justify-between items-center mb-3">
                   <div className="font-medium">{category.category}</div>
@@ -1336,7 +1336,7 @@ function CabinetContent({ type, tab, modules, colors }: { type: string; tab: str
             <button className="px-4 py-2 bg-purple-500/20 text-purple-400 rounded-lg text-sm font-bold">+ Новый проект</button>
           </div>
           <div className="space-y-4">
-            {modules.research.map((project: any) => (
+            {modules.research.map((project) => (
               <div key={project.id} className="p-4 bg-white/5 rounded-xl">
                 <div className="flex justify-between items-start mb-2">
                   <div className="font-medium">{project.title}</div>
@@ -1370,7 +1370,7 @@ function CabinetContent({ type, tab, modules, colors }: { type: string; tab: str
             Data Lake
           </h3>
           <div className="space-y-3">
-            {modules.data.map((dataset: any, i: number) => (
+            {modules.data.map((dataset, i: number) => (
               <div key={i} className="p-4 bg-white/5 rounded-xl flex items-center gap-4">
                 <Database className="text-purple-400" size={24} />
                 <div className="flex-1">
@@ -1397,7 +1397,7 @@ function CabinetContent({ type, tab, modules, colors }: { type: string; tab: str
             ML Модели
           </h3>
           <div className="space-y-3">
-            {modules.models.map((model: any, i: number) => (
+            {modules.models.map((model, i: number) => (
               <div key={i} className="p-4 bg-white/5 rounded-xl">
                 <div className="flex justify-between items-start mb-2">
                   <div>
@@ -1427,7 +1427,7 @@ function CabinetContent({ type, tab, modules, colors }: { type: string; tab: str
             API Endpoints
           </h3>
           <div className="space-y-3">
-            {modules.api.map((endpoint: any, i: number) => (
+            {modules.api.map((endpoint, i: number) => (
               <div key={i} className="p-4 bg-white/5 rounded-xl font-mono text-sm">
                 <div className="flex items-center gap-3 mb-2">
                   <span className={cn("px-2 py-0.5 rounded text-xs font-bold",
@@ -1459,7 +1459,7 @@ function CabinetContent({ type, tab, modules, colors }: { type: string; tab: str
             Системный мониторинг
           </h3>
           <div className="space-y-4">
-            {modules.control.map((service: any, i: number) => (
+            {modules.control.map((service, i: number) => (
               <div key={i} className="p-4 bg-white/5 rounded-xl">
                 <div className="flex items-center gap-4 mb-3">
                   <div className={cn("w-3 h-3 rounded-full",
@@ -1503,7 +1503,7 @@ function CabinetContent({ type, tab, modules, colors }: { type: string; tab: str
             Системные алерты
           </h3>
           <div className="space-y-3">
-            {modules.alerts.map((alert: any) => (
+            {modules.alerts.map((alert) => (
               <div key={alert.id} className={cn("p-4 rounded-xl border",
                 alert.type === "warning" ? "bg-yellow-500/10 border-yellow-500/30" :
                 alert.type === "resolved" ? "bg-green-500/10 border-green-500/30" : "bg-blue-500/10 border-blue-500/30"
@@ -1533,7 +1533,7 @@ function CabinetContent({ type, tab, modules, colors }: { type: string; tab: str
             Системные логи
           </h3>
           <div className="space-y-2 font-mono text-xs">
-            {modules.logs.map((log: any, i: number) => (
+            {modules.logs.map((log, i: number) => (
               <div key={i} className="p-3 bg-black/40 rounded-lg flex items-start gap-3">
                 <span className="text-slate-600 shrink-0">{log.timestamp}</span>
                 <span className={cn("shrink-0 px-1.5 py-0.5 rounded font-bold",
@@ -1557,7 +1557,7 @@ function CabinetContent({ type, tab, modules, colors }: { type: string; tab: str
             Тикеты поддержки
           </h3>
           <div className="space-y-3">
-            {modules.support.map((ticket: any) => (
+            {modules.support.map((ticket) => (
               <div key={ticket.id} className="p-4 bg-white/5 rounded-xl">
                 <div className="flex justify-between items-start mb-2">
                   <div>
@@ -1598,7 +1598,7 @@ function CabinetContent({ type, tab, modules, colors }: { type: string; tab: str
             <button className="px-4 py-2 bg-red-500/20 text-red-400 rounded-lg text-sm font-bold">+ Новый пользователь</button>
           </div>
           <div className="space-y-3">
-            {modules.users.map((user: any) => (
+            {modules.users.map((user) => (
               <div key={user.id} className="p-4 bg-white/5 rounded-xl flex items-center gap-4">
                 <div className="w-10 h-10 rounded-full bg-gradient-to-br from-red-500 to-orange-500 flex items-center justify-center text-white font-bold">
                   {user.name.slice(0, 2).toUpperCase()}
@@ -1635,7 +1635,7 @@ function CabinetContent({ type, tab, modules, colors }: { type: string; tab: str
             Управление ролями
           </h3>
           <div className="space-y-3">
-            {modules.roles.map((role: any) => (
+            {modules.roles.map((role) => (
               <div key={role.id} className="p-4 bg-white/5 rounded-xl">
                 <div className="flex justify-between items-start mb-2">
                   <div>
@@ -1666,7 +1666,7 @@ function CabinetContent({ type, tab, modules, colors }: { type: string; tab: str
             Журнал аудита
           </h3>
           <div className="space-y-2">
-            {modules.audit.map((log: any) => (
+            {modules.audit.map((log) => (
               <div key={log.id} className="p-3 bg-white/5 rounded-xl flex items-center gap-4 text-sm">
                 <div className={cn("w-2 h-2 rounded-full shrink-0",
                   log.status === "success" ? "bg-green-500" :
@@ -1690,7 +1690,7 @@ function CabinetContent({ type, tab, modules, colors }: { type: string; tab: str
             Системные настройки
           </h3>
           <div className="space-y-3">
-            {modules.config.map((setting: any, i: number) => (
+            {modules.config.map((setting, i: number) => (
               <div key={i} className="p-4 bg-white/5 rounded-xl flex items-center gap-4">
                 <div className="flex-1">
                   <div className="font-mono text-sm text-slate-300">{setting.key}</div>
