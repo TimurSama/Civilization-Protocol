@@ -306,15 +306,13 @@ export async function POST(request: NextRequest) {
           data: { vodBalance: { decrement: amount } },
         });
         
-        const stake = await prisma.staking.create({
+        const stake = await prisma.stake.create({
           data: {
             userId: payload.userId,
             poolId: poolId,
+            poolName: pool.name,
             amount: amount,
             apy: pool.apy,
-            lockPeriod: pool.lockDays,
-            unlockDate: unlockDate,
-            status: 'ACTIVE',
           },
         });
         
@@ -342,11 +340,11 @@ export async function POST(request: NextRequest) {
       
       case 'unstake': {
         // Вывод из стейкинга
-        const stake = await prisma.staking.findFirst({
+        const stake = await prisma.stake.findFirst({
           where: {
             userId: payload.userId,
             poolId: poolId,
-            status: 'ACTIVE',
+            status: 'active',
           },
         });
         
@@ -355,15 +353,15 @@ export async function POST(request: NextRequest) {
         }
         
         const now = new Date();
-        const isUnlocked = now >= stake.unlockDate;
+        const isUnlocked = now >= stake.endDate;
         const penalty = isUnlocked ? 0 : 0.1; // 10% штраф за ранний вывод
         
         const returnAmount = Math.floor(stake.amount * (1 - penalty));
-        const rewards = stake.pendingRewards || 0;
+        const rewards = stake.earnedRewards || 0;
         
-        await prisma.staking.update({
+        await prisma.stake.update({
           where: { id: stake.id },
-          data: { status: 'COMPLETED' },
+          data: { status: 'completed' },
         });
         
         await prisma.user.update({
