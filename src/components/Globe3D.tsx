@@ -89,7 +89,7 @@ function Hotspot({ position, data }: { position: [number, number, number], data:
                             )} />
                         </div>
                         <div className="text-sm font-black mb-1">{data.name}</div>
-                        <p className="text-[10px] text-slate-400 mb-3 leading-tight italic">"{data.description}"</p>
+                        <p className="text-[10px] text-slate-400 mb-3 leading-tight italic">&quot;{data.description}&quot;</p>
                         <div className="space-y-2">
                             <div className="flex justify-between text-[10px] font-bold">
                                 <span>ИНДЕКС СОСТОЯНИЯ</span>

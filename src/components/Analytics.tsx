@@ -25,12 +25,16 @@ const ANALYTICS_CONFIG = {
 // Track page views
 function trackPageView(url: string) {
   // Plausible
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   if (ANALYTICS_CONFIG.plausible.enabled && typeof window !== "undefined" && (window as any).plausible) {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     (window as any).plausible("pageview");
   }
 
   // Google Analytics
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   if (ANALYTICS_CONFIG.ga.enabled && typeof window !== "undefined" && (window as any).gtag) {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     (window as any).gtag("config", ANALYTICS_CONFIG.ga.measurementId, {
       page_path: url,
     });
@@ -56,12 +60,16 @@ function trackPageView(url: string) {
 // Track custom events
 export function trackEvent(eventName: string, properties?: Record<string, unknown>) {
   // Plausible
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   if (ANALYTICS_CONFIG.plausible.enabled && typeof window !== "undefined" && (window as any).plausible) {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     (window as any).plausible(eventName, { props: properties });
   }
 
   // Google Analytics
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   if (ANALYTICS_CONFIG.ga.enabled && typeof window !== "undefined" && (window as any).gtag) {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     (window as any).gtag("event", eventName, properties);
   }
 
