@@ -66,3 +66,9 @@ Thumbs.db
 # Temporary files
 *.tmp
 *.temp
+
+# GitHub tokens (never commit!)
+*.token
+*_token.txt
+github_token.txt
+SETUP_GITHUB_TOKEN.md
