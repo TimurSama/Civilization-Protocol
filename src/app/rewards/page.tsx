@@ -535,7 +535,7 @@ export default function RewardsPage() {
                     key={entry.rank}
                     className={cn(
                       "flex items-center gap-4 p-4 md:p-6 transition-colors",
-                      entry.isUser ? "bg-cyan-500/10" : "hover:bg-white/[0.02]"
+                      (entry as { isUser?: boolean }).isUser ? "bg-cyan-500/10" : "hover:bg-white/[0.02]"
                     )}
                   >
                     <div className={cn(
@@ -545,12 +545,12 @@ export default function RewardsPage() {
                       entry.rank === 3 ? "bg-orange-500/20 text-orange-400" :
                       "bg-white/5 text-slate-500"
                     )}>
-                      {(entry as { badge?: string; rank: number }).badge || `#${entry.rank}`}
+                      {(entry as { badge?: string; rank: number; isUser?: boolean }).badge || `#${entry.rank}`}
                     </div>
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center gap-2">
                         <span className="font-bold truncate">{entry.name}</span>
-                        {(entry as { isUser?: boolean }).isUser && (
+                        {(entry as { badge?: string; rank: number; isUser?: boolean }).isUser && (
                           <span className="px-2 py-0.5 bg-cyan-500/20 text-cyan-400 text-xs rounded-full">Вы</span>
                         )}
                       </div>

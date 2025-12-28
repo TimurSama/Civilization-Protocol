@@ -630,7 +630,7 @@ export default function CabinetPage() {
 
       {/* Stats Grid */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-        {config.stats.map((stat: { label: string; value: string; icon?: React.ComponentType<{ size?: number; className?: string }> }, i: number) => (
+        {config.stats.map((stat: { label: string; value: string; icon: React.ComponentType<{ size?: number; className?: string }>; change?: string }, i: number) => (
           <motion.div
             key={i}
             initial={{ opacity: 0, scale: 0.9 }}
@@ -640,7 +640,7 @@ export default function CabinetPage() {
           >
             <div className="flex items-center gap-3 mb-3">
               <div className="p-2 rounded-xl bg-white/5 group-hover:bg-white/10 transition-colors">
-                <stat.icon size={18} className={colors.text} />
+                {stat.icon && <stat.icon size={18} className={colors.text} />}
               </div>
               <span className="text-xs font-bold uppercase tracking-widest text-slate-500">{stat.label}</span>
             </div>
@@ -659,7 +659,7 @@ export default function CabinetPage() {
       {/* Tabs & Search */}
       <div className="flex flex-col md:flex-row gap-4 items-center justify-between">
         <div className="flex gap-2 overflow-x-auto pb-2 w-full md:w-auto">
-          {config.tabs?.map((tab: { id: string; label: string }) => (
+          {config.tabs?.map((tab: { id: string; label: string; icon?: React.ComponentType<{ size?: number; className?: string }> }) => (
             <button
               key={tab.id}
               onClick={() => setActiveTab(tab.id)}
@@ -670,7 +670,7 @@ export default function CabinetPage() {
                   : "glass hover:bg-white/5"
               )}
             >
-              <tab.icon size={16} />
+              {tab.icon && <tab.icon size={16} />}
               {tab.label}
             </button>
           ))}

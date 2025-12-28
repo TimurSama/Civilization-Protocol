@@ -134,7 +134,7 @@ interface EcosystemItem {
   lat: number;
   lng: number;
   status: string;
-  metrics: Record<string, string | number>;
+  metrics: Record<string, string | number | undefined>;
   description: string;
 }
 
