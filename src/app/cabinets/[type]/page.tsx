@@ -771,8 +771,7 @@ export default function CabinetPage() {
 }
 
 // Cabinet Content Component
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-function CabinetContent({ type, tab, modules, colors }: { type: string; tab: string; modules: any; colors: any }) {
+function CabinetContent({ type, tab, modules, colors }: { type: string; tab: string; /* eslint-disable-next-line @typescript-eslint/no-explicit-any */ modules: any; colors: Record<string, { bg: string; text: string; border: string; glow: string }> }) {
   // ========== CITIZEN CABINET ==========
   if (type === "citizen") {
     if (tab === "monitor" && modules?.monitor) {
