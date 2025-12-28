@@ -29,7 +29,11 @@ jobs:
 
       - name: Build Check
         run: npm run build
+        env:
+          DATABASE_URL: "file:./dev.db"
 
       - name: Check Prisma Schema
         run: npx prisma validate
+        env:
+          DATABASE_URL: "file:./dev.db"
 
