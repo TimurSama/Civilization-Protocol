@@ -32,11 +32,21 @@ jobs:
         continue-on-error: true
 
       - name: Build project
+        id: build
         run: npm run build
         env:
           NODE_ENV: production
+        continue-on-error: false
+
+      - name: Check build status
+        if: steps.build.outcome == 'failure'
+        run: |
+          echo "❌ Build failed. Checking for common issues..."
+          echo "Please check the build logs above for TypeScript errors."
+          exit 1
 
       - name: Deploy to Vercel
+        if: steps.build.outcome == 'success'
         uses: amondnet/vercel-action@v25
         with:
           vercel-token: ${{ secrets.VERCEL_TOKEN }}
