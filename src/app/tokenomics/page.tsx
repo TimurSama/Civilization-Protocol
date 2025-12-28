@@ -659,7 +659,7 @@ export default function TokenomicsPage() {
             <div className="grid md:grid-cols-3 gap-6 mb-8">
               {[
                 { label: "TPS", value: "10,000+", icon: <Zap size={24} />, color: "cyan" },
-                { label: "Block Time", value: "1-2 сек", icon: <Clock size={24} />, color: "blue" },
+                { label: "Block Time", value: "1-2 сек", icon: <CheckCircle2 size={24} />, color: "blue" },
                 { label: "Finality", value: "5-10 сек", icon: <CheckCircle2 size={24} />, color: "green" },
                 { label: "Shards", value: "64", icon: <Database size={24} />, color: "purple" },
                 { label: "Validators", value: "10,000+", icon: <Users size={24} />, color: "orange" },

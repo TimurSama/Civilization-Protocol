@@ -467,7 +467,7 @@ export default function CabinetPage() {
     slate: { bg: "bg-slate-500/20", text: "text-slate-400", border: "border-slate-500/30", glow: "shadow-slate-500/20" },
     red: { bg: "bg-red-500/20", text: "text-red-400", border: "border-red-500/30", glow: "shadow-red-500/20" },
   };
-  const colors = colorClasses[config.color];
+  const colors = colorClasses[config.color] || colorClasses.cyan;
 
   return (
     <div className="max-w-7xl mx-auto px-4 py-8 space-y-8">
@@ -630,7 +630,7 @@ export default function CabinetPage() {
 
       {/* Stats Grid */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-        {config.stats.map((stat, i: number) => (
+        {config.stats.map((stat: { label: string; value: string; icon?: React.ComponentType<{ size?: number; className?: string }> }, i: number) => (
           <motion.div
             key={i}
             initial={{ opacity: 0, scale: 0.9 }}
@@ -659,7 +659,7 @@ export default function CabinetPage() {
       {/* Tabs & Search */}
       <div className="flex flex-col md:flex-row gap-4 items-center justify-between">
         <div className="flex gap-2 overflow-x-auto pb-2 w-full md:w-auto">
-          {config.tabs?.map((tab) => (
+          {config.tabs?.map((tab: { id: string; label: string }) => (
             <button
               key={tab.id}
               onClick={() => setActiveTab(tab.id)}
@@ -742,7 +742,7 @@ export default function CabinetPage() {
                   { text: language === 'ru' ? "Обновление IoT датчиков" : language === 'ar' ? "تحديث أجهزة استشعار IoT" : "IoT sensors update", time: language === 'ru' ? "15 мин назад" : language === 'ar' ? "قبل 15 دقيقة" : "15 min ago" },
                   { text: language === 'ru' ? "Завершено голосование #124" : language === 'ar' ? "اكتمل التصويت رقم 124" : "Voting #124 completed", time: language === 'ru' ? "1 час назад" : language === 'ar' ? "قبل ساعة" : "1 hour ago" },
                   { text: language === 'ru' ? "Синхронизация данных" : language === 'ar' ? "مزامنة البيانات" : "Data synchronization", time: language === 'ru' ? "3 часа назад" : language === 'ar' ? "قبل 3 ساعات" : "3 hours ago" },
-                ].map((item, i) => (
+                ].map((item: any, i: number) => (
                   <div key={i} className="flex items-start gap-3 text-sm">
                     <div className="w-2 h-2 rounded-full bg-cyan-glow mt-1.5" />
                     <div>
@@ -770,7 +770,8 @@ export default function CabinetPage() {
 }
 
 // Cabinet Content Component
-function CabinetContent({ type, tab, modules, colors }: { type: string; tab: string; /* eslint-disable-next-line @typescript-eslint/no-explicit-any */ modules: any; colors: Record<string, { bg: string; text: string; border: string; glow: string }> }) {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+function CabinetContent({ type, tab, modules, colors }: { type: string; tab: string; modules: any; colors: { bg: string; text: string; border: string; glow: string } }) {
   // ========== CITIZEN CABINET ==========
   if (type === "citizen") {
     if (tab === "monitor" && modules?.monitor) {
@@ -781,7 +782,8 @@ function CabinetContent({ type, tab, modules, colors }: { type: string; tab: str
             Качество воды в вашем регионе
           </h3>
           <div className="grid grid-cols-2 gap-4">
-            {modules.monitor.map((item, i: number) => (
+            {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
+            {modules.monitor.map((item: any, i: number) => (
               <div key={i} className="p-4 bg-white/5 rounded-xl hover:bg-white/10 transition-colors cursor-pointer">
                 <div className="flex justify-between items-start mb-2">
                   <span className="text-sm text-slate-400">{item.title}</span>
@@ -817,7 +819,8 @@ function CabinetContent({ type, tab, modules, colors }: { type: string; tab: str
             </button>
           </div>
           <div className="space-y-3">
-            {modules.reports.map((report) => (
+            {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
+            {modules.reports.map((report: any) => (
               <div key={report.id} className="p-4 bg-white/5 rounded-xl hover:bg-white/10 transition-colors">
                 <div className="flex justify-between items-start mb-2">
                   <div className="font-medium">{report.title}</div>
@@ -847,7 +850,8 @@ function CabinetContent({ type, tab, modules, colors }: { type: string; tab: str
             Активные миссии
           </h3>
           <div className="space-y-4">
-            {modules.missions.map((mission, i: number) => (
+            {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
+            {modules.missions.map((mission: any, i: number) => (
               <div key={i} className="p-4 bg-white/5 rounded-xl hover:bg-white/10 transition-colors">
                 <div className="flex justify-between items-start mb-2">
                   <span className="font-medium">{mission.title}</span>
@@ -879,7 +883,8 @@ function CabinetContent({ type, tab, modules, colors }: { type: string; tab: str
             Достижения
           </h3>
           <div className="grid grid-cols-2 gap-4">
-            {modules.achievements.map((achievement, i: number) => (
+            {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
+            {modules.achievements.map((achievement: any, i: number) => (
               <div key={i} className={cn("p-4 rounded-xl border transition-all",
                 achievement.earned ? "bg-gradient-to-br from-cyan-500/10 to-blue-500/10 border-cyan-500/30" : "bg-white/5 border-white/10 opacity-60"
               )}>
@@ -914,7 +919,8 @@ function CabinetContent({ type, tab, modules, colors }: { type: string; tab: str
             Статус регионов
           </h3>
           <div className="space-y-4">
-            {modules.dashboard.map((region, i: number) => (
+            {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
+            {modules.dashboard.map((region: any, i: number) => (
               <div key={i} className="p-4 bg-white/5 rounded-xl hover:bg-white/10 transition-colors cursor-pointer">
                 <div className="flex items-center gap-4">
                   <div className={cn("w-3 h-3 rounded-full",
@@ -956,7 +962,8 @@ function CabinetContent({ type, tab, modules, colors }: { type: string; tab: str
             <button className="px-4 py-2 bg-blue-500/20 text-blue-400 rounded-lg text-sm font-bold">+ Новая политика</button>
           </div>
           <div className="space-y-3">
-            {modules.policies.map((policy) => (
+            {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
+            {modules.policies.map((policy: any) => (
               <div key={policy.id} className="p-4 bg-white/5 rounded-xl">
                 <div className="flex justify-between items-start mb-2">
                   <div className="font-medium">{policy.title}</div>
@@ -986,7 +993,8 @@ function CabinetContent({ type, tab, modules, colors }: { type: string; tab: str
             Кризис-центр
           </h3>
           <div className="space-y-3">
-            {modules.crisis.map((crisis) => (
+            {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
+            {modules.crisis.map((crisis: any) => (
               <div key={crisis.id} className={cn("p-4 rounded-xl border",
                 crisis.severity === "critical" ? "bg-red-500/10 border-red-500/30" :
                 crisis.severity === "high" ? "bg-orange-500/10 border-orange-500/30" : "bg-yellow-500/10 border-yellow-500/30"
@@ -1019,7 +1027,8 @@ function CabinetContent({ type, tab, modules, colors }: { type: string; tab: str
             SDG Отчётность
           </h3>
           <div className="space-y-4">
-            {modules.reports.map((report) => (
+            {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
+            {modules.reports.map((report: any) => (
               <div key={report.id} className="p-4 bg-white/5 rounded-xl">
                 <div className="flex justify-between items-center mb-3">
                   <div className="font-medium">{report.title}</div>
@@ -1054,7 +1063,8 @@ function CabinetContent({ type, tab, modules, colors }: { type: string; tab: str
             Управление активами
           </h3>
           <div className="space-y-4">
-            {modules.assets.map((asset, i: number) => (
+            {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
+            {modules.assets.map((asset: any, i: number) => (
               <div key={i} className="p-4 bg-white/5 rounded-xl hover:bg-white/10 transition-colors">
                 <div className="flex items-center gap-4">
                   <div className={cn("w-12 h-12 rounded-xl flex items-center justify-center",
@@ -1092,7 +1102,8 @@ function CabinetContent({ type, tab, modules, colors }: { type: string; tab: str
             IoT Мониторинг
           </h3>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            {modules.iot.map((sensor) => (
+            {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
+            {modules.iot.map((sensor: any) => (
               <div key={sensor.id} className="p-4 bg-white/5 rounded-xl">
                 <div className="flex justify-between items-start mb-3">
                   <div>
@@ -1130,7 +1141,8 @@ function CabinetContent({ type, tab, modules, colors }: { type: string; tab: str
             <button className="px-4 py-2 bg-orange-500/20 text-orange-400 rounded-lg text-sm font-bold">+ Новая задача</button>
           </div>
           <div className="space-y-3">
-            {modules.maintenance.map((task) => (
+            {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
+            {modules.maintenance.map((task: any) => (
               <div key={task.id} className="p-4 bg-white/5 rounded-xl">
                 <div className="flex justify-between items-start mb-2">
                   <div>
@@ -1165,7 +1177,8 @@ function CabinetContent({ type, tab, modules, colors }: { type: string; tab: str
             Оповещения
           </h3>
           <div className="space-y-3">
-            {modules.alerts.map((alert) => (
+            {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
+            {modules.alerts.map((alert: any) => (
               <div key={alert.id} className={cn("p-4 rounded-xl border flex items-start gap-4",
                 alert.type === "critical" ? "bg-red-500/10 border-red-500/30" :
                 alert.type === "warning" ? "bg-yellow-500/10 border-yellow-500/30" : "bg-blue-500/10 border-blue-500/30"
@@ -1202,7 +1215,8 @@ function CabinetContent({ type, tab, modules, colors }: { type: string; tab: str
             Инвестиционный портфель
           </h3>
           <div className="space-y-4">
-            {modules.portfolio.map((item, i: number) => (
+            {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
+            {modules.portfolio.map((item: any, i: number) => (
               <div key={i} className="p-4 bg-white/5 rounded-xl hover:bg-white/10 transition-colors">
                 <div className="flex justify-between items-start mb-3">
                   <div>
@@ -1233,7 +1247,8 @@ function CabinetContent({ type, tab, modules, colors }: { type: string; tab: str
             Инвестиционные проекты
           </h3>
           <div className="space-y-4">
-            {modules.projects.map((project) => (
+            {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
+            {modules.projects.map((project: any) => (
               <div key={project.id} className="p-4 bg-white/5 rounded-xl">
                 <div className="flex justify-between items-start mb-3">
                   <div>
@@ -1269,7 +1284,8 @@ function CabinetContent({ type, tab, modules, colors }: { type: string; tab: str
             Рынок токенов
           </h3>
           <div className="space-y-3">
-            {modules.market.map((pair, i: number) => (
+            {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
+            {modules.market.map((pair: any, i: number) => (
               <div key={i} className="p-4 bg-white/5 rounded-xl flex items-center gap-4">
                 <div className="flex-1">
                   <div className="font-medium">{pair.pair}</div>
@@ -1295,7 +1311,8 @@ function CabinetContent({ type, tab, modules, colors }: { type: string; tab: str
             ESG Отчёт
           </h3>
           <div className="space-y-4">
-            {modules.esg.map((category, i: number) => (
+            {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
+            {modules.esg.map((category: any, i: number) => (
               <div key={i} className="p-4 bg-white/5 rounded-xl">
                 <div className="flex justify-between items-center mb-3">
                   <div className="font-medium">{category.category}</div>
@@ -1334,7 +1351,8 @@ function CabinetContent({ type, tab, modules, colors }: { type: string; tab: str
             <button className="px-4 py-2 bg-purple-500/20 text-purple-400 rounded-lg text-sm font-bold">+ Новый проект</button>
           </div>
           <div className="space-y-4">
-            {modules.research.map((project) => (
+            {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
+            {modules.research.map((project: any) => (
               <div key={project.id} className="p-4 bg-white/5 rounded-xl">
                 <div className="flex justify-between items-start mb-2">
                   <div className="font-medium">{project.title}</div>
@@ -1368,7 +1386,8 @@ function CabinetContent({ type, tab, modules, colors }: { type: string; tab: str
             Data Lake
           </h3>
           <div className="space-y-3">
-            {modules.data.map((dataset, i: number) => (
+            {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
+            {modules.data.map((dataset: any, i: number) => (
               <div key={i} className="p-4 bg-white/5 rounded-xl flex items-center gap-4">
                 <Database className="text-purple-400" size={24} />
                 <div className="flex-1">
@@ -1395,7 +1414,8 @@ function CabinetContent({ type, tab, modules, colors }: { type: string; tab: str
             ML Модели
           </h3>
           <div className="space-y-3">
-            {modules.models.map((model, i: number) => (
+            {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
+            {modules.models.map((model: any, i: number) => (
               <div key={i} className="p-4 bg-white/5 rounded-xl">
                 <div className="flex justify-between items-start mb-2">
                   <div>
@@ -1425,7 +1445,8 @@ function CabinetContent({ type, tab, modules, colors }: { type: string; tab: str
             API Endpoints
           </h3>
           <div className="space-y-3">
-            {modules.api.map((endpoint, i: number) => (
+            {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
+            {modules.api.map((endpoint: any, i: number) => (
               <div key={i} className="p-4 bg-white/5 rounded-xl font-mono text-sm">
                 <div className="flex items-center gap-3 mb-2">
                   <span className={cn("px-2 py-0.5 rounded text-xs font-bold",
@@ -1457,7 +1478,8 @@ function CabinetContent({ type, tab, modules, colors }: { type: string; tab: str
             Системный мониторинг
           </h3>
           <div className="space-y-4">
-            {modules.control.map((service, i: number) => (
+            {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
+            {modules.control.map((service: any, i: number) => (
               <div key={i} className="p-4 bg-white/5 rounded-xl">
                 <div className="flex items-center gap-4 mb-3">
                   <div className={cn("w-3 h-3 rounded-full",
@@ -1501,7 +1523,8 @@ function CabinetContent({ type, tab, modules, colors }: { type: string; tab: str
             Системные алерты
           </h3>
           <div className="space-y-3">
-            {modules.alerts.map((alert) => (
+            {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
+            {modules.alerts.map((alert: any) => (
               <div key={alert.id} className={cn("p-4 rounded-xl border",
                 alert.type === "warning" ? "bg-yellow-500/10 border-yellow-500/30" :
                 alert.type === "resolved" ? "bg-green-500/10 border-green-500/30" : "bg-blue-500/10 border-blue-500/30"
@@ -1531,7 +1554,8 @@ function CabinetContent({ type, tab, modules, colors }: { type: string; tab: str
             Системные логи
           </h3>
           <div className="space-y-2 font-mono text-xs">
-            {modules.logs.map((log, i: number) => (
+            {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
+            {modules.logs.map((log: any, i: number) => (
               <div key={i} className="p-3 bg-black/40 rounded-lg flex items-start gap-3">
                 <span className="text-slate-600 shrink-0">{log.timestamp}</span>
                 <span className={cn("shrink-0 px-1.5 py-0.5 rounded font-bold",
@@ -1555,7 +1579,8 @@ function CabinetContent({ type, tab, modules, colors }: { type: string; tab: str
             Тикеты поддержки
           </h3>
           <div className="space-y-3">
-            {modules.support.map((ticket) => (
+            {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
+            {modules.support.map((ticket: any) => (
               <div key={ticket.id} className="p-4 bg-white/5 rounded-xl">
                 <div className="flex justify-between items-start mb-2">
                   <div>
@@ -1596,7 +1621,8 @@ function CabinetContent({ type, tab, modules, colors }: { type: string; tab: str
             <button className="px-4 py-2 bg-red-500/20 text-red-400 rounded-lg text-sm font-bold">+ Новый пользователь</button>
           </div>
           <div className="space-y-3">
-            {modules.users.map((user) => (
+            {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
+            {modules.users.map((user: any) => (
               <div key={user.id} className="p-4 bg-white/5 rounded-xl flex items-center gap-4">
                 <div className="w-10 h-10 rounded-full bg-gradient-to-br from-red-500 to-orange-500 flex items-center justify-center text-white font-bold">
                   {user.name.slice(0, 2).toUpperCase()}
@@ -1633,7 +1659,8 @@ function CabinetContent({ type, tab, modules, colors }: { type: string; tab: str
             Управление ролями
           </h3>
           <div className="space-y-3">
-            {modules.roles.map((role) => (
+            {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
+            {modules.roles.map((role: any) => (
               <div key={role.id} className="p-4 bg-white/5 rounded-xl">
                 <div className="flex justify-between items-start mb-2">
                   <div>
@@ -1664,7 +1691,8 @@ function CabinetContent({ type, tab, modules, colors }: { type: string; tab: str
             Журнал аудита
           </h3>
           <div className="space-y-2">
-            {modules.audit.map((log) => (
+            {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
+            {modules.audit.map((log: any) => (
               <div key={log.id} className="p-3 bg-white/5 rounded-xl flex items-center gap-4 text-sm">
                 <div className={cn("w-2 h-2 rounded-full shrink-0",
                   log.status === "success" ? "bg-green-500" :
@@ -1688,7 +1716,8 @@ function CabinetContent({ type, tab, modules, colors }: { type: string; tab: str
             Системные настройки
           </h3>
           <div className="space-y-3">
-            {modules.config.map((setting, i: number) => (
+            {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
+            {modules.config.map((setting: any, i: number) => (
               <div key={i} className="p-4 bg-white/5 rounded-xl flex items-center gap-4">
                 <div className="flex-1">
                   <div className="font-mono text-sm text-slate-300">{setting.key}</div>

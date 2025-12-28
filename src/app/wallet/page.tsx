@@ -70,7 +70,7 @@ const demoTransactions: Transaction[] = [
 ];
 
 export default function WalletPage() {
-  const { user, isAuthenticated, loading: authLoading } = useAuth();
+  const { user, isAuthenticated, isLoading: authLoading } = useAuth();
   const { getTransactions, transfer, loading: txLoading } = useTransactions();
   
   const [activeTab, setActiveTab] = useState("overview");

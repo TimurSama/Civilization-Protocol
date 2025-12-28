@@ -164,7 +164,7 @@ function showBrowserNotification(notification: Notification) {
     icon: '/icons/icon-192x192.png',
     badge: '/icons/badge-72x72.png',
     tag: notification.id,
-    renotify: true
+    // renotify not supported in all browsers
   });
 }
 

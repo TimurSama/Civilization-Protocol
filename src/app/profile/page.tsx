@@ -27,7 +27,7 @@ const achievements = [
 export default function ProfilePage() {
   const { t, isRTL } = useLanguage();
   const { address, isConnected } = useWallet();
-  const { user, isAuthenticated, loading: authLoading, logout } = useAuth();
+  const { user, isAuthenticated, isLoading: authLoading, logout } = useAuth();
   
   const [activeTab, setActiveTab] = useState("activity");
   const [copied, setCopied] = useState(false);

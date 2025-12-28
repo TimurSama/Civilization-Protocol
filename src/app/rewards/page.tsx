@@ -62,7 +62,7 @@ const demoLeaderboard = [
 ];
 
 export default function RewardsPage() {
-  const { user, isAuthenticated, loading: authLoading } = useAuth();
+  const { user, isAuthenticated, isLoading: authLoading } = useAuth();
   const { getRewards, claimReward, loading: apiLoading } = useRewards();
   
   const [activeTab, setActiveTab] = useState("mining");
@@ -300,7 +300,7 @@ export default function RewardsPage() {
                         ) : (
                           <button
                             onClick={() => handleClaimReward(task.id)}
-                            disabled={claiming === task.id || (task.max && (task.progress || 0) < task.max)}
+                            disabled={claiming === task.id || (task.max !== undefined && task.max > 0 && (task.progress || 0) < task.max)}
                             className="text-xs text-cyan-glow hover:underline disabled:opacity-50 disabled:cursor-not-allowed"
                           >
                             {claiming === task.id ? <Loader2 size={12} className="animate-spin" /> : 'Забрать'}
@@ -545,12 +545,12 @@ export default function RewardsPage() {
                       entry.rank === 3 ? "bg-orange-500/20 text-orange-400" :
                       "bg-white/5 text-slate-500"
                     )}>
-                      {entry.badge || `#${entry.rank}`}
+                      {(entry as { badge?: string; rank: number }).badge || `#${entry.rank}`}
                     </div>
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center gap-2">
                         <span className="font-bold truncate">{entry.name}</span>
-                        {entry.isUser && (
+                        {(entry as { isUser?: boolean }).isUser && (
                           <span className="px-2 py-0.5 bg-cyan-500/20 text-cyan-400 text-xs rounded-full">Вы</span>
                         )}
                       </div>

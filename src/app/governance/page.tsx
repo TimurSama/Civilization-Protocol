@@ -692,7 +692,7 @@ export default function GovernancePage() {
                     ].map(tab => (
                         <button
                             key={tab.id}
-                            onClick={() => setActiveTab(tab.id)}
+                            onClick={() => setActiveTab(tab.id as "active" | "all" | "history" | "pending")}
                             className={cn(
                                 "px-4 py-2 rounded-lg text-sm font-bold transition-all flex items-center gap-2",
                                 activeTab === tab.id
@@ -730,7 +730,7 @@ export default function GovernancePage() {
                     </select>
                     <select
                         value={sortBy}
-                        onChange={(e) => setSortBy(e.target.value)}
+                        onChange={(e) => setSortBy(e.target.value as "newest" | "votes" | "ending")}
                         className="px-3 py-2 bg-white/5 border border-white/10 rounded-lg text-sm font-bold focus:outline-none focus:border-cyan-500/50"
                     >
                         <option value="newest">{tr.newest}</option>
@@ -930,7 +930,7 @@ export default function GovernancePage() {
                                 ].map(option => (
                                     <button
                                         key={option.id}
-                                        onClick={() => setVoteChoice(option.id)}
+                                        onClick={() => setVoteChoice(option.id as "for" | "against" | "abstain")}
                                         className={cn(
                                             "w-full p-4 rounded-xl border-2 transition-all flex items-center gap-3",
                                             voteChoice === option.id

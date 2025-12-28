@@ -350,7 +350,8 @@ export default function EcosystemDomainPage() {
             {t.plannedFeatures}
           </h3>
           <div className="space-y-4">
-            {config.features.map((feature, i: number) => (
+            {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
+            {config.features.map((feature: any, i: number) => (
               <motion.div
                 key={feature.key}
                 initial={{ opacity: 0, x: -20 }}
@@ -381,7 +382,8 @@ export default function EcosystemDomainPage() {
             {t.expectedMetrics}
           </h3>
           <div className="space-y-4">
-            {config.stats.map((stat, i: number) => (
+            {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
+            {config.stats.map((stat: any, i: number) => (
               <motion.div
                 key={i}
                 initial={{ opacity: 0, x: 20 }}

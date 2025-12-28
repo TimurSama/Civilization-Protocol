@@ -41,7 +41,8 @@ export async function POST(request: NextRequest) {
     const token = await createSession(user.id, userAgent);
 
     // Возвращаем пользователя без пароля
-    const { password, ...userWithoutPassword } = user;
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const { password: _password, ...userWithoutPassword } = user;
 
     return NextResponse.json({
       success: true,

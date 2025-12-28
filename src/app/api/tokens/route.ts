@@ -333,7 +333,7 @@ export async function POST(request: NextRequest) {
             stakeId: stake.id,
             amount,
             pool: pool.name,
-            unlockDate,
+            unlockDate: endDate.toISOString(),
             estimatedReward: Math.floor(amount * pool.apy / 100 * pool.lockDays / 365),
           }
         });
