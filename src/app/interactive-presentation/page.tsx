@@ -59,7 +59,7 @@ interface InfoPoint {
   shortDesc: string;
   fullDesc: string;
   stats?: { label: string; value: string }[];
-  icon: any;
+  icon: React.ComponentType<{ size?: number; className?: string }>;
   color: string;
 }
 

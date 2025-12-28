@@ -317,7 +317,8 @@ export default function PresentationPage() {
     );
 }
 
-function ScreenComponent({ screen, index, total, onInView }: any) {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+function ScreenComponent({ screen, index, total, onInView }: { screen: any; index: number; total: number; onInView: (index: number) => void }) {
   const ref = useRef<HTMLDivElement>(null);
     const { scrollYProgress } = useScroll({
         target: ref,
@@ -391,7 +392,8 @@ function ScreenComponent({ screen, index, total, onInView }: any) {
   );
 }
 
-function ScreenContent({ screen, index }: any) {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+function ScreenContent({ screen, index }: { screen: any; index: number }) {
   switch (index) {
     case 0: // Welcome
       return <WelcomeScreen screen={screen} />;
@@ -429,12 +431,13 @@ function ScreenContent({ screen, index }: any) {
 }
 
 // Screen 1: Welcome
-function WelcomeScreen({ screen }: any) {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+function WelcomeScreen({ screen }: { screen: any }) {
   return (
     <div className="grid lg:grid-cols-2 gap-12 items-center">
                 <div className="space-y-8">
         <div className="grid grid-cols-3 gap-4">
-          {screen.stats.map((stat: any, i: number) => (
+          {screen.stats.map((stat, i: number) => (
             <motion.div
               key={i}
               initial={{ opacity: 0, y: 30 }}
@@ -503,10 +506,11 @@ function WelcomeScreen({ screen }: any) {
 }
 
 // Screen 2: Problems
-function ProblemsScreen({ screen }: any) {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+function ProblemsScreen({ screen }: { screen: any }) {
   return (
     <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-      {screen.problems.map((problem: any, i: number) => (
+      {screen.problems.map((problem, i: number) => (
         <motion.div
           key={i}
           initial={{ opacity: 0, y: 50 }}
@@ -525,7 +529,8 @@ function ProblemsScreen({ screen }: any) {
 }
 
 // Screen 3: Transition
-function TransitionScreen({ screen }: any) {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+function TransitionScreen({ screen }: { screen: any }) {
   return (
     <div className="flex justify-center">
       <div className="relative">
@@ -553,11 +558,12 @@ function TransitionScreen({ screen }: any) {
 }
 
 // Screen 4: What is VODeco
-function VODecoScreen({ screen }: any) {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+function VODecoScreen({ screen }: { screen: any }) {
   return (
     <div className="space-y-12">
       <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-        {screen.features.map((feature: any, i: number) => (
+        {screen.features.map((feature, i: number) => (
           <motion.div
             key={i}
             initial={{ opacity: 0, y: 30 }}
@@ -591,12 +597,13 @@ function VODecoScreen({ screen }: any) {
 }
 
 // Screen 5: Architecture
-function ArchitectureScreen({ screen }: any) {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+function ArchitectureScreen({ screen }: { screen: any }) {
   const [hoveredLayer, setHoveredLayer] = useState<number | null>(null);
   
   return (
     <div className="grid lg:grid-cols-3 gap-4">
-      {screen.architecture.map((layer: any, i: number) => (
+      {screen.architecture.map((layer, i: number) => (
         <motion.div
           key={i}
           initial={{ opacity: 0, scale: 0.9 }}
@@ -623,10 +630,11 @@ function ArchitectureScreen({ screen }: any) {
 }
 
 // Screen 6: Data Flow
-function DataFlowScreen({ screen }: any) {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+function DataFlowScreen({ screen }: { screen: any }) {
   return (
     <div className="flex flex-wrap justify-center gap-4 items-center">
-      {screen.dataFlow.map((step: any, i: number) => (
+      {screen.dataFlow.map((step, i: number) => (
         <motion.div
           key={i}
           initial={{ opacity: 0, x: -30 }}
@@ -651,10 +659,11 @@ function DataFlowScreen({ screen }: any) {
 }
 
 // Screen 7: Digital Twins
-function TwinsScreen({ screen }: any) {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+function TwinsScreen({ screen }: { screen: any }) {
   return (
     <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-      {screen.twinTypes.map((twin: any, i: number) => (
+      {screen.twinTypes.map((twin, i: number) => (
         <motion.div
           key={i}
           initial={{ opacity: 0, rotateY: -15 }}
@@ -675,10 +684,11 @@ function TwinsScreen({ screen }: any) {
 }
 
 // Screen 8: Nexus
-function NexusScreen({ screen }: any) {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+function NexusScreen({ screen }: { screen: any }) {
   return (
     <div className="grid md:grid-cols-2 gap-6">
-      {screen.nexusModules.map((module: any, i: number) => (
+      {screen.nexusModules.map((module, i: number) => (
         <motion.div
           key={i}
           initial={{ opacity: 0, y: 30 }}
@@ -701,12 +711,13 @@ function NexusScreen({ screen }: any) {
 }
 
 // Screen 9: Tokenomics
-function TokenomicsScreen({ screen }: any) {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+function TokenomicsScreen({ screen }: { screen: any }) {
   return (
     <div className="space-y-12">
       {/* Phases */}
       <div className="grid md:grid-cols-4 gap-4">
-        {screen.phases.map((phase: any, i: number) => (
+        {screen.phases.map((phase, i: number) => (
           <motion.div
             key={i}
             initial={{ opacity: 0, y: 30 }}
@@ -737,7 +748,7 @@ function TokenomicsScreen({ screen }: any) {
       >
         <h4 className="font-bold mb-6 text-center">Распределение токенов (1,000,000,000 VOD)</h4>
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-          {screen.tokenDistribution.map((item: any, i: number) => (
+          {screen.tokenDistribution.map((item, i: number) => (
             <div key={i} className="text-center">
               <div className="text-2xl font-black text-cyan-glow">{item.percent}%</div>
               <div className="text-sm text-slate-400">{item.name}</div>
@@ -750,11 +761,12 @@ function TokenomicsScreen({ screen }: any) {
 }
 
 // Screen 10: DAO
-function DAOScreen({ screen }: any) {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+function DAOScreen({ screen }: { screen: any }) {
   return (
     <div className="space-y-8">
       <div className="grid md:grid-cols-3 lg:grid-cols-6 gap-4">
-        {screen.daoFeatures.map((feature: any, i: number) => (
+        {screen.daoFeatures.map((feature, i: number) => (
           <motion.div
             key={i}
             initial={{ opacity: 0, scale: 0.9 }}
@@ -777,7 +789,7 @@ function DAOScreen({ screen }: any) {
       >
         <h4 className="font-bold mb-4 text-center">Участники DAO</h4>
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-          {screen.participants.map((p: any, i: number) => (
+          {screen.participants.map((p, i: number) => (
             <div key={i} className="text-center p-4 bg-white/5 rounded-xl">
               <div className="font-bold">{p.role}</div>
               <div className="text-xs text-cyan-glow">{p.weight}</div>
@@ -791,10 +803,11 @@ function DAOScreen({ screen }: any) {
 }
 
 // Screen 11: Cabinets
-function CabinetsScreen({ screen }: any) {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+function CabinetsScreen({ screen }: { screen: any }) {
   return (
     <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4">
-      {screen.cabinets.slice(0, 4).map((cabinet: any, i: number) => (
+      {screen.cabinets.slice(0, 4).map((cabinet, i: number) => (
         <motion.div
           key={i}
           initial={{ opacity: 0, y: 30 }}
@@ -817,7 +830,7 @@ function CabinetsScreen({ screen }: any) {
         </motion.div>
       ))}
       <div className="lg:col-span-4 grid md:grid-cols-3 gap-4">
-        {screen.cabinets.slice(4).map((cabinet: any, i: number) => (
+        {screen.cabinets.slice(4).map((cabinet, i: number) => (
           <motion.div
             key={i}
             initial={{ opacity: 0, y: 30 }}
@@ -845,10 +858,11 @@ function CabinetsScreen({ screen }: any) {
 }
 
 // Screen 12: TokenHub Projects
-function TokenHubScreen({ screen }: any) {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+function TokenHubScreen({ screen }: { screen: any }) {
   return (
     <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
-      {screen.projects.map((project: any, i: number) => (
+      {screen.projects.map((project, i: number) => (
                     <motion.div
           key={i}
           initial={{ opacity: 0, x: i % 2 === 0 ? -30 : 30 }}
@@ -877,11 +891,12 @@ function TokenHubScreen({ screen }: any) {
 }
 
 // Screen 13: International
-function InternationalScreen({ screen }: any) {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+function InternationalScreen({ screen }: { screen: any }) {
   return (
     <div className="space-y-8">
       <div className="grid md:grid-cols-5 gap-4">
-        {screen.sdgAlignment.map((sdg: any, i: number) => (
+        {screen.sdgAlignment.map((sdg, i: number) => (
           <motion.div
             key={i}
             initial={{ opacity: 0, y: 30 }}
@@ -913,13 +928,14 @@ function InternationalScreen({ screen }: any) {
 }
 
 // Screen 14: Roadmap
-function RoadmapScreen({ screen }: any) {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+function RoadmapScreen({ screen }: { screen: any }) {
   return (
     <div className="relative">
       <div className="absolute left-1/2 top-0 bottom-0 w-px bg-gradient-to-b from-cyan-glow/50 via-cyan-glow to-cyan-glow/50 hidden lg:block" />
       
       <div className="space-y-8">
-        {screen.roadmap.map((item: any, i: number) => (
+        {screen.roadmap.map((item, i: number) => (
                         <motion.div
                             key={i}
             initial={{ opacity: 0, x: i % 2 === 0 ? -50 : 50 }}
@@ -961,11 +977,12 @@ function RoadmapScreen({ screen }: any) {
 }
 
 // Screen 15: CTA
-function CTAScreen({ screen }: any) {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+function CTAScreen({ screen }: { screen: any }) {
   return (
     <div className="space-y-12">
       <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4">
-        {screen.investmentTiers.map((tier: any, i: number) => (
+        {screen.investmentTiers.map((tier, i: number) => (
           <motion.div
             key={i}
             initial={{ opacity: 0, y: 30 }}

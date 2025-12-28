@@ -8,8 +8,7 @@ import {
   Droplets, Zap, Activity, Globe, MapPin, BarChart3, FileText, Users,
   AlertTriangle, CheckCircle2, Download, Search, Plus,
   Wallet, Target, Award, MessageSquare, Bell, Cpu, Database,
-  TrendingDown, Eye, Share2, Lock, Unlock, RefreshCw, Send, ArrowUpRight,
-  ArrowDownRight, PieChart, LayoutDashboard, Wrench, Radio, Gauge, ThermometerSun,
+  Eye, Lock, Wrench, Gauge, ThermometerSun,
   Waves, Leaf, BookOpen, GraduationCap, Microscope, FlaskConical, BarChart2,
   Server, HardDrive, Network, Shield, Key, History, Cog, Play, Pause, RotateCcw,
   AlertCircle, Info, ChevronRight, ExternalLink, Copy, Trash2, Edit, Save, LogIn
