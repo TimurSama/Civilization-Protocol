@@ -57,8 +57,13 @@ export async function POST(request: NextRequest) {
     );
 
     // Send email
+    const emailAddress = user.email || email;
+    if (!emailAddress) {
+      return NextResponse.json({ error: 'Email address is required' }, { status: 400 });
+    }
+
     const result = await sendEmail(
-      user.email,
+      emailAddress,
       language === 'ru' ? EMAIL_TEMPLATES.verification.subject : EMAIL_TEMPLATES.verification.subjectEn,
       html
     );
