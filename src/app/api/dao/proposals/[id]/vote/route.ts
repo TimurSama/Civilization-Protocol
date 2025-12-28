@@ -85,7 +85,11 @@ export async function POST(
     });
     
     // Обновляем счётчики
-    const updateData: any = {};
+    const updateData: {
+      votesFor?: { increment: number };
+      votesAgainst?: { increment: number };
+      votesAbstain?: { increment: number };
+    } = {};
     if (vote === 'for') updateData.votesFor = { increment: Math.round(weight) };
     if (vote === 'against') updateData.votesAgainst = { increment: Math.round(weight) };
     if (vote === 'abstain') updateData.votesAbstain = { increment: Math.round(weight) };

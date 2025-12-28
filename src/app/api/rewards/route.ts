@@ -17,7 +17,7 @@ export async function GET(request: NextRequest) {
     const { limit, skip } = getPagination(searchParams);
     const status = searchParams.get('status');
     
-    const where: any = { userId };
+    const where: { userId: string; status?: string } = { userId };
     if (status) where.status = status;
     
     const [rewards, total, pendingCount, totalEarned] = await Promise.all([

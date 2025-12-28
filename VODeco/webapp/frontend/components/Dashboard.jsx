@@ -10,7 +10,7 @@ const Dashboard = () => {
         pool_liquidity: 0
     });
     const [proposals, setProposals] = useState([]);
-    const [waterData, setWaterData] = useState({
+    const [waterData] = useState({
         sources: [],
         total_volume: 0
     });

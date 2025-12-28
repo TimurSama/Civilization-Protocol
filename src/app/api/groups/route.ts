@@ -11,7 +11,11 @@ export async function GET(request: NextRequest) {
     const type = searchParams.get('type');
     const search = searchParams.get('search');
     
-    const where: any = {};
+    const where: {
+      category?: string;
+      type?: string;
+      OR?: Array<{ name?: { contains: string }; description?: { contains: string } }>;
+    } = {};
     if (category) where.category = category;
     if (type) where.type = type;
     if (search) {

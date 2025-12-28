@@ -13,7 +13,12 @@ export async function GET(request: NextRequest) {
     const tag = searchParams.get('tag');
     
     // Фильтры
-    const where: any = { status: 'active' };
+    const where: { 
+      status: string; 
+      type?: string; 
+      authorId?: string; 
+      tags?: { contains: string } 
+    } = { status: 'active' };
     if (type) where.type = type;
     if (authorId) where.authorId = authorId;
     if (tag) where.tags = { contains: tag };

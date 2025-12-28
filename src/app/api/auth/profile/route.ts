@@ -81,7 +81,17 @@ export async function PUT(request: NextRequest) {
     const { name, bio, location, website, avatar, language, notifications, privacy, role } = body;
 
     // Обновляем только разрешённые поля
-    const updateData: any = {};
+    const updateData: {
+      name?: string;
+      bio?: string;
+      location?: string;
+      website?: string;
+      avatar?: string;
+      language?: string;
+      notifications?: boolean;
+      privacy?: string;
+      role?: string;
+    } = {};
     if (name !== undefined) updateData.name = name;
     if (bio !== undefined) updateData.bio = bio;
     if (location !== undefined) updateData.location = location;

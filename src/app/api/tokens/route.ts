@@ -178,15 +178,15 @@ export async function GET(request: NextRequest) {
     }
     
     const stakedAmount = user.stakes
-      .filter((s: any) => s.status === 'ACTIVE')
-      .reduce((sum: number, s: any) => sum + s.amount, 0);
+      .filter((s) => s.status === 'active')
+      .reduce((sum: number, s) => sum + s.amount, 0);
     
     const pendingRewards = user.stakes
-      .reduce((sum: number, s: any) => sum + (s.pendingRewards || 0), 0);
+      .reduce((sum: number, s) => sum + (s.earnedRewards || 0), 0);
     
     const totalEarned = user.transactions
-      .filter((t: any) => t.type === 'REWARD')
-      .reduce((sum: number, t: any) => sum + t.amount, 0);
+      .filter((t) => t.type === 'reward')
+      .reduce((sum: number, t) => sum + t.amount, 0);
     
     // Расчёт уровня и XP
     const xp = user.xp || 0;

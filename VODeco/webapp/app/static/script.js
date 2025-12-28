@@ -50,7 +50,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 userStatus.textContent = `Ошибка: ${data.error}`;
                 userStatus.style.color = 'red';
             }
-        } catch (error) {
+        } catch {
             userStatus.textContent = 'Ошибка при регистрации';
             userStatus.style.color = 'red';
         }
@@ -94,7 +94,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 userStatus.textContent = `Ошибка: ${data.error}`;
                 userStatus.style.color = 'red';
             }
-        } catch (error) {
+        } catch {
             userStatus.textContent = 'Ошибка при стейкинге токенов';
             userStatus.style.color = 'red';
         }
@@ -123,7 +123,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 userStatus.textContent = `Ошибка: ${data.error}`;
                 userStatus.style.color = 'red';
             }
-        } catch (error) {
+        } catch {
             userStatus.textContent = 'Ошибка при голосовании';
             userStatus.style.color = 'red';
         }
@@ -171,7 +171,7 @@ document.addEventListener('DOMContentLoaded', function() {
             a.click();
             window.URL.revokeObjectURL(url);
             document.body.removeChild(a);
-        } catch (error) {
+        } catch {
             alert('Ошибка при экспорте данных в JSON');
         }
     });
@@ -189,7 +189,7 @@ document.addEventListener('DOMContentLoaded', function() {
             a.click();
             window.URL.revokeObjectURL(url);
             document.body.removeChild(a);
-        } catch (error) {
+        } catch {
             alert('Ошибка при экспорте данных в CSV');
         }
     });
