@@ -152,11 +152,7 @@ async function handleTelegramUser(
   }
 
   // Generate JWT token
-  const token = generateToken({
-    userId: user.id,
-    email: user.email,
-    role: user.role
-  });
+  const token = generateToken(user.id);
 
   return NextResponse.json({
     success: true,
