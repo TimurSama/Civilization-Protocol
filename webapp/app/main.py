@@ -39,18 +39,27 @@ def get_static_file_path(filename: str):
     # Альтернативные пути для разных окружений
     current_file = os.path.abspath(__file__)  # webapp/app/main.py
     current_dir = os.path.dirname(current_file)  # webapp/app/
+    cwd = os.getcwd()
     
     alt_paths = [
         os.path.join(current_dir, "static", filename),  # webapp/app/static/
-        os.path.join(os.getcwd(), "webapp", "app", "static", filename),
+        os.path.join(cwd, "webapp", "app", "static", filename),
+        os.path.join(cwd, "static", filename),
         os.path.join(os.path.dirname(current_dir), "static", filename),
+        # Для Vercel
+        os.path.join("/var/task", "webapp", "app", "static", filename),
+        os.path.join("/var/task", "static", filename),
+        os.path.join("/tmp", "webapp", "app", "static", filename),
     ]
     
     # Попробуем найти файл
     for alt_path in alt_paths:
-        abs_path = os.path.abspath(alt_path)
-        if os.path.exists(abs_path):
-            return abs_path
+        try:
+            abs_path = os.path.abspath(alt_path)
+            if os.path.exists(abs_path):
+                return abs_path
+        except Exception:
+            continue
     
     return file_path
 
@@ -84,6 +93,27 @@ async def roadmap():
         return HTMLResponse(content=read_html_file("roadmap.html"))
     except HTTPException:
         return FileResponse(get_static_file_path("roadmap.html"))
+
+@app.get("/whitepaper", response_class=HTMLResponse)
+async def whitepaper():
+    try:
+        return HTMLResponse(content=read_html_file("whitepaper.html"))
+    except HTTPException:
+        return FileResponse(get_static_file_path("whitepaper.html"))
+
+@app.get("/wallet", response_class=HTMLResponse)
+async def wallet():
+    try:
+        return HTMLResponse(content=read_html_file("wallet.html"))
+    except HTTPException:
+        return FileResponse(get_static_file_path("wallet.html"))
+
+@app.get("/vodcheck", response_class=HTMLResponse)
+async def vodcheck():
+    try:
+        return HTMLResponse(content=read_html_file("vodcheck.html"))
+    except HTTPException:
+        return FileResponse(get_static_file_path("vodcheck.html"))
 
 if __name__ == "__main__":
     import uvicorn

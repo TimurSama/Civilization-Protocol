@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>White Paper - VOD.eco</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="/static/styles.css" rel="stylesheet">
+    <style>
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        .whitepaper-container {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 2rem;
+            margin: 2rem 0;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        }
+        .nav-buttons {
+            margin-bottom: 2rem;
+        }
+        .section {
+            margin-bottom: 3rem;
+        }
+        code {
+            background: #f4f4f4;
+            padding: 0.2rem 0.4rem;
+            border-radius: 4px;
+            font-size: 0.9em;
+        }
+        pre {
+            background: #2d2d2d;
+            color: #f8f8f2;
+            padding: 1rem;
+            border-radius: 8px;
+            overflow-x: auto;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="whitepaper-container">
+            <div class="nav-buttons">
+                <a href="/" class="btn btn-outline-primary me-2">
+                    <i class="fas fa-home"></i> Главная
+                </a>
+                <a href="/tokenomics" class="btn btn-outline-success me-2">
+                    <i class="fas fa-coins"></i> Токеномика
+                </a>
+                <a href="/roadmap" class="btn btn-outline-warning me-2">
+                    <i class="fas fa-road"></i> Дорожная карта
+                </a>
+                <a href="/wallet" class="btn btn-outline-info me-2">
+                    <i class="fas fa-wallet"></i> Кошелек
+                </a>
+            </div>
+
+            <h1 class="text-center mb-4">VOD.eco: White Paper</h1>
+            <p class="text-center text-muted mb-5">Формулы и Описание Проекта</p>
+
+            <div class="section">
+                <h2><i class="fas fa-coins"></i> Токеномика</h2>
+                
+                <h3>VODeco (Utility Token)</h3>
+                <p>VODeco - это utility токен экосистемы, цена которого определяется спросом и предложением на свободном рынке.</p>
+                <pre><code># Цена VODeco
+def vod_eco_price(demand: float, supply: float) -> float:
+    return demand / supply if supply > 0 else 0
+
+# Эмиссия VODeco
+def mint_vod_eco(amount: float, current_supply: float) -> float:
+    return current_supply + amount
+
+# Сжигание VODeco
+def burn_vod_eco(amount: float, current_supply: float) -> float:
+    return max(0, current_supply - amount)</code></pre>
+
+                <h3>VOD (Stable Token)</h3>
+                <p>VOD - это стейблкоин, обеспеченный водой. 1 VOD = 1 м³ воды.</p>
+                <pre><code># Выпуск VOD
+def mint_vod(water_volume: float) -> float:
+    return water_volume  # 1 VOD = 1 м³
+
+# Погашение VOD
+def redeem_vod(amount: float, water_reserves: float) -> float:
+    return min(amount, water_reserves)</code></pre>
+
+                <h3>Обмен между токенами</h3>
+                <pre><code># Курс обмена
+def exchange_rate(vod_eco_price: float, dao_coefficient: float, 
+                 pool_liquidity: float) -> float:
+    return vod_eco_price * dao_coefficient * pool_liquidity</code></pre>
+            </div>
+
+            <div class="section">
+                <h2><i class="fas fa-tint"></i> Водные Активы</h2>
+                
+                <h3>Расчет IRR</h3>
+                <p>Внутренняя норма доходности (IRR) рассчитывается для оценки эффективности водных объектов.</p>
+                <pre><code>def calculate_irr(cash_flows: List[float]) -> float:
+    """
+    Расчет внутренней нормы доходности
+    cash_flows: список денежных потоков, где первый элемент - начальные инвестиции
+    """
+    def npv(rate):
+        return sum(cf / (1 + rate) ** i for i, cf in enumerate(cash_flows))
+    
+    # Используем метод Ньютона для нахождения IRR
+    rate = 0.1
+    for _ in range(100):
+        rate = rate - npv(rate) / npv(rate)
+        if abs(npv(rate)) < 0.0001:
+            return rate
+    return rate</code></pre>
+
+                <h3>Качество воды</h3>
+                <pre><code>def water_quality_score(parameters: Dict[str, float]) -> float:
+    """
+    Расчет индекса качества воды
+    parameters: словарь с параметрами качества (pH, мутность и т.д.)
+    """
+    weights = {
+        'ph': 0.2,
+        'turbidity': 0.15,
+        'tds': 0.15,
+        'chlorine': 0.1,
+        'bacteria': 0.2,
+        'metals': 0.2
+    }
+    
+    return sum(score * weights[param] 
+              for param, score in parameters.items())</code></pre>
+            </div>
+
+            <div class="section">
+                <h2><i class="fas fa-vote-yea"></i> DAO Механики</h2>
+                
+                <h3>Сила голоса</h3>
+                <pre><code>def voting_power(tokens: float, role: DAORole) -> float:
+    role_multipliers = {
+        DAORole.MEMBER: 1.0,
+        DAORole.DELEGATE: 1.5,
+        DAORole.GOVERNOR: 2.0
+    }
+    return tokens * role_multipliers[role]</code></pre>
+
+                <h3>Распределение вознаграждений</h3>
+                <pre><code>def calculate_rewards(total_reward: float, 
+                    voting_powers: Dict[str, float]) -> Dict[str, float]:
+    total_power = sum(voting_powers.values())
+    return {
+        address: (power / total_power) * total_reward
+        for address, power in voting_powers.items()
+    }</code></pre>
+            </div>
+
+            <div class="section">
+                <h2><i class="fas fa-image"></i> NFT Механика</h2>
+                
+                <h3>Расчет доли</h3>
+                <pre><code>def calculate_share(nft_value: float, total_value: float) -> float:
+    return nft_value / total_value if total_value > 0 else 0</code></pre>
+
+                <h3>Распределение доходов</h3>
+                <pre><code>def distribute_income(total_income: float, 
+                     shares: Dict[str, float]) -> Dict[str, float]:
+    return {
+        nft_id: share * total_income
+        for nft_id, share in shares.items()
+    }</code></pre>
+            </div>
+
+            <div class="section">
+                <h2><i class="fas fa-bullseye"></i> Pitch Deck</h2>
+                
+                <h3>Проблема</h3>
+                <ul>
+                    <li>Неэффективное управление водными ресурсами</li>
+                    <li>Отсутствие прозрачности в водной отрасли</li>
+                    <li>Сложности с привлечением инвестиций</li>
+                    <li>Недостаток инструментов для мониторинга</li>
+                </ul>
+
+                <h3>Решение</h3>
+                <ul>
+                    <li>Токенизация водных активов</li>
+                    <li>Прозрачное управление через DAO</li>
+                    <li>Стимулирование инвестиций через токены</li>
+                    <li>Реальное обеспечение стейблкоина</li>
+                </ul>
+
+                <h3>Преимущества</h3>
+                <div class="row">
+                    <div class="col-md-4">
+                        <h4>Экономические</h4>
+                        <ul>
+                            <li>Ликвидность водных активов</li>
+                            <li>Привлечение инвестиций</li>
+                            <li>Снижение транзакционных издержек</li>
+                        </ul>
+                    </div>
+                    <div class="col-md-4">
+                        <h4>Экологические</h4>
+                        <ul>
+                            <li>Мониторинг качества воды</li>
+                            <li>Стимулирование сохранения ресурсов</li>
+                            <li>Прозрачность использования</li>
+                        </ul>
+                    </div>
+                    <div class="col-md-4">
+                        <h4>Социальные</h4>
+                        <ul>
+                            <li>Доступ к чистой воде</li>
+                            <li>Участие сообщества в управлении</li>
+                            <li>Образовательные программы</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <h3>Рынок</h3>
+                <ul>
+                    <li>Глобальный рынок воды: <strong>$600B+</strong></li>
+                    <li>Рост спроса на <strong>40% к 2030</strong></li>
+                    <li>Необходимость инвестиций: <strong>$1T+</strong></li>
+                </ul>
+
+                <h3>Токеномика</h3>
+                <ul>
+                    <li>VODeco: <strong>1B токенов</strong></li>
+                    <li>VOD: обеспечение <strong>1:1</strong></li>
+                    <li>Распределение:
+                        <ul>
+                            <li>Команда: 15%</li>
+                            <li>Инвесторы: 25%</li>
+                            <li>Экосистема: 40%</li>
+                            <li>Резерв: 20%</li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
+
