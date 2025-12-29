@@ -28,6 +28,14 @@ app.mount("/static", StaticFiles(directory=static_dir), name="static")
 async def root():
     return FileResponse(os.path.join(static_dir, "index.html"))
 
+@app.get("/tokenomics")
+async def tokenomics():
+    return FileResponse(os.path.join(static_dir, "tokenomics.html"))
+
+@app.get("/roadmap")
+async def roadmap():
+    return FileResponse(os.path.join(static_dir, "roadmap.html"))
+
 if __name__ == "__main__":
     import uvicorn
     uvicorn.run(app, host="0.0.0.0", port=8000) 

@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Дорожная карта VOD.eco</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    <link href="/static/styles.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #00a8e8;
+            --secondary-color: #0077b6;
+            --success-color: #06d6a0;
+            --warning-color: #ffd166;
+            --danger-color: #ef476f;
+        }
+
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        .roadmap-container {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 2rem;
+            margin: 2rem 0;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        }
+
+        .timeline {
+            position: relative;
+            padding: 2rem 0;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 50%;
+            top: 0;
+            bottom: 0;
+            width: 4px;
+            background: var(--primary-color);
+            transform: translateX(-50%);
+        }
+
+        .timeline-item {
+            position: relative;
+            margin: 3rem 0;
+            display: flex;
+            align-items: center;
+        }
+
+        .timeline-item:nth-child(odd) {
+            flex-direction: row;
+        }
+
+        .timeline-item:nth-child(even) {
+            flex-direction: row-reverse;
+        }
+
+        .timeline-content {
+            width: 45%;
+            background: white;
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .timeline-content:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2);
+        }
+
+        .timeline-content.completed {
+            border-left: 5px solid var(--success-color);
+        }
+
+        .timeline-content.in-progress {
+            border-left: 5px solid var(--warning-color);
+        }
+
+        .timeline-content.planned {
+            border-left: 5px solid var(--primary-color);
+        }
+
+        .timeline-dot {
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: var(--primary-color);
+            border: 4px solid white;
+            box-shadow: 0 0 0 4px var(--primary-color);
+            z-index: 1;
+        }
+
+        .timeline-dot.completed {
+            background: var(--success-color);
+            box-shadow: 0 0 0 4px var(--success-color);
+        }
+
+        .timeline-dot.in-progress {
+            background: var(--warning-color);
+            box-shadow: 0 0 0 4px var(--warning-color);
+        }
+
+        .stage-badge {
+            display: inline-block;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: bold;
+            margin-bottom: 1rem;
+        }
+
+        .badge-completed {
+            background: var(--success-color);
+            color: white;
+        }
+
+        .badge-in-progress {
+            background: var(--warning-color);
+            color: #333;
+        }
+
+        .badge-planned {
+            background: var(--primary-color);
+            color: white;
+        }
+
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin: 1rem 0;
+        }
+
+        .metric-card {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            padding: 1rem;
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        .metric-value {
+            font-size: 2rem;
+            font-weight: bold;
+        }
+
+        .metric-label {
+            font-size: 0.9rem;
+            opacity: 0.9;
+        }
+
+        .cost-breakdown {
+            background: #f8f9fa;
+            padding: 1rem;
+            border-radius: 10px;
+            margin: 1rem 0;
+        }
+
+        .progress-bar-animated {
+            animation: progress-animation 2s ease-in-out;
+        }
+
+        @keyframes progress-animation {
+            from { width: 0%; }
+        }
+
+        .calculation-section {
+            background: #f8f9fa;
+            padding: 1.5rem;
+            border-radius: 10px;
+            margin: 1rem 0;
+        }
+
+        .formula-display {
+            background: white;
+            padding: 1rem;
+            border-left: 4px solid var(--primary-color);
+            margin: 0.5rem 0;
+            font-family: 'Courier New', monospace;
+        }
+
+        @media (max-width: 768px) {
+            .timeline::before {
+                left: 20px;
+            }
+
+            .timeline-item {
+                flex-direction: column !important;
+            }
+
+            .timeline-content {
+                width: 100%;
+                margin-left: 3rem;
+            }
+
+            .timeline-dot {
+                left: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="roadmap-container">
+            <div class="text-center mb-4">
+                <h1 class="display-4 mb-3">
+                    <i class="fas fa-road"></i> Дорожная карта VOD.eco
+                </h1>
+                <p class="lead">Этапы разработки с расчетами объемов работ и стоимости</p>
+            </div>
+
+            <!-- Общая статистика -->
+            <div class="metrics-grid mb-4">
+                <div class="metric-card">
+                    <div class="metric-value" id="totalCost">$0</div>
+                    <div class="metric-label">Общая стоимость</div>
+                </div>
+                <div class="metric-card" style="background: linear-gradient(135deg, #06d6a0, #048a64);">
+                    <div class="metric-value" id="completedCost">$0</div>
+                    <div class="metric-label">Выполнено</div>
+                </div>
+                <div class="metric-card" style="background: linear-gradient(135deg, #ffd166, #f4a261);">
+                    <div class="metric-value" id="inProgressCost">$0</div>
+                    <div class="metric-label">В работе</div>
+                </div>
+                <div class="metric-card" style="background: linear-gradient(135deg, #ef476f, #d62828);">
+                    <div class="metric-value" id="plannedCost">$0</div>
+                    <div class="metric-label">Запланировано</div>
+                </div>
+            </div>
+
+            <!-- График прогресса -->
+            <div class="mb-4">
+                <h3><i class="fas fa-chart-line"></i> Прогресс выполнения</h3>
+                <canvas id="progressChart" height="100"></canvas>
+            </div>
+
+            <!-- Временная линия -->
+            <div class="timeline">
+                <!-- Этап 1 -->
+                <div class="timeline-item">
+                    <div class="timeline-dot completed"></div>
+                    <div class="timeline-content completed">
+                        <span class="stage-badge badge-completed">
+                            <i class="fas fa-check-circle"></i> Завершено
+                        </span>
+                        <h3>Этап 1: MVP и базовая инфраструктура</h3>
+                        <p><strong>Период:</strong> Q1 2024</p>
+                        <div class="cost-breakdown">
+                            <h6>Объемы работ:</h6>
+                            <ul>
+                                <li>Backend API: 320 часов</li>
+                                <li>Frontend MVP: 280 часов</li>
+                                <li>База данных: 80 часов</li>
+                                <li>Документация: 40 часов</li>
+                            </ul>
+                            <h6>Стоимость:</h6>
+                            <div class="formula-display">
+                                Стоимость = (320 + 280 + 80 + 40) × $50/час = $36,000
+                            </div>
+                        </div>
+                        <div class="progress mt-2">
+                            <div class="progress-bar bg-success" style="width: 100%">100%</div>
+                        </div>
+                        <button class="btn btn-sm btn-outline-primary mt-2" onclick="showDetails(1)">
+                            <i class="fas fa-calculator"></i> Детальные расчеты
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Этап 2 -->
+                <div class="timeline-item">
+                    <div class="timeline-dot in-progress"></div>
+                    <div class="timeline-content in-progress">
+                        <span class="stage-badge badge-in-progress">
+                            <i class="fas fa-spinner fa-spin"></i> В работе
+                        </span>
+                        <h3>Этап 2: Интеграция блокчейна и токеномика</h3>
+                        <p><strong>Период:</strong> Q2 2024</p>
+                        <div class="cost-breakdown">
+                            <h6>Объемы работ:</h6>
+                            <ul>
+                                <li>Смарт-контракты: 400 часов</li>
+                                <li>Интеграция блокчейна: 240 часов</li>
+                                <li>Токеномика v2: 200 часов</li>
+                                <li>Тестирование: 160 часов</li>
+                            </ul>
+                            <h6>Стоимость:</h6>
+                            <div class="formula-display">
+                                Стоимость = (400 + 240 + 200 + 160) × $60/час = $60,000
+                            </div>
+                        </div>
+                        <div class="progress mt-2">
+                            <div class="progress-bar bg-warning progress-bar-animated" style="width: 65%">65%</div>
+                        </div>
+                        <button class="btn btn-sm btn-outline-primary mt-2" onclick="showDetails(2)">
+                            <i class="fas fa-calculator"></i> Детальные расчеты
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Этап 3 -->
+                <div class="timeline-item">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-content planned">
+                        <span class="stage-badge badge-planned">
+                            <i class="fas fa-clock"></i> Запланировано
+                        </span>
+                        <h3>Этап 3: DAO и система голосования</h3>
+                        <p><strong>Период:</strong> Q3 2024</p>
+                        <div class="cost-breakdown">
+                            <h6>Объемы работ:</h6>
+                            <ul>
+                                <li>DAO контракты: 320 часов</li>
+                                <li>Система голосования: 280 часов</li>
+                                <li>UI/UX: 200 часов</li>
+                                <li>Безопасность: 200 часов</li>
+                            </ul>
+                            <h6>Стоимость:</h6>
+                            <div class="formula-display">
+                                Стоимость = (320 + 280 + 200 + 200) × $65/час = $65,000
+                            </div>
+                        </div>
+                        <div class="progress mt-2">
+                            <div class="progress-bar bg-primary" style="width: 0%">0%</div>
+                        </div>
+                        <button class="btn btn-sm btn-outline-primary mt-2" onclick="showDetails(3)">
+                            <i class="fas fa-calculator"></i> Детальные расчеты
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Этап 4 -->
+                <div class="timeline-item">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-content planned">
+                        <span class="stage-badge badge-planned">
+                            <i class="fas fa-clock"></i> Запланировано
+                        </span>
+                        <h3>Этап 4: NFT и водные активы</h3>
+                        <p><strong>Период:</strong> Q4 2024</p>
+                        <div class="cost-breakdown">
+                            <h6>Объемы работ:</h6>
+                            <ul>
+                                <li>NFT контракты: 360 часов</li>
+                                <li>Интеграция активов: 320 часов</li>
+                                <li>Маркетплейс: 280 часов</li>
+                                <li>Аналитика: 120 часов</li>
+                            </ul>
+                            <h6>Стоимость:</h6>
+                            <div class="formula-display">
+                                Стоимость = (360 + 320 + 280 + 120) × $70/час = $75,600
+                            </div>
+                        </div>
+                        <div class="progress mt-2">
+                            <div class="progress-bar bg-primary" style="width: 0%">0%</div>
+                        </div>
+                        <button class="btn btn-sm btn-outline-primary mt-2" onclick="showDetails(4)">
+                            <i class="fas fa-calculator"></i> Детальные расчеты
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Этап 5 -->
+                <div class="timeline-item">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-content planned">
+                        <span class="stage-badge badge-planned">
+                            <i class="fas fa-clock"></i> Запланировано
+                        </span>
+                        <h3>Этап 5: Масштабирование и партнерства</h3>
+                        <p><strong>Период:</strong> Q1-Q2 2025</p>
+                        <div class="cost-breakdown">
+                            <h6>Объемы работ:</h6>
+                            <ul>
+                                <li>Масштабирование инфраструктуры: 400 часов</li>
+                                <li>Партнерские интеграции: 360 часов</li>
+                                <li>Мобильное приложение: 480 часов</li>
+                                <li>Маркетинг: 320 часов</li>
+                            </ul>
+                            <h6>Стоимость:</h6>
+                            <div class="formula-display">
+                                Стоимость = (400 + 360 + 480 + 320) × $75/час = $117,000
+                            </div>
+                        </div>
+                        <div class="progress mt-2">
+                            <div class="progress-bar bg-primary" style="width: 0%">0%</div>
+                        </div>
+                        <button class="btn btn-sm btn-outline-primary mt-2" onclick="showDetails(5)">
+                            <i class="fas fa-calculator"></i> Детальные расчеты
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Калькулятор финансирования -->
+            <div class="calculation-section mt-4">
+                <h3><i class="fas fa-calculator"></i> Калькулятор финансирования</h3>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="mb-3">
+                            <label>Текущий сбор:</label>
+                            <input type="number" class="form-control" id="currentFunding" value="36000">
+                        </div>
+                        <div class="mb-3">
+                            <label>Целевой сбор:</label>
+                            <input type="number" class="form-control" id="targetFunding" value="354600">
+                        </div>
+                        <button class="btn btn-primary" onclick="calculateFunding()">Рассчитать</button>
+                    </div>
+                    <div class="col-md-6">
+                        <div id="fundingResult"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Модальное окно с детальными расчетами -->
+    <div class="modal fade" id="detailsModal" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="detailsModalTitle">Детальные расчеты</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body" id="detailsModalBody">
+                    <!-- Контент будет добавлен динамически -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="/static/roadmap.js"></script>
+</body>
+</html>
+

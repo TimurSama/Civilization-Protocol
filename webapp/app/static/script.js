@@ -12,9 +12,9 @@ document.addEventListener('DOMContentLoaded', function() {
     const proposalsList = document.getElementById('proposalsList');
 
     // Инициализация модальных окон
-    assistantModal = new bootstrap.Modal(document.getElementById('assistantModal'));
-    assistantChat = document.getElementById('assistantChat');
-    docsModal = new bootstrap.Modal(document.getElementById('docsModal'));
+    let assistantModal = new bootstrap.Modal(document.getElementById('assistantModal'));
+    let assistantChat = document.getElementById('assistantChat');
+    let docsModal = new bootstrap.Modal(document.getElementById('docsModal'));
     
     // Загрузка документов при открытии модального окна
     document.getElementById('docsModal').addEventListener('show.bs.modal', loadDocuments);
