@@ -1,7 +1,7 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
-from fastapi.responses import FileResponse
+from fastapi.responses import FileResponse, HTMLResponse
 from .routes import users, admin
 import os
 
@@ -24,45 +24,66 @@ app.include_router(admin.router, prefix="/admin")
 static_dir = os.path.join(os.path.dirname(__file__), "static")
 # Проверяем существование директории для Vercel
 if os.path.exists(static_dir):
-    app.mount("/static", StaticFiles(directory=static_dir), name="static")
+    try:
+        app.mount("/static", StaticFiles(directory=static_dir), name="static")
+    except Exception:
+        pass  # Игнорируем ошибку, если директория не доступна
 
-def get_static_file(filename: str):
-    """Получить путь к статическому файлу с проверкой"""
-    # Основной путь
+def get_static_file_path(filename: str):
+    """Получить путь к статическому файлу с проверкой для разных окружений"""
+    # Основной путь (относительно текущего файла)
     file_path = os.path.join(static_dir, filename)
     if os.path.exists(file_path):
         return file_path
     
-    # Fallback для разных окружений (Vercel, локальное и т.д.)
-    current_dir = os.path.dirname(__file__)  # webapp/app/
-    base_dir = os.path.dirname(os.path.dirname(current_dir))  # корень проекта
+    # Альтернативные пути для разных окружений
+    current_file = os.path.abspath(__file__)  # webapp/app/main.py
+    current_dir = os.path.dirname(current_file)  # webapp/app/
     
     alt_paths = [
-        os.path.join(base_dir, "webapp", "app", "static", filename),
+        os.path.join(current_dir, "static", filename),  # webapp/app/static/
         os.path.join(os.getcwd(), "webapp", "app", "static", filename),
-        os.path.join("webapp", "app", "static", filename),
+        os.path.join(os.path.dirname(current_dir), "static", filename),
     ]
     
+    # Попробуем найти файл
     for alt_path in alt_paths:
         abs_path = os.path.abspath(alt_path)
         if os.path.exists(abs_path):
             return abs_path
     
-    # Если файл не найден, возвращаем основной путь
-    # FastAPI выбросит 404, что правильно
     return file_path
 
-@app.get("/")
+def read_html_file(filename: str) -> str:
+    """Прочитать HTML файл"""
+    file_path = get_static_file_path(filename)
+    try:
+        with open(file_path, 'r', encoding='utf-8') as f:
+            return f.read()
+    except FileNotFoundError:
+        raise HTTPException(status_code=404, detail=f"File {filename} not found")
+
+@app.get("/", response_class=HTMLResponse)
 async def root():
-    return FileResponse(get_static_file("index.html"))
+    try:
+        return HTMLResponse(content=read_html_file("index.html"))
+    except HTTPException:
+        # Fallback на FileResponse
+        return FileResponse(get_static_file_path("index.html"))
 
-@app.get("/tokenomics")
+@app.get("/tokenomics", response_class=HTMLResponse)
 async def tokenomics():
-    return FileResponse(get_static_file("tokenomics.html"))
+    try:
+        return HTMLResponse(content=read_html_file("tokenomics.html"))
+    except HTTPException:
+        return FileResponse(get_static_file_path("tokenomics.html"))
 
-@app.get("/roadmap")
+@app.get("/roadmap", response_class=HTMLResponse)
 async def roadmap():
-    return FileResponse(get_static_file("roadmap.html"))
+    try:
+        return HTMLResponse(content=read_html_file("roadmap.html"))
+    except HTTPException:
+        return FileResponse(get_static_file_path("roadmap.html"))
 
 if __name__ == "__main__":
     import uvicorn
