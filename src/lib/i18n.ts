@@ -133,6 +133,21 @@ export const translations = {
                 ngo: "NGO",
                 international: "International"
             }
+        },
+        roadmap: {
+            title: "Roadmap",
+            subtitle: "From concept to global water resources management ecosystem",
+            invested_today: "Invested today",
+            completed_path: "Completed path",
+            hide: "Hide",
+            show: "Show",
+            current_phase: "Current phase",
+            upcoming_phases: "Upcoming phases",
+            key_metrics: "Key metrics",
+            target_users: "Target users",
+            iot_sensors: "IoT sensors",
+            water_objects: "Water objects",
+            partners: "Partners"
         }
     },
     ru: {
@@ -269,6 +284,21 @@ export const translations = {
                 ngo: "НГО",
                 international: "Международный"
             }
+        },
+        roadmap: {
+            title: "Дорожная карта",
+            subtitle: "От концепции к глобальной экосистеме управления водными ресурсами",
+            invested_today: "Инвестировано на сегодня",
+            completed_path: "Пройденный путь",
+            hide: "Скрыть",
+            show: "Показать",
+            current_phase: "Текущая фаза",
+            upcoming_phases: "Предстоящие фазы",
+            key_metrics: "Ключевые метрики",
+            target_users: "Целевые пользователи",
+            iot_sensors: "IoT датчики",
+            water_objects: "Водные объекты",
+            partners: "Партнёры"
         }
     },
     ar: {
@@ -402,6 +432,21 @@ export const translations = {
                 ngo: "منظمة غير حكومية",
                 international: "دولي"
             }
+        },
+        roadmap: {
+            title: "خارطة الطريق",
+            subtitle: "من المفهوم إلى النظام البيئي العالمي لإدارة الموارد المائية",
+            invested_today: "المستثمر اليوم",
+            completed_path: "المسار المكتمل",
+            hide: "إخفاء",
+            show: "إظهار",
+            current_phase: "المرحلة الحالية",
+            upcoming_phases: "المراحل القادمة",
+            key_metrics: "المقاييس الرئيسية",
+            target_users: "المستخدمون المستهدفون",
+            iot_sensors: "أجهزة استشعار إنترنت الأشياء",
+            water_objects: "الكائنات المائية",
+            partners: "الشركاء"
         }
     }
 };

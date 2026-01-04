@@ -104,6 +104,7 @@ export default function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
                         <MenuItem href="/interactive-presentation" icon={<Zap size={18} />} label="🎮 Презентация" onClose={onClose} />
                         <MenuItem href="/dashboard" icon={<Target size={18} />} label="Dashboard" onClose={onClose} />
                         <MenuItem href="/map" icon={<Globe size={18} />} label="Карта" onClose={onClose} />
+                        <MenuItem href="/roadmap" icon={<Target size={18} />} label="Дорожная карта" onClose={onClose} />
                         <MenuItem href="/tokenhub" icon={<Coins size={18} />} label="TokenHub" onClose={onClose} />
                         <MenuItem href="/nexus" icon={<Zap size={18} />} label="Nexus" onClose={onClose} />
                     </Section>
@@ -191,7 +192,6 @@ export default function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
                     <Section title="ДОПОЛНИТЕЛЬНО">
                         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '6px' }}>
                             <MenuItem href="/vodcheck" icon={<Shield size={16} />} label="VODCheck" onClose={onClose} compact />
-                            <MenuItem href="/roadmap" icon={<Target size={16} />} label="Roadmap" onClose={onClose} compact />
                             <MenuItem href="/landing" icon={<Home size={16} />} label="Landing" onClose={onClose} compact />
                             <MenuItem href="/whitepaper" icon={<BookOpen size={16} />} label="Whitepaper" onClose={onClose} compact />
                             <MenuItem href="/api/docs" icon={<Code size={16} />} label="API Docs" onClose={onClose} compact />

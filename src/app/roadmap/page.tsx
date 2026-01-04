@@ -9,6 +9,7 @@ import {
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import BuyTokenWidget from "@/components/BuyTokenWidget";
+import { useLanguage } from "@/context/LanguageContext";
 
 // Пройденный путь с затратами
 const completedPath = [
@@ -257,14 +258,10 @@ const roadmapData = [
   },
 ];
 
-const keyMetrics = [
-  { label: "Целевые пользователи", current: "1,000+", target: "1,000,000", icon: Users },
-  { label: "IoT датчики", current: "50", target: "10,000+", icon: Cpu },
-  { label: "Водные объекты", current: "15", target: "5,000+", icon: Globe },
-  { label: "Партнёры", current: "5", target: "100+", icon: Building2 },
-];
+// keyMetrics will be defined inside component to use translations
 
 export default function RoadmapPage() {
+  const { t } = useLanguage();
   const [selectedYear, setSelectedYear] = useState(2024);
   const [showCompleted, setShowCompleted] = useState(true);
 
@@ -277,6 +274,13 @@ export default function RoadmapPage() {
 
   const totalCompleted = completedPath.reduce((sum, item) => sum + item.cost, 0);
 
+  const keyMetrics = [
+    { label: t("roadmap.target_users"), current: "1,000+", target: "1,000,000", icon: Users },
+    { label: t("roadmap.iot_sensors"), current: "50", target: "10,000+", icon: Cpu },
+    { label: t("roadmap.water_objects"), current: "15", target: "5,000+", icon: Globe },
+    { label: t("roadmap.partners"), current: "5", target: "100+", icon: Building2 },
+  ];
+
   return (
     <div className="max-w-7xl mx-auto px-4 py-8">
       {/* Header */}
@@ -285,13 +289,13 @@ export default function RoadmapPage() {
         animate={{ opacity: 1, y: 0 }}
         className="text-center mb-12"
       >
-        <h1 className="text-5xl font-black mb-4">Дорожная карта</h1>
+        <h1 className="text-5xl font-black mb-4">{t("roadmap.title")}</h1>
         <p className="text-xl text-slate-400 max-w-3xl mx-auto">
-          От концепции к глобальной экосистеме управления водными ресурсами
+          {t("roadmap.subtitle")}
         </p>
         <div className="mt-6 flex items-center justify-center gap-4">
           <div className="px-6 py-3 glass rounded-xl">
-            <div className="text-sm text-slate-500">Инвестировано на сегодня</div>
+            <div className="text-sm text-slate-500">{t("roadmap.invested_today")}</div>
             <div className="text-3xl font-black text-cyan-glow">${totalCompleted.toLocaleString()}</div>
           </div>
         </div>
@@ -307,13 +311,13 @@ export default function RoadmapPage() {
           <div className="flex items-center justify-between mb-8">
             <h2 className="text-3xl font-black flex items-center gap-3">
               <CheckCircle2 className="text-green-400" size={32} />
-              Пройденный путь
+              {t("roadmap.completed_path")}
             </h2>
             <button
               onClick={() => setShowCompleted(!showCompleted)}
               className="px-4 py-2 glass rounded-xl hover:bg-white/10 transition-colors"
             >
-              {showCompleted ? "Скрыть" : "Показать"}
+              {showCompleted ? t("roadmap.hide") : t("roadmap.show")}
             </button>
           </div>
 
