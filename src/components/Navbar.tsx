@@ -6,7 +6,7 @@ import {
     Menu, Building2, Home, Vote, Target,
     Coins, User, Wallet, LogOut, BookOpen,
     Zap, Globe, TreePine, Heart, FlaskConical,
-    ChevronDown, Search, Bell
+    ChevronDown, Search, Bell, FileText, TrendingUp, Map
 } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -47,6 +47,9 @@ export default function Navbar() {
 
     const navItems = [
         { name: t("nav.home"), href: "/", icon: Home },
+        { name: t("nav.presentation"), href: "/presentation", icon: FileText },
+        { name: t("nav.tokenomics"), href: "/tokenomics", icon: TrendingUp },
+        { name: t("nav.roadmap"), href: "/roadmap", icon: Map },
         { name: t("nav.whitepaper"), href: "/whitepaper", icon: BookOpen },
         { name: t("nav.map"), href: "/map", icon: Globe },
         { name: t("nav.tokenhub"), href: "/tokenhub", icon: Coins },
@@ -62,7 +65,7 @@ export default function Navbar() {
 
     return (
         <>
-            <nav className="fixed top-0 left-0 right-0 z-50 glass border-b border-white/5 px-4 py-3">
+            <nav className="fixed top-0 left-0 right-0 z-[100] glass border-b border-white/5 px-4 py-3">
                 <div className="max-w-7xl mx-auto flex items-center justify-between relative">
                     {/* Left: Burger Menu & Search */}
                     <div className="flex items-center gap-2">

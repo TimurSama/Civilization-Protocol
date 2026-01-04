@@ -212,9 +212,9 @@ export default function SmartWhitePaper() {
       "min-h-screen transition-colors",
       darkMode ? "bg-[#0d1117] text-slate-200" : "bg-white text-slate-800"
     )}>
-      {/* Header */}
+      {/* Header - под главным Navbar */}
       <div className={cn(
-        "fixed top-0 left-0 right-0 z-50 backdrop-blur-xl border-b",
+        "sticky top-20 left-0 right-0 z-[90] backdrop-blur-xl border-b",
         darkMode ? "bg-[#0d1117]/90 border-slate-800" : "bg-white/90 border-slate-200"
       )}>
         <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
@@ -274,7 +274,7 @@ export default function SmartWhitePaper() {
         </div>
       </div>
 
-      <div className="pt-20 flex">
+      <div className="flex">
         {/* Sidebar TOC */}
         <AnimatePresence>
           {showToc && (
@@ -636,5 +636,12 @@ export default function SmartWhitePaper() {
     </div>
   );
 }
+
+
+
+
+
+
+
 
 

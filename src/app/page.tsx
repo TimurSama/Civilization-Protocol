@@ -9,7 +9,7 @@ import Stories from "@/components/Stories";
 import { useLanguage } from "@/context/LanguageContext";
 import { useAuth } from "@/context/AuthContext";
 import { usePosts } from "@/hooks/useApi";
-import { Plus, TrendingUp, Users, Globe, Zap, Heart, TreePine, FlaskConical, Loader2, RefreshCw, ChevronDown } from "lucide-react";
+import { Plus, TrendingUp, Users, Globe, Zap, Heart, TreePine, FlaskConical, Loader2, RefreshCw, ChevronDown, FileText, Map, ArrowRight } from "lucide-react";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
 import Globe3D from "@/components/Globe3D";
@@ -350,8 +350,31 @@ export default function HomePage() {
           </div>
 
           <div className="space-y-2">
+            <div className="px-2 py-2 text-[10px] font-black uppercase tracking-widest text-slate-600">ОСНОВНОЕ</div>
             {[
               { icon: Globe, label: t("common.explore"), active: true, href: "/" },
+              { icon: FileText, label: t("nav.presentation"), active: false, href: "/presentation" },
+              { icon: TrendingUp, label: t("nav.tokenomics"), active: false, href: "/tokenomics" },
+              { icon: Map, label: t("nav.roadmap"), active: false, href: "/roadmap" },
+            ].map(item => (
+              <Link
+                key={item.label}
+                href={item.href}
+                className={cn(
+                  "w-full flex items-center gap-4 px-6 py-4 rounded-2xl transition-all",
+                  isRTL && "flex-row-reverse",
+                  item.active ? "bg-cyan-500/10 text-cyan-400 border border-cyan-500/20" : "text-slate-500 hover:text-white hover:bg-white/5"
+                )}
+              >
+                <item.icon size={20} />
+                <span className="font-black text-sm uppercase tracking-widest">{item.label}</span>
+              </Link>
+            ))}
+          </div>
+          
+          <div className="space-y-2">
+            <div className="px-2 py-2 text-[10px] font-black uppercase tracking-widest text-slate-600">ЭКОСИСТЕМА</div>
+            {[
               { icon: TreePine, label: t("nav.ecology"), active: false, href: "/ecology" },
               { icon: Zap, label: t("nav.energy"), active: false, href: "/energy" },
               { icon: Heart, label: t("nav.health"), active: false, href: "/health" },
@@ -375,6 +398,66 @@ export default function HomePage() {
 
         {/* Main Feed */}
         <div className="lg:col-span-6 space-y-6">
+          {/* Featured Pages Cards */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.1 }}
+            >
+              <Link href="/presentation" className="block glass-card p-6 border-white/5 bg-white/[0.02] hover:bg-white/[0.04] hover:border-cyan-500/30 transition-all group">
+                <div className="flex items-center gap-3 mb-3">
+                  <div className="w-10 h-10 rounded-xl bg-cyan-500/20 flex items-center justify-center text-cyan-400">
+                    <FileText size={20} />
+                  </div>
+                  <h3 className="font-black text-sm uppercase tracking-wider">Презентация</h3>
+                </div>
+                <p className="text-xs text-slate-400 mb-4">Узнайте о платформе VODeco</p>
+                <div className="flex items-center gap-2 text-cyan-400 text-xs font-bold group-hover:gap-3 transition-all">
+                  Открыть <ArrowRight size={14} />
+                </div>
+              </Link>
+            </motion.div>
+            
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.2 }}
+            >
+              <Link href="/tokenomics" className="block glass-card p-6 border-white/5 bg-white/[0.02] hover:bg-white/[0.04] hover:border-emerald-500/30 transition-all group">
+                <div className="flex items-center gap-3 mb-3">
+                  <div className="w-10 h-10 rounded-xl bg-emerald-500/20 flex items-center justify-center text-emerald-400">
+                    <TrendingUp size={20} />
+                  </div>
+                  <h3 className="font-black text-sm uppercase tracking-wider">Токеномика</h3>
+                </div>
+                <p className="text-xs text-slate-400 mb-4">Экономическая модель VOD</p>
+                <div className="flex items-center gap-2 text-emerald-400 text-xs font-bold group-hover:gap-3 transition-all">
+                  Открыть <ArrowRight size={14} />
+                </div>
+              </Link>
+            </motion.div>
+            
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.3 }}
+            >
+              <Link href="/roadmap" className="block glass-card p-6 border-white/5 bg-white/[0.02] hover:bg-white/[0.04] hover:border-blue-500/30 transition-all group">
+                <div className="flex items-center gap-3 mb-3">
+                  <div className="w-10 h-10 rounded-xl bg-blue-500/20 flex items-center justify-center text-blue-400">
+                    <Map size={20} />
+                  </div>
+                  <h3 className="font-black text-sm uppercase tracking-wider">Roadmap</h3>
+                </div>
+                <p className="text-xs text-slate-400 mb-4">План развития платформы</p>
+                <div className="flex items-center gap-2 text-blue-400 text-xs font-bold group-hover:gap-3 transition-all">
+                  Открыть <ArrowRight size={14} />
+                </div>
+              </Link>
+            </motion.div>
+          </div>
+
           {/* Stories */}
           <Stories />
 

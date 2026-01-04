@@ -3,6 +3,9 @@ export const translations = {
         nav: {
             home: "Home",
             whitepaper: "WhitePaper",
+            presentation: "Presentation",
+            tokenomics: "Tokenomics",
+            roadmap: "Roadmap",
             dao: "DAO",
             missions: "Missions",
             profile: "Profile",
@@ -136,6 +139,9 @@ export const translations = {
         nav: {
             home: "Главная",
             whitepaper: "WhitePaper",
+            presentation: "Презентация",
+            tokenomics: "Токеномика",
+            roadmap: "Roadmap",
             dao: "DAO",
             missions: "Миссии",
             profile: "Профиль",

@@ -326,8 +326,8 @@ export default function GamePresentation() {
         ))}
       </AnimatePresence>
 
-      {/* Header HUD */}
-      <div className="fixed top-0 left-0 right-0 z-40 bg-black/50 backdrop-blur-md border-b border-white/10">
+      {/* Header HUD - под главным Navbar */}
+      <div className="sticky top-20 left-0 right-0 z-[90] bg-black/50 backdrop-blur-md border-b border-white/10">
         <div className="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between">
           <Link href="/" className="flex items-center gap-2">
             <Gamepad2 className="text-cyan-400" />
@@ -358,7 +358,7 @@ export default function GamePresentation() {
       </div>
 
       {/* Main content */}
-      <div className="pt-20 pb-8 px-4">
+      <div className="pb-8 px-4">
         <AnimatePresence mode="wait">
           {/* Role Selection Screen */}
           {gameState.level === 0 && (
@@ -778,5 +778,12 @@ function StatBar({ label, value, color, icon }: { label: string; value: number; 
     </div>
   );
 }
+
+
+
+
+
+
+
 
 

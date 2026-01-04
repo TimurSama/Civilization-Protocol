@@ -181,6 +181,9 @@ export default function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
                             <MenuItem href="/presentations/game" icon={<Gamepad2 size={16} />} label="Игра: Спаси экологию" onClose={onClose} />
                             <MenuItem href="/presentations/diplomatic" icon={<Building2 size={16} />} label="Для ООН и политиков" onClose={onClose} />
                             <MenuItem href="/presentations/investors" icon={<TrendingUp size={16} />} label="Для инвесторов" onClose={onClose} />
+                            <MenuItem href="/presentations/ecosystem" icon={<Globe size={16} />} label="Карта экосистемы" onClose={onClose} />
+                            <MenuItem href="/presentations/ecology-transformation" icon={<TreePine size={16} />} label="Трансформация экологии" onClose={onClose} />
+                            <MenuItem href="/presentations/whitepaper" icon={<BookOpen size={16} />} label="Smart WhitePaper" onClose={onClose} />
                         </div>
                     </Section>
 

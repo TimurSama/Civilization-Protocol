@@ -5,7 +5,7 @@ import { motion } from "framer-motion";
 import {
   Gamepad2, Building2, TrendingUp, Map, BookOpen, Users, Leaf,
   Globe, ArrowRight, Play, Clock, Star, Award, ChevronRight,
-  Sparkles, Target, Shield, Cpu, Heart
+  Sparkles, Target, Shield, Cpu, Heart, Ruler
 } from "lucide-react";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
@@ -155,6 +155,22 @@ const presentations: Presentation[] = [
     features: ["Научные данные", "Методологии", "Датасеты", "Публикации"],
     status: "coming",
     link: "/presentations/science",
+  },
+  {
+    id: "ecology-transformation",
+    number: 8,
+    title: "Трансформация экологии",
+    subtitle: "Интерактивная презентация в стиле схем",
+    description: "Визуальная презентация реального изменения экологии: от пересушенного среднеазиатского региона к цветущему оазису. Стиль технических чертежей и схем.",
+    icon: <Ruler size={32} />,
+    color: "green",
+    gradient: "from-green-500 to-emerald-600",
+    duration: "10-15 мин",
+    difficulty: "easy",
+    audience: ["Все", "Экологи", "Инвесторы", "Инженеры"],
+    features: ["Схемы чертежей", "Интерактивность", "Реальный пример", "Визуализация"],
+    status: "ready",
+    link: "/presentations/ecology-transformation",
   },
 ];
 

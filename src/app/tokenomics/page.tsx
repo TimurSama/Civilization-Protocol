@@ -87,6 +87,7 @@ const stakingPools = [
 ];
 
 export default function TokenomicsPage() {
+  const [version, setVersion] = useState<"v1" | "v2">("v2");
   const [investment, setInvestment] = useState(50000);
   const [selectedTier, setSelectedTier] = useState(0);
   const [earlyBird, setEarlyBird] = useState(true);
@@ -177,19 +178,68 @@ export default function TokenomicsPage() {
             Революционная модель токеномики, обеспеченная реальным ресурсом — водой.
             Стабильная цена, независимая от спекуляций.
           </p>
+
+          {/* Version Switcher */}
+          <div className="flex justify-center mb-8">
+            <div className="glass-card p-2 rounded-xl inline-flex gap-2">
+              <button
+                onClick={() => setVersion("v1")}
+                className={cn(
+                  "px-6 py-3 rounded-lg font-bold transition-all",
+                  version === "v1"
+                    ? "bg-cyan-500 text-ocean-deep"
+                    : "text-slate-400 hover:text-white"
+                )}
+              >
+                Версия 1.0
+              </button>
+              <button
+                onClick={() => setVersion("v2")}
+                className={cn(
+                  "px-6 py-3 rounded-lg font-bold transition-all",
+                  version === "v2"
+                    ? "bg-cyan-500 text-ocean-deep"
+                    : "text-slate-400 hover:text-white"
+                )}
+              >
+                Версия 2.0
+              </button>
+            </div>
+          </div>
+
+          {/* Version-specific stats */}
           <div className="flex flex-wrap justify-center gap-4">
-            <div className="px-4 py-2 glass rounded-xl">
-              <div className="text-sm text-slate-500">Базовая цена</div>
-              <div className="text-2xl font-black text-cyan-glow">$0.005 / VOD</div>
-            </div>
-            <div className="px-4 py-2 glass rounded-xl">
-              <div className="text-sm text-slate-500">Макс. эмиссия</div>
-              <div className="text-2xl font-black text-purple-400">105 квадр.</div>
-            </div>
-            <div className="px-4 py-2 glass rounded-xl">
-              <div className="text-sm text-slate-500">1 VOD =</div>
-              <div className="text-2xl font-black text-emerald-400">1 литр воды</div>
-            </div>
+            {version === "v1" ? (
+              <>
+                <div className="px-4 py-2 glass rounded-xl">
+                  <div className="text-sm text-slate-500">Базовая цена</div>
+                  <div className="text-2xl font-black text-cyan-glow">$1.3 / VOD</div>
+                </div>
+                <div className="px-4 py-2 glass rounded-xl">
+                  <div className="text-sm text-slate-500">Макс. эмиссия</div>
+                  <div className="text-2xl font-black text-purple-400">1.386 млрд</div>
+                </div>
+                <div className="px-4 py-2 glass rounded-xl">
+                  <div className="text-sm text-slate-500">1 VOD =</div>
+                  <div className="text-2xl font-black text-emerald-400">1 м³ воды</div>
+                </div>
+              </>
+            ) : (
+              <>
+                <div className="px-4 py-2 glass rounded-xl">
+                  <div className="text-sm text-slate-500">Базовая цена</div>
+                  <div className="text-2xl font-black text-cyan-glow">$0.005 / VOD</div>
+                </div>
+                <div className="px-4 py-2 glass rounded-xl">
+                  <div className="text-sm text-slate-500">Макс. эмиссия</div>
+                  <div className="text-2xl font-black text-purple-400">105 квадр.</div>
+                </div>
+                <div className="px-4 py-2 glass rounded-xl">
+                  <div className="text-sm text-slate-500">1 VOD =</div>
+                  <div className="text-2xl font-black text-emerald-400">1 литр воды</div>
+                </div>
+              </>
+            )}
           </div>
         </motion.div>
 

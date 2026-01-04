@@ -176,8 +176,8 @@ export default function EcosystemPresentation() {
 
   return (
     <div className="min-h-screen bg-slate-950 text-white overflow-hidden">
-      {/* Header */}
-      <div className="fixed top-0 left-0 right-0 z-50 bg-slate-950/90 backdrop-blur-xl border-b border-teal-500/20">
+      {/* Header - под главным Navbar */}
+      <div className="sticky top-20 left-0 right-0 z-[90] bg-slate-950/90 backdrop-blur-xl border-b border-teal-500/20">
         <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
           <Link href="/presentations" className="flex items-center gap-2">
             <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-teal-500 to-cyan-600 flex items-center justify-center">
@@ -227,7 +227,7 @@ export default function EcosystemPresentation() {
       </div>
 
       {/* Main content */}
-      <div className="pt-20 flex h-screen">
+      <div className="flex h-screen">
         {/* Left sidebar - Layers */}
         <div className="w-64 border-r border-slate-800 p-4 overflow-y-auto hidden lg:block">
           <h3 className="font-bold mb-4 flex items-center gap-2">

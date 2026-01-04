@@ -272,7 +272,7 @@ export default function PresentationPage() {
     <div ref={containerRef} className="relative bg-ocean-deep">
             {/* Progress Bar */}
             <motion.div
-        className="fixed top-0 left-0 right-0 h-1 bg-gradient-to-r from-cyan-glow via-blue-500 to-purple-500 z-[60] origin-left"
+        className="fixed top-[80px] left-0 right-0 h-1 bg-gradient-to-r from-cyan-glow via-blue-500 to-purple-500 z-[90] origin-left"
                 style={{ scaleX }}
             />
 

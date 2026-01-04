@@ -55,8 +55,8 @@ export default function DiplomaticPresentation() {
 
   return (
     <div ref={containerRef} className="min-h-screen bg-gradient-to-b from-slate-950 via-[#0a1628] to-slate-950">
-      {/* Formal Header */}
-      <div className="fixed top-0 left-0 right-0 z-50 bg-[#0a1628]/95 backdrop-blur-xl border-b border-[#1a3a5c]">
+      {/* Formal Header - под главным Navbar */}
+      <div className="sticky top-20 left-0 right-0 z-[90] bg-[#0a1628]/95 backdrop-blur-xl border-b border-[#1a3a5c]">
         <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
           <div className="flex items-center gap-4">
             <div className="w-12 h-12 rounded-full bg-gradient-to-br from-[#1a4d7c] to-[#0d2847] flex items-center justify-center border border-[#2a5a8c]">
@@ -120,7 +120,7 @@ export default function DiplomaticPresentation() {
       </div>
 
       {/* Main Content */}
-      <div className="pt-24 pb-12 px-6 lg:pl-48">
+      <div className="pb-12 px-6 lg:pl-48">
         <div className="max-w-5xl mx-auto space-y-32">
           
           {/* Section 1: Global Context */}
@@ -688,5 +688,12 @@ export default function DiplomaticPresentation() {
     </div>
   );
 }
+
+
+
+
+
+
+
 
 

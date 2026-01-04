@@ -471,3 +471,10 @@ export default function DelegateVotesModal({ isOpen, onClose, votingPower = 1000
 }
 
 
+
+
+
+
+
+
+

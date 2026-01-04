@@ -10,6 +10,116 @@ import {
 import { cn } from "@/lib/utils";
 import BuyTokenWidget from "@/components/BuyTokenWidget";
 
+// Пройденный путь с затратами
+const completedPath = [
+  {
+    id: "app-alpha",
+    title: "Разработка приложения альфа-версия",
+    period: "Q3 2023 - Q2 2024",
+    cost: 80000,
+    status: "completed",
+    technologies: [
+      "Next.js 16 Framework",
+      "12-уровневая архитектура",
+      "7 специализированных кабинетов",
+      "UI/UX дизайн-система",
+      "Блокчейн интеграция (базовая)",
+      "REST API",
+      "База данных (Prisma)",
+    ],
+    results: [
+      "MVP платформы запущен",
+      "Web-приложение функционально",
+      "Базовая интеграция с блокчейном",
+    ],
+    icon: Smartphone,
+    color: "cyan",
+  },
+  {
+    id: "documentation",
+    title: "Документация",
+    period: "Q4 2023 - Q1 2024",
+    cost: 15000,
+    status: "completed",
+    technologies: [
+      "White Paper v1.0 и v2.0",
+      "Техническая документация",
+      "API документация",
+      "Руководства по развертыванию",
+      "Документация токеномики",
+    ],
+    results: [
+      "Полная техническая документация",
+      "API docs с примерами",
+      "Руководства для разработчиков",
+    ],
+    icon: Database,
+    color: "blue",
+  },
+  {
+    id: "research",
+    title: "Научные исследования",
+    period: "Q3 2023 - Q2 2024",
+    cost: 25000,
+    status: "completed",
+    technologies: [
+      "Исследование водных ресурсов",
+      "Анализ экологических проблем",
+      "Методология токенизации",
+      "Научные публикации",
+    ],
+    results: [
+      "Партнёрство с TIIAME",
+      "Аналитические записки",
+      "Научные публикации",
+    ],
+    icon: Cpu,
+    color: "purple",
+  },
+  {
+    id: "innovations",
+    title: "Новаторские технологии и инструменты",
+    period: "Q4 2023 - Q2 2024",
+    cost: 20000,
+    status: "completed",
+    technologies: [
+      "Карманный анализатор воды VOD Check (прототип)",
+      "Система IoT датчиков (концепция)",
+      "AI аналитический движок (базовая версия)",
+      "Блокчейн инфраструктура (тестнет)",
+      "Интеграционные API",
+    ],
+    results: [
+      "Прототип VOD Check готов",
+      "AI движок работает",
+      "IoT концепция разработана",
+    ],
+    icon: Zap,
+    color: "emerald",
+  },
+  {
+    id: "sensors",
+    title: "Системы датчиков",
+    period: "Q1-Q2 2024",
+    cost: 10000,
+    status: "completed",
+    technologies: [
+      "Прототипы IoT датчиков",
+      "Система мониторинга качества воды",
+      "Интеграция с существующими системами",
+      "Телеметрия и сбор данных",
+    ],
+    results: [
+      "Прототипы датчиков созданы",
+      "Система мониторинга работает",
+      "Интеграция протестирована",
+    ],
+    icon: Activity,
+    color: "orange",
+  },
+];
+
+// Будущая дорожная карта
 const roadmapData = [
   {
     year: 2023,
@@ -70,6 +180,8 @@ const roadmapData = [
           { text: "Стейкинг программа", done: false },
         ],
         achievements: [],
+        cost: 500000,
+        category: "blockchain",
       },
       {
         quarter: "Q4",
@@ -83,6 +195,8 @@ const roadmapData = [
           { text: "5+ пилотных проектов", done: false },
         ],
         achievements: [],
+        cost: 300000,
+        category: "marketing",
       },
     ],
   },
@@ -101,6 +215,8 @@ const roadmapData = [
           { text: "100+ IoT датчиков", done: false },
         ],
         achievements: [],
+        cost: 400000,
+        category: "integration",
       },
       {
         quarter: "Q3-Q4",
@@ -114,6 +230,8 @@ const roadmapData = [
           { text: "10,000+ пользователей", done: false },
         ],
         achievements: [],
+        cost: 2000000,
+        category: "production",
       },
     ],
   },
@@ -148,6 +266,7 @@ const keyMetrics = [
 
 export default function RoadmapPage() {
   const [selectedYear, setSelectedYear] = useState(2024);
+  const [showCompleted, setShowCompleted] = useState(true);
 
   const statusColors = {
     completed: { bg: "bg-green-500/20", text: "text-green-400", border: "border-green-500/30" },
@@ -155,6 +274,8 @@ export default function RoadmapPage() {
     upcoming: { bg: "bg-yellow-500/20", text: "text-yellow-400", border: "border-yellow-500/30" },
     future: { bg: "bg-slate-500/20", text: "text-slate-400", border: "border-slate-500/30" },
   };
+
+  const totalCompleted = completedPath.reduce((sum, item) => sum + item.cost, 0);
 
   return (
     <div className="max-w-7xl mx-auto px-4 py-8">
@@ -168,7 +289,113 @@ export default function RoadmapPage() {
         <p className="text-xl text-slate-400 max-w-3xl mx-auto">
           От концепции к глобальной экосистеме управления водными ресурсами
         </p>
+        <div className="mt-6 flex items-center justify-center gap-4">
+          <div className="px-6 py-3 glass rounded-xl">
+            <div className="text-sm text-slate-500">Инвестировано на сегодня</div>
+            <div className="text-3xl font-black text-cyan-glow">${totalCompleted.toLocaleString()}</div>
+          </div>
+        </div>
       </motion.div>
+
+      {/* Пройденный путь */}
+      {showCompleted && (
+        <motion.section
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="mb-16"
+        >
+          <div className="flex items-center justify-between mb-8">
+            <h2 className="text-3xl font-black flex items-center gap-3">
+              <CheckCircle2 className="text-green-400" size={32} />
+              Пройденный путь
+            </h2>
+            <button
+              onClick={() => setShowCompleted(!showCompleted)}
+              className="px-4 py-2 glass rounded-xl hover:bg-white/10 transition-colors"
+            >
+              {showCompleted ? "Скрыть" : "Показать"}
+            </button>
+          </div>
+
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+            {completedPath.map((item, i) => {
+              const Icon = item.icon;
+              return (
+                <motion.div
+                  key={item.id}
+                  initial={{ opacity: 0, y: 30 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: i * 0.1 }}
+                  className={cn(
+                    "glass-card p-6 border-2 rounded-2xl hover:scale-105 transition-all",
+                    `border-${item.color}-500/30 bg-${item.color}-500/5`
+                  )}
+                >
+                  <div className="flex items-start justify-between mb-4">
+                    <div className={cn(`w-12 h-12 rounded-xl bg-${item.color}-500/20 flex items-center justify-center`, `text-${item.color}-400`)}>
+                      <Icon size={24} />
+                    </div>
+                    <span className="px-3 py-1 rounded-full bg-green-500/20 text-green-400 text-xs font-bold">
+                      ✓ Завершено
+                    </span>
+                  </div>
+
+                  <h3 className="text-xl font-black mb-2">{item.title}</h3>
+                  <div className="text-sm text-slate-500 mb-4">{item.period}</div>
+
+                  <div className="mb-4">
+                    <div className="text-xs text-slate-500 mb-1">Затраты</div>
+                    <div className={cn("text-2xl font-black", `text-${item.color}-400`)}>
+                      ${item.cost.toLocaleString()}
+                    </div>
+                  </div>
+
+                  <div className="mb-4">
+                    <div className="text-xs text-slate-500 mb-2">Технологии:</div>
+                    <div className="flex flex-wrap gap-1">
+                      {item.technologies.slice(0, 3).map((tech, j) => (
+                        <span key={j} className="px-2 py-1 bg-white/5 rounded text-xs">
+                          {tech}
+                        </span>
+                      ))}
+                      {item.technologies.length > 3 && (
+                        <span className="px-2 py-1 bg-white/5 rounded text-xs">
+                          +{item.technologies.length - 3}
+                        </span>
+                      )}
+                    </div>
+                  </div>
+
+                  <div>
+                    <div className="text-xs text-slate-500 mb-2">Результаты:</div>
+                    <ul className="space-y-1">
+                      {item.results.map((result, j) => (
+                        <li key={j} className="text-xs text-slate-400 flex items-center gap-2">
+                          <CheckCircle2 size={12} className="text-green-400" />
+                          {result}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                </motion.div>
+              );
+            })}
+          </div>
+
+          <div className="glass-card p-6 bg-gradient-to-r from-green-500/10 to-cyan-500/10 border border-green-500/30">
+            <div className="flex items-center justify-between">
+              <div>
+                <div className="text-sm text-slate-500 mb-1">Общая сумма инвестиций</div>
+                <div className="text-4xl font-black text-green-400">${totalCompleted.toLocaleString()}</div>
+              </div>
+              <div className="text-right">
+                <div className="text-sm text-slate-500 mb-1">Статус</div>
+                <div className="text-xl font-black text-cyan-glow">Альфа-версия</div>
+              </div>
+            </div>
+          </div>
+        </motion.section>
+      )}
 
       {/* Key Metrics */}
       <motion.div
@@ -315,6 +542,219 @@ export default function RoadmapPage() {
             )}
         </div>
       </div>
+
+      {/* Будущие этапы с карточками */}
+      <motion.section
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.4 }}
+        className="mt-16 mb-16"
+      >
+        <h2 className="text-3xl font-black mb-8 text-center">Планируемые этапы развития</h2>
+        
+        <div className="grid md:grid-cols-2 gap-6">
+          {/* Блокчейн */}
+          <motion.div
+            initial={{ opacity: 0, x: -20 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            className="glass-card p-6 border-2 border-purple-500/30 bg-purple-500/5 rounded-2xl"
+          >
+            <div className="flex items-center gap-4 mb-4">
+              <div className="w-14 h-14 rounded-xl bg-purple-500/20 flex items-center justify-center text-purple-400">
+                <Shield size={28} />
+              </div>
+              <div>
+                <h3 className="text-xl font-black">Блокчейн инфраструктура</h3>
+                <div className="text-sm text-slate-500">Q3-Q4 2024</div>
+              </div>
+            </div>
+            <div className="mb-4">
+              <div className="text-xs text-slate-500 mb-1">Бюджет</div>
+              <div className="text-3xl font-black text-purple-400">$500,000</div>
+            </div>
+            <div className="space-y-2">
+              <div className="text-xs text-slate-500 mb-2">Технологии:</div>
+              <ul className="space-y-1 text-sm text-slate-400">
+                <li className="flex items-center gap-2">
+                  <CheckCircle2 size={12} className="text-purple-400" />
+                  VOD Chain (собственный блокчейн)
+                </li>
+                <li className="flex items-center gap-2">
+                  <CheckCircle2 size={12} className="text-purple-400" />
+                  Hybrid Consensus (PoS + PoA)
+                </li>
+                <li className="flex items-center gap-2">
+                  <CheckCircle2 size={12} className="text-purple-400" />
+                  TPS: 10,000+ транзакций/сек
+                </li>
+                <li className="flex items-center gap-2">
+                  <CheckCircle2 size={12} className="text-purple-400" />
+                  Шардинг (64 шарда)
+                </li>
+                <li className="flex items-center gap-2">
+                  <CheckCircle2 size={12} className="text-purple-400" />
+                  Валидаторная сеть (10,000+ узлов)
+                </li>
+              </ul>
+            </div>
+          </motion.div>
+
+          {/* Маркетинг */}
+          <motion.div
+            initial={{ opacity: 0, x: 20 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            className="glass-card p-6 border-2 border-yellow-500/30 bg-yellow-500/5 rounded-2xl"
+          >
+            <div className="flex items-center gap-4 mb-4">
+              <div className="w-14 h-14 rounded-xl bg-yellow-500/20 flex items-center justify-center text-yellow-400">
+                <TrendingUp size={28} />
+              </div>
+              <div>
+                <h3 className="text-xl font-black">Маркетинг и продвижение</h3>
+                <div className="text-sm text-slate-500">Q3 2024 - Q1 2025</div>
+              </div>
+            </div>
+            <div className="mb-4">
+              <div className="text-xs text-slate-500 mb-1">Бюджет</div>
+              <div className="text-3xl font-black text-yellow-400">$300,000</div>
+            </div>
+            <div className="space-y-2">
+              <div className="text-xs text-slate-500 mb-2">Направления:</div>
+              <ul className="space-y-1 text-sm text-slate-400">
+                <li className="flex items-center gap-2">
+                  <CheckCircle2 size={12} className="text-yellow-400" />
+                  Контент-маркетинг
+                </li>
+                <li className="flex items-center gap-2">
+                  <CheckCircle2 size={12} className="text-yellow-400" />
+                  Социальные сети
+                </li>
+                <li className="flex items-center gap-2">
+                  <CheckCircle2 size={12} className="text-yellow-400" />
+                  Партнёрства с экологическими организациями
+                </li>
+                <li className="flex items-center gap-2">
+                  <CheckCircle2 size={12} className="text-yellow-400" />
+                  Конференции и мероприятия
+                </li>
+                <li className="flex items-center gap-2">
+                  <CheckCircle2 size={12} className="text-yellow-400" />
+                  PR кампании
+                </li>
+              </ul>
+            </div>
+          </motion.div>
+
+          {/* Интеграции */}
+          <motion.div
+            initial={{ opacity: 0, x: -20 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            className="glass-card p-6 border-2 border-blue-500/30 bg-blue-500/5 rounded-2xl"
+          >
+            <div className="flex items-center gap-4 mb-4">
+              <div className="w-14 h-14 rounded-xl bg-blue-500/20 flex items-center justify-center text-blue-400">
+                <Network size={28} />
+              </div>
+              <div>
+                <h3 className="text-xl font-black">Интеграции</h3>
+                <div className="text-sm text-slate-500">Q4 2024 - Q2 2025</div>
+              </div>
+            </div>
+            <div className="mb-4">
+              <div className="text-xs text-slate-500 mb-1">Бюджет</div>
+              <div className="text-3xl font-black text-blue-400">$400,000</div>
+            </div>
+            <div className="space-y-2">
+              <div className="text-xs text-slate-500 mb-2">Партнёрства:</div>
+              <ul className="space-y-1 text-sm text-slate-400">
+                <li className="flex items-center gap-2">
+                  <CheckCircle2 size={12} className="text-blue-400" />
+                  UN-Water, UNEP
+                </li>
+                <li className="flex items-center gap-2">
+                  <CheckCircle2 size={12} className="text-blue-400" />
+                  Regen Network
+                </li>
+                <li className="flex items-center gap-2">
+                  <CheckCircle2 size={12} className="text-blue-400" />
+                  Государственные системы
+                </li>
+                <li className="flex items-center gap-2">
+                  <CheckCircle2 size={12} className="text-blue-400" />
+                  API и SDK для разработчиков
+                </li>
+                <li className="flex items-center gap-2">
+                  <CheckCircle2 size={12} className="text-blue-400" />
+                  Кросс-чейн мосты
+                </li>
+              </ul>
+            </div>
+          </motion.div>
+
+          {/* Производство */}
+          <motion.div
+            initial={{ opacity: 0, x: 20 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            className="glass-card p-6 border-2 border-emerald-500/30 bg-emerald-500/5 rounded-2xl"
+          >
+            <div className="flex items-center gap-4 mb-4">
+              <div className="w-14 h-14 rounded-xl bg-emerald-500/20 flex items-center justify-center text-emerald-400">
+                <Cpu size={28} />
+              </div>
+              <div>
+                <h3 className="text-xl font-black">Производство технологий</h3>
+                <div className="text-sm text-slate-500">Q1-Q4 2025</div>
+              </div>
+            </div>
+            <div className="mb-4">
+              <div className="text-xs text-slate-500 mb-1">Бюджет</div>
+              <div className="text-3xl font-black text-emerald-400">$2,000,000</div>
+            </div>
+            <div className="space-y-2">
+              <div className="text-xs text-slate-500 mb-2">Продукция:</div>
+              <ul className="space-y-1 text-sm text-slate-400">
+                <li className="flex items-center gap-2">
+                  <CheckCircle2 size={12} className="text-emerald-400" />
+                  Карманные анализаторы VOD Check (массовое производство)
+                </li>
+                <li className="flex items-center gap-2">
+                  <CheckCircle2 size={12} className="text-emerald-400" />
+                  IoT датчики (10,000+ единиц)
+                </li>
+                <li className="flex items-center gap-2">
+                  <CheckCircle2 size={12} className="text-emerald-400" />
+                  Системы мониторинга для промышленности
+                </li>
+                <li className="flex items-center gap-2">
+                  <CheckCircle2 size={12} className="text-emerald-400" />
+                  Мобильные лаборатории
+                </li>
+                <li className="flex items-center gap-2">
+                  <CheckCircle2 size={12} className="text-emerald-400" />
+                  Оборудование для очистных станций
+                </li>
+              </ul>
+            </div>
+          </motion.div>
+        </div>
+
+        <div className="mt-8 glass-card p-6 bg-gradient-to-r from-purple-500/10 via-blue-500/10 to-emerald-500/10 border border-purple-500/30">
+          <div className="flex items-center justify-between">
+            <div>
+              <div className="text-sm text-slate-500 mb-1">Общий бюджет планируемых этапов</div>
+              <div className="text-4xl font-black text-cyan-glow">$3,200,000</div>
+            </div>
+            <div className="text-right">
+              <div className="text-sm text-slate-500 mb-1">Всего инвестиций</div>
+              <div className="text-2xl font-black text-white">${(totalCompleted + 3200000).toLocaleString()}</div>
+            </div>
+          </div>
+        </div>
+      </motion.section>
 
       {/* All Years Overview */}
       <motion.div

@@ -409,3 +409,10 @@ interface TelegramWebAppInstance {
 }
 
 
+
+
+
+
+
+
+

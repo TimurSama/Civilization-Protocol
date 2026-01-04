@@ -167,8 +167,8 @@ export default function InvestorPresentation() {
 
   return (
     <div className="min-h-screen bg-black text-white overflow-hidden">
-      {/* Header */}
-      <div className="fixed top-0 left-0 right-0 z-50 bg-black/80 backdrop-blur-xl border-b border-white/10">
+      {/* Header - под главным Navbar */}
+      <div className="sticky top-20 left-0 right-0 z-[90] bg-black/80 backdrop-blur-xl border-b border-white/10">
         <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
           <Link href="/" className="flex items-center gap-2">
             <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-cyan-500 to-blue-600 flex items-center justify-center">
@@ -230,7 +230,7 @@ export default function InvestorPresentation() {
       </button>
 
       {/* Slides */}
-      <div className="pt-20 min-h-screen flex items-center justify-center px-4">
+      <div className="min-h-screen flex items-center justify-center px-4">
         <AnimatePresence mode="wait">
           <motion.div
             key={currentSlide}
@@ -690,5 +690,12 @@ export default function InvestorPresentation() {
     </div>
   );
 }
+
+
+
+
+
+
+
 
 

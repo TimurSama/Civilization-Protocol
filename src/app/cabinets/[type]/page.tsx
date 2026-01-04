@@ -486,7 +486,14 @@ export default function CabinetPage() {
                   {t.viewMode}
                   <span className="px-2 py-0.5 bg-cyan-500/20 rounded text-xs">DEMO</span>
                 </div>
-                <p className="text-sm text-slate-400 max-w-lg">{t.viewModeDesc}</p>
+                <p className="text-sm text-slate-400 max-w-lg">
+                  {language === 'ru' 
+                    ? 'Вы просматриваете кабинет в демо-режиме. Для полного доступа и работы в кабинете необходимо войти в систему и пройти верификацию.'
+                    : language === 'ar'
+                    ? 'أنت تشاهد المكتب في الوضع التجريبي. للوصول الكامل والعمل في المكتب، يجب تسجيل الدخول وإكمال التحقق.'
+                    : 'You are viewing the cabinet in demo mode. To get full access and work in the cabinet, you need to sign in and complete verification.'
+                  }
+                </p>
               </div>
             </div>
             <div className="flex gap-3">
@@ -495,12 +502,22 @@ export default function CabinetPage() {
                   <LogIn size={18} /> {t.signIn}
                 </Link>
               ) : (
-                <button 
-                  onClick={() => setShowAuthModal(true)}
-                  className="px-6 py-3 bg-gradient-to-r from-cyan-500 to-blue-500 text-white rounded-xl font-bold flex items-center gap-2 hover:opacity-90 transition-opacity"
-                >
-                  <ShieldCheck size={18} /> {t.verify}
-                </button>
+                <div className="flex flex-col items-end gap-2">
+                  <button 
+                    onClick={() => setShowAuthModal(true)}
+                    className="px-6 py-3 bg-gradient-to-r from-cyan-500 to-blue-500 text-white rounded-xl font-bold flex items-center gap-2 hover:opacity-90 transition-opacity"
+                  >
+                    <ShieldCheck size={18} /> {t.verify}
+                  </button>
+                  <p className="text-xs text-slate-500 text-right max-w-[200px]">
+                    {language === 'ru' 
+                      ? 'Для работы в кабинете необходима верификация'
+                      : language === 'ar'
+                      ? 'التحقق مطلوب للعمل في المكتب'
+                      : 'Verification required to work in the cabinet'
+                    }
+                  </p>
+                </div>
               )}
             </div>
           </div>
@@ -569,10 +586,27 @@ export default function CabinetPage() {
                   </div>
                 </div>
                 
-                <button className={cn("w-full py-4 rounded-xl font-bold flex items-center justify-center gap-2", colors.bg, colors.text)}>
-                  <ShieldCheck size={20} />
-                  {language === 'ru' ? 'Начать верификацию' : language === 'ar' ? 'بدء التحقق' : 'Start Verification'}
-                </button>
+                <div>
+                  <button 
+                    onClick={() => {
+                      // Здесь будет логика начала верификации
+                      setShowAuthModal(false);
+                      // Можно перенаправить на страницу верификации
+                    }}
+                    className={cn("w-full py-4 rounded-xl font-bold flex items-center justify-center gap-2 transition-all hover:scale-105", colors.bg, colors.text)}
+                  >
+                    <ShieldCheck size={20} />
+                    {language === 'ru' ? 'Начать верификацию' : language === 'ar' ? 'بدء التحقق' : 'Start Verification'}
+                  </button>
+                  <p className="text-xs text-center text-slate-500 mt-2">
+                    {language === 'ru' 
+                      ? 'Верификация необходима для работы в кабинете'
+                      : language === 'ar'
+                      ? 'التحقق مطلوب للعمل في المكتب'
+                      : 'Verification is required to work in the cabinet'
+                    }
+                  </p>
+                </div>
                 
                 <button 
                   onClick={() => setShowAuthModal(false)}
