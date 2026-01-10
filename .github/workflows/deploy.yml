@@ -45,12 +45,18 @@ jobs:
           echo "Please check the build logs above for TypeScript errors."
           exit 1
 
-      - name: Deploy to Vercel
-        if: steps.build.outcome == 'success'
-        uses: amondnet/vercel-action@v25
-        with:
-          vercel-token: ${{ secrets.VERCEL_TOKEN }}
-          vercel-org-id: ${{ secrets.ORG_ID }}
-          vercel-project-id: ${{ secrets.PROJECT_ID }}
-          vercel-args: '--prod'
-          scope: ${{ secrets.VERCEL_ORG_ID }}
+      # Deploy to Vercel
+      # ⚠️ ВРЕМЕННО ОТКЛЮЧЕНО: Для включения деплоя добавьте секреты в GitHub:
+      # Settings → Secrets and variables → Actions → New repository secret
+      # Требуемые секреты: VERCEL_TOKEN, VERCEL_ORG_ID, VERCEL_PROJECT_ID
+      # Инструкция: см. docs/VERCEL_DEPLOY_SETUP.md
+      #
+      # - name: Deploy to Vercel
+      #   if: steps.build.outcome == 'success'
+      #   uses: amondnet/vercel-action@v25
+      #   with:
+      #     vercel-token: ${{ secrets.VERCEL_TOKEN }}
+      #     vercel-org-id: ${{ secrets.VERCEL_ORG_ID }}
+      #     vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID }}
+      #     vercel-args: '--prod'
+      #     scope: ${{ secrets.VERCEL_ORG_ID }}
