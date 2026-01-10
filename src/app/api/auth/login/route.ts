@@ -2,6 +2,10 @@ import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/lib/db';
 import { verifyPassword, createSession } from '@/lib/auth';
 
+// Убеждаемся, что route динамический (не статический)
+export const dynamic = 'force-dynamic';
+export const runtime = 'nodejs';
+
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
@@ -12,6 +16,15 @@ export async function POST(request: NextRequest) {
       return NextResponse.json(
         { success: false, error: 'Email и пароль обязательны' },
         { status: 400 }
+      );
+    }
+
+    // Проверяем доступность БД
+    if (!process.env.DATABASE_URL) {
+      console.error('DATABASE_URL is not set');
+      return NextResponse.json(
+        { success: false, error: 'Database configuration error' },
+        { status: 500 }
       );
     }
 
