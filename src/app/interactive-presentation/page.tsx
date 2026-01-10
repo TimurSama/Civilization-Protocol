@@ -2991,7 +2991,6 @@ ROI водных проектов: $4-12 на каждый вложенный $1
               </div>
             </motion.div>
           )}
-          </AnimatePresence>
         </div>
       )}
 

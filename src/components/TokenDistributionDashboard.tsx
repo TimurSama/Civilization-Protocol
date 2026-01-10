@@ -4,7 +4,7 @@ import { useState } from "react";
 import { motion } from "framer-motion";
 import {
   Users, Building2, Coins, Lock, Handshake, TrendingUp,
-  ArrowRight, Calendar, ExternalLink, Info
+  ArrowRight, Calendar, ExternalLink, Info, Zap
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import InfoPopup from "./InfoPopup";

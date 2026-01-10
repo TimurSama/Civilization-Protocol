@@ -155,7 +155,7 @@ export default function LiveMetric({
 
         <div className="text-sm text-slate-400 font-medium">{label}</div>
 
-        {TrendIcon && trendValue && (
+        {TrendIcon && trendValue && trend && (
           <div className={cn("flex items-center gap-1 text-xs font-medium", trendColors[trend])}>
             <TrendIcon size={14} />
             <span>{trendValue}</span>

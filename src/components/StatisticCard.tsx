@@ -54,7 +54,7 @@ export default function StatisticCard({
             <Icon className="text-cyan-400" size={20} />
           </div>
         )}
-        {TrendIcon && trendValue && (
+        {TrendIcon && trendValue && trend && (
           <div className={cn("flex items-center gap-1 text-xs", trendColors[trend])}>
             <TrendIcon size={14} />
             <span>{trendValue}</span>
