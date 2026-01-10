@@ -13,6 +13,25 @@ prisma/dev.db
 docs/*.pdf
 docs/*.docx
 
+# Ignore Python files (not used in this Next.js project)
+requirements.txt
+*.py
+*.pyc
+__pycache__/
+.python-version
+pip-log.txt
+pip-delete-this-directory.txt
+venv/
+env/
+ENV/
+
+# Ignore other project directories that might confuse Vercel
+VODeco/
+webapp/
+api/
+core/
+assistant/
+
 
 
 
