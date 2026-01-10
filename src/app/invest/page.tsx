@@ -139,7 +139,7 @@ export default function InvestPage() {
           </span>
         </h1>
         <p className="text-xl text-slate-400 max-w-3xl mx-auto mb-8">
-          VODeco создаёт глобальную децентрализованную экосистему для прозрачного 
+          CivilizationProtocol создаёт глобальную децентрализованную экосистему для прозрачного 
           и эффективного управления водными ресурсами планеты
         </p>
         <div className="flex flex-wrap justify-center gap-4">
@@ -203,7 +203,7 @@ export default function InvestPage() {
           </ul>
         </div>
         <div className="glass-card p-8 border-green-500/20">
-          <h3 className="text-2xl font-black mb-4 text-green-400">Решение VODeco</h3>
+          <h3 className="text-2xl font-black mb-4 text-green-400">Решение CivilizationProtocol</h3>
           <ul className="space-y-3">
             <li className="flex items-start gap-3">
               <CheckCircle2 className="text-green-500 mt-0.5 flex-shrink-0" size={18} />

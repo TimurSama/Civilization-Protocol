@@ -444,7 +444,7 @@ export default function EcosystemDomainPage() {
               </div>
               <div>
                 <div className="font-bold flex items-center gap-2">
-                  VODeco Water
+                  CivilizationProtocol Water
                   <span className="px-2 py-0.5 bg-green-500/20 text-green-400 rounded text-xs font-bold">
                     {t.activeNow}
                   </span>

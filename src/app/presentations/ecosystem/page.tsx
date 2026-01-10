@@ -12,6 +12,7 @@ import {
 import Link from "next/link";
 import dynamic from "next/dynamic";
 import { cn } from "@/lib/utils";
+import InfoPopup from "@/components/InfoPopup";
 
 // Dynamic import for 3D Globe
 const Globe3D = dynamic(() => import("@/components/Globe3D"), {
@@ -35,7 +36,7 @@ const layers = [
 
 // Zoom levels
 const zoomLevels = [
-  { level: 1, name: "Планетарный", description: "Глобальная сеть VODeco" },
+  { level: 1, name: "Планетарный", description: "Глобальная сеть CivilizationProtocol" },
   { level: 2, name: "Региональный", description: "Проекты по странам" },
   { level: 3, name: "Локальный", description: "Конкретные объекты" },
   { level: 4, name: "Детальный", description: "Real-time данные" },
@@ -57,7 +58,7 @@ const ecosystemData = [
       coverage: "340 km²",
       budget: "$2.5M"
     },
-    description: "Первый полномасштабный пилот VODeco в Ферганской долине"
+    description: "Первый полномасштабный пилот CivilizationProtocol в Ферганской долине"
   },
   {
     id: 2,
@@ -175,7 +176,7 @@ export default function EcosystemPresentation() {
   };
 
   return (
-    <div className="min-h-screen bg-slate-950 text-white overflow-hidden">
+    <div className="min-h-screen text-white overflow-hidden">
       {/* Header - под главным Navbar */}
       <div className="sticky top-20 left-0 right-0 z-[90] bg-slate-950/90 backdrop-blur-xl border-b border-teal-500/20">
         <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
@@ -235,21 +236,75 @@ export default function EcosystemPresentation() {
             Слои карты
           </h3>
           <div className="space-y-2">
-            {layers.map(layer => (
-              <button
-                key={layer.id}
-                onClick={() => setActiveLayer(layer.id)}
-                className={cn(
-                  "w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-all text-left",
-                  activeLayer === layer.id
-                    ? "bg-teal-500/20 border border-teal-500/50 text-teal-400"
-                    : "bg-slate-800/50 hover:bg-slate-800 text-slate-400"
-                )}
-              >
-                <span className={`text-${layer.color}-400`}>{layer.icon}</span>
-                <span className="text-sm">{layer.name}</span>
-              </button>
-            ))}
+            {layers.map(layer => {
+              const layerDetails = {
+                all: "Показать все слои экосистемы CivilizationProtocol одновременно. Включает водные объекты, инфраструктуру, IoT-сенсоры, проекты и исследовательские центры.",
+                water: "Водные объекты: реки, озёра, водохранилища, подземные воды. Отображает текущее состояние и качество водных ресурсов в реальном времени.",
+                infrastructure: "Инфраструктура: станции очистки, насосные станции, водопроводные сети, опреснительные установки. Показывает техническую инфраструктуру водного сектора.",
+                sensors: "IoT-сенсоры: точки мониторинга качества воды, уровня, температуры и других параметров. Обеспечивают непрерывный сбор данных в режиме реального времени.",
+                projects: "Проекты CivilizationProtocol: активные и планируемые проекты по улучшению водных ресурсов. Включает пилотные программы, масштабные инициативы и партнёрства.",
+                research: "Исследовательские центры: научные институты, университеты и лаборатории, работающие с CivilizationProtocol. Показывает места проведения исследований и разработок.",
+              };
+              
+              return (
+                <InfoPopup
+                  key={layer.id}
+                  title={layer.name}
+                  content={
+                    <div className="space-y-3">
+                      <p className="text-sm">{layerDetails[layer.id as keyof typeof layerDetails]}</p>
+                      <div>
+                        <h4 className="font-bold mb-2">Элементы слоя:</h4>
+                        <p className="text-sm text-slate-400">
+                          {layer.id === "all" && "Все типы объектов экосистемы"}
+                          {layer.id === "water" && "Реки, озёра, водохранилища, подземные воды"}
+                          {layer.id === "infrastructure" && "Станции очистки, насосные станции, водопроводные сети"}
+                          {layer.id === "sensors" && "IoT-датчики, спутниковые данные, телеметрия"}
+                          {layer.id === "projects" && "Пилотные проекты, масштабные инициативы, партнёрства"}
+                          {layer.id === "research" && "Научные институты, университеты, исследовательские лаборатории"}
+                        </p>
+                      </div>
+                    </div>
+                  }
+                  trigger={
+                    <button
+                      onClick={() => setActiveLayer(layer.id)}
+                      className={cn(
+                        "w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-all text-left cursor-pointer group relative overflow-hidden",
+                        activeLayer === layer.id
+                          ? "bg-teal-500/20 border border-teal-500/50 text-teal-400"
+                          : "bg-slate-800/50 hover:bg-slate-800 text-slate-400"
+                      )}
+                    >
+                      {/* Градиентный фон при hover */}
+                      <motion.div
+                        className="absolute inset-0 bg-gradient-to-r from-teal-500/0 to-cyan-500/0 group-hover:from-teal-500/10 group-hover:to-cyan-500/5 transition-all duration-300"
+                      />
+                      
+                      <span className={`text-${layer.color}-400 relative z-10 group-hover:scale-110 transition-transform`}>
+                        {layer.icon}
+                      </span>
+                      <span className="text-sm relative z-10 group-hover:text-white transition-colors">
+                        {layer.name}
+                      </span>
+                      
+                      {/* Декоративные элементы */}
+                      {activeLayer === layer.id && (
+                        <motion.div
+                          className="absolute right-2 w-2 h-2 rounded-full bg-teal-400"
+                          animate={{
+                            scale: [1, 1.3, 1],
+                            opacity: [0.5, 1, 0.5],
+                          }}
+                          transition={{ duration: 2, repeat: Infinity }}
+                        />
+                      )}
+                    </button>
+                  }
+                  size="md"
+                />
+              );
+            })}
           </div>
 
           {/* Timeline toggle */}
@@ -365,27 +420,98 @@ export default function EcosystemPresentation() {
               </h3>
               <div className="space-y-2">
                 {filteredData.map(item => (
-                  <button
+                  <InfoPopup
                     key={item.id}
-                    onClick={() => setSelectedItem(item)}
-                    className="w-full flex items-center gap-3 p-3 rounded-lg bg-slate-800/50 hover:bg-slate-800 transition-colors text-left"
-                  >
-                    <div className={cn(
-                      "w-8 h-8 rounded-lg flex items-center justify-center",
-                      item.type === "project" ? "bg-purple-500/20 text-purple-400" :
-                      item.type === "research" ? "bg-blue-500/20 text-blue-400" :
-                      item.type === "sensors" ? "bg-green-500/20 text-green-400" :
-                      item.type === "infrastructure" ? "bg-orange-500/20 text-orange-400" :
-                      "bg-cyan-500/20 text-cyan-400"
-                    )}>
-                      {getTypeIcon(item.type)}
-                    </div>
-                    <div className="flex-1 min-w-0">
-                      <div className="font-medium text-sm truncate">{item.name}</div>
-                      <div className="text-xs text-slate-500">{item.region}</div>
-                    </div>
-                    <div className={cn("w-2 h-2 rounded-full", getStatusColor(item.status))} />
-                  </button>
+                    title={item.name}
+                    content={
+                      <div className="space-y-3">
+                        <p className="text-sm">{item.description}</p>
+                        <div>
+                          <h4 className="font-bold mb-2">Метрики:</h4>
+                          <div className="grid grid-cols-2 gap-2 text-sm">
+                            {Object.entries(item.metrics).map(([key, value]) => (
+                              <div key={key} className="p-2 rounded bg-slate-800/50">
+                                <div className="text-slate-400 text-xs mb-1">
+                                  {key === "sensors" ? "Сенсоров" :
+                                   key === "dataPoints" ? "Data Points" :
+                                   key === "coverage" ? "Покрытие" :
+                                   key === "budget" ? "Бюджет" :
+                                   key === "researchers" ? "Исследователей" :
+                                   key === "publications" ? "Публикаций" :
+                                   key === "datasets" ? "Датасетов" :
+                                   key === "partners" ? "Партнёров" :
+                                   key === "lastUpdate" ? "Обновление" :
+                                   key === "alerts" ? "Алертов" :
+                                   key === "facilities" ? "Объектов" :
+                                   key === "capacity" ? "Мощность" :
+                                   key === "investment" ? "Инвестиции" :
+                                   key === "timeline" ? "Сроки" :
+                                   key === "countries" ? "Стран" :
+                                   key === "stations" ? "Станций" :
+                                   key === "quality" ? "Качество" :
+                                   key === "flow" ? "Расход" :
+                                   key}
+                                </div>
+                                <div className="font-bold text-white">{String(value)}</div>
+                              </div>
+                            ))}
+                          </div>
+                        </div>
+                        <div>
+                          <h4 className="font-bold mb-2">Статус:</h4>
+                          <p className="text-sm text-slate-400">
+                            {item.status === "active" && "Проект активно работает и собирает данные"}
+                            {item.status === "monitoring" && "Ведётся постоянный мониторинг состояния"}
+                            {item.status === "planning" && "Проект находится в стадии планирования"}
+                            {item.status === "completed" && "Проект успешно завершён"}
+                          </p>
+                        </div>
+                      </div>
+                    }
+                    trigger={
+                      <button
+                        onClick={() => setSelectedItem(item)}
+                        className="w-full flex items-center gap-3 p-3 rounded-lg bg-slate-800/50 hover:bg-slate-800 transition-all text-left cursor-pointer group relative overflow-hidden"
+                      >
+                        {/* Градиентный фон при hover */}
+                        <motion.div
+                          className="absolute inset-0 bg-gradient-to-r from-teal-500/0 to-cyan-500/0 group-hover:from-teal-500/10 group-hover:to-cyan-500/5 transition-all duration-300"
+                        />
+                        
+                        <motion.div
+                          className={cn(
+                            "w-8 h-8 rounded-lg flex items-center justify-center relative z-10 group-hover:scale-110 transition-transform",
+                            item.type === "project" ? "bg-purple-500/20 text-purple-400" :
+                            item.type === "research" ? "bg-blue-500/20 text-blue-400" :
+                            item.type === "sensors" ? "bg-green-500/20 text-green-400" :
+                            item.type === "infrastructure" ? "bg-orange-500/20 text-orange-400" :
+                            "bg-cyan-500/20 text-cyan-400"
+                          )}
+                          whileHover={{ rotate: 360 }}
+                          transition={{ duration: 0.5 }}
+                        >
+                          {getTypeIcon(item.type)}
+                        </motion.div>
+                        <div className="flex-1 min-w-0 relative z-10">
+                          <div className="font-medium text-sm truncate group-hover:text-white transition-colors">
+                            {item.name}
+                          </div>
+                          <div className="text-xs text-slate-500 group-hover:text-slate-400 transition-colors">
+                            {item.region}
+                          </div>
+                        </div>
+                        <motion.div
+                          className={cn("w-2 h-2 rounded-full relative z-10", getStatusColor(item.status))}
+                          animate={{
+                            scale: [1, 1.3, 1],
+                            opacity: [0.7, 1, 0.7],
+                          }}
+                          transition={{ duration: 2, repeat: Infinity }}
+                        />
+                      </button>
+                    }
+                    size="lg"
+                  />
                 ))}
               </div>
             </div>

@@ -422,7 +422,7 @@ export default function ProjectHubPage() {
     };
 
     return (
-        <div className={cn("min-h-screen bg-ocean-deep py-24 px-4", isRTL && "text-right")}>
+        <div className={cn("min-h-screen py-24 px-4", isRTL && "text-right")}>
             <div className="max-w-7xl mx-auto">
                 {/* Header */}
                 <div className="mb-8">

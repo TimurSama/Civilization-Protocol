@@ -117,7 +117,7 @@ export function exportToPDF(elementId: string, filename: string) {
         </style>
       </head>
       <body>
-        <h1>VODeco Report - ${filename}</h1>
+        <h1>CivilizationProtocol Report - ${filename}</h1>
         <p style="color: #64748b; margin-bottom: 24px;">Generated: ${new Date().toLocaleString()}</p>
         ${element.innerHTML}
       </body>
@@ -276,6 +276,14 @@ export function exportProposalData(proposals: {
   
   exportToCSV(proposals, filename);
 }
+
+
+
+
+
+
+
+
 
 
 

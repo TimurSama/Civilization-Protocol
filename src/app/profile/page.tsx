@@ -141,7 +141,7 @@ export default function ProfilePage() {
           <div className="w-20 h-20 rounded-3xl bg-gradient-to-br from-cyan-500 to-blue-600 mx-auto mb-8 flex items-center justify-center shadow-2xl shadow-cyan-500/20">
             <UserPlus className="text-white" size={32} />
           </div>
-          <h1 className="text-3xl font-black mb-4">Присоединяйтесь к VODeco</h1>
+          <h1 className="text-3xl font-black mb-4">Присоединяйтесь к CivilizationProtocol</h1>
           <p className="text-slate-400 mb-8">Войдите или зарегистрируйтесь для доступа к профилю</p>
           <div className="space-y-4">
             <Link

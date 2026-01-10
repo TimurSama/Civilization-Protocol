@@ -2,19 +2,19 @@ import type { Metadata } from "next";
 
 export const siteMetadata: Metadata = {
   title: {
-    default: "VODeco - DAO Платформа для Управления Водными Ресурсами",
-    template: "%s | VODeco"
+    default: "CivilizationProtocol - DAO Платформа для Управления Водными Ресурсами",
+    template: "%s | CivilizationProtocol"
   },
   description: "Первая децентрализованная платформа для управления водными ресурсами человечества. Присоединяйтесь к DAO, участвуйте в голосованиях, инвестируйте в проекты и получайте награды за активность.",
   keywords: [
-    "VODeco", "DAO", "вода", "водные ресурсы", "блокчейн", "Web3",
+    "CivilizationProtocol", "DAO", "вода", "водные ресурсы", "блокчейн", "Web3",
     "экология", "устойчивое развитие", "SDG", "ESG", "IoT",
     "децентрализация", "голосование", "токены", "VOD",
     "water management", "decentralized", "governance"
   ],
-  authors: [{ name: "VODeco Team" }],
-  creator: "VODeco",
-  publisher: "VODeco DAO",
+  authors: [{ name: "CivilizationProtocol Team" }],
+  creator: "CivilizationProtocol",
+  publisher: "CivilizationProtocol DAO",
   robots: {
     index: true,
     follow: true,
@@ -31,21 +31,21 @@ export const siteMetadata: Metadata = {
     locale: "ru_RU",
     alternateLocale: ["en_US", "ar_SA"],
     url: "https://vodeco.org",
-    siteName: "VODeco",
-    title: "VODeco - DAO Платформа для Управления Водными Ресурсами",
+    siteName: "CivilizationProtocol",
+    title: "CivilizationProtocol - DAO Платформа для Управления Водными Ресурсами",
     description: "Первая децентрализованная платформа для управления водными ресурсами человечества. Присоединяйтесь к DAO!",
     images: [
       {
         url: "/og-image.png",
         width: 1200,
         height: 630,
-        alt: "VODeco Platform",
+        alt: "CivilizationProtocol Platform",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "VODeco - DAO Платформа для Управления Водными Ресурсами",
+    title: "CivilizationProtocol - DAO Платформа для Управления Водными Ресурсами",
     description: "Первая децентрализованная платформа для управления водными ресурсами человечества.",
     images: ["/twitter-image.png"],
     creator: "@vodeco_dao",
@@ -76,15 +76,15 @@ export const pageMetadata = {
   },
   dao: {
     title: "DAO - Голосования и предложения",
-    description: "Участвуйте в управлении экосистемой VODeco. Голосуйте за проекты, распределение средств и развитие платформы."
+    description: "Участвуйте в управлении экосистемой CivilizationProtocol. Голосуйте за проекты, распределение средств и развитие платформы."
   },
   tokenhub: {
     title: "TokenHub - Проекты для инвестиций",
     description: "Инвестируйте в водные проекты по всему миру. ESG-показатели, прозрачная отчётность и VOD награды."
   },
   whitepaper: {
-    title: "White Paper - Документация VODeco",
-    description: "Полная документация экосистемы VODeco: архитектура, токеномика, DAO, roadmap и техническая спецификация."
+    title: "White Paper - Документация CivilizationProtocol",
+    description: "Полная документация экосистемы CivilizationProtocol: архитектура, токеномика, DAO, roadmap и техническая спецификация."
   },
   social: {
     title: "Социальная сеть",
@@ -92,7 +92,7 @@ export const pageMetadata = {
   },
   profile: {
     title: "Профиль пользователя",
-    description: "Управляйте профилем, отслеживайте награды и достижения в экосистеме VODeco."
+    description: "Управляйте профилем, отслеживайте награды и достижения в экосистеме CivilizationProtocol."
   },
   missions: {
     title: "Миссии и достижения",
@@ -100,15 +100,15 @@ export const pageMetadata = {
   },
   presentation: {
     title: "Интерактивная презентация",
-    description: "Погрузитесь в мир VODeco: 3D визуализация, Learn-to-Earn и полная информация об экосистеме."
+    description: "Погрузитесь в мир CivilizationProtocol: 3D визуализация, Learn-to-Earn и полная информация об экосистеме."
   },
   landing: {
-    title: "Присоединяйтесь к VODeco",
-    description: "Зарегистрируйтесь на бета-тест платформы VODeco и получите эксклюзивные бонусы для пионеров."
+    title: "Присоединяйтесь к CivilizationProtocol",
+    description: "Зарегистрируйтесь на бета-тест платформы CivilizationProtocol и получите эксклюзивные бонусы для пионеров."
   },
   invest: {
     title: "Инвестиционное предложение",
-    description: "Инвестируйте в развитие экосистемы VODeco. Roadmap, токеномика и условия участия."
+    description: "Инвестируйте в развитие экосистемы CivilizationProtocol. Roadmap, токеномика и условия участия."
   },
   cabinets: {
     title: "Специализированные кабинеты",
@@ -123,6 +123,14 @@ export const pageMetadata = {
     description: "Расширенное управление DAO: предложения, голосования, история и статистика."
   }
 };
+
+
+
+
+
+
+
+
 
 
 

@@ -100,7 +100,7 @@ export default function WhitePaperPage() {
     };
 
     return (
-        <div ref={containerRef} className={cn("min-h-screen bg-ocean-deep", isRTL && "text-right")}>
+        <div ref={containerRef} className={cn("min-h-screen", isRTL && "text-right")}>
             {/* Progress Bar */}
             <motion.div 
                 className="fixed top-0 left-0 right-0 h-1 bg-gradient-to-r from-cyan-500 to-blue-600 z-50 origin-left"
@@ -192,7 +192,7 @@ export default function WhitePaperPage() {
                             <BookOpen size={14} /> White Paper 2.0
                         </div>
                         <h1 className="text-5xl md:text-7xl lg:text-8xl font-black mb-8 text-glow-cyan tracking-tighter leading-none">
-                            VODeco <br /> <span className="text-white/20">Earth Standard</span>
+                            CivilizationProtocol <br /> <span className="text-white/20">Earth Standard</span>
                         </h1>
                         <p className="text-xl text-slate-400 leading-relaxed mb-12">
                             Децентрализованная кибер-физическая платформа для устойчивого управления водными ресурсами планеты
@@ -454,7 +454,7 @@ export default function WhitePaperPage() {
                         viewport={{ once: true }}
                         className="text-center mb-16"
                     >
-                        <h2 className="text-4xl font-black mb-4">Экосистема VODeco</h2>
+                        <h2 className="text-4xl font-black mb-4">Экосистема CivilizationProtocol</h2>
                         <p className="text-slate-400 max-w-2xl mx-auto">
                             Технологии, экономика и сообщество
                         </p>
@@ -715,7 +715,7 @@ export default function WhitePaperPage() {
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}
                     >
-                        <h2 className="text-4xl font-black mb-6">Присоединяйтесь к VODeco</h2>
+                        <h2 className="text-4xl font-black mb-6">Присоединяйтесь к CivilizationProtocol</h2>
                         <p className="text-xl text-slate-400 mb-8">
                             Станьте частью глобального движения за устойчивое управление водными ресурсами
                         </p>
@@ -736,7 +736,7 @@ export default function WhitePaperPage() {
                 <div className="max-w-7xl mx-auto px-4 text-center">
                     <div className="flex items-center justify-center gap-2 mb-6">
                         <Droplets className="text-cyan-500" size={24} />
-                        <span className="text-xl font-black tracking-tighter">VODeco</span>
+                        <span className="text-xl font-black tracking-tighter">CivilizationProtocol</span>
                     </div>
                     <p className="text-xs text-slate-600 font-bold uppercase tracking-widest">
                         International Standard for Water Resource Management

@@ -80,7 +80,7 @@ export default function NexusPage() {
     ];
 
     return (
-        <div className={cn("min-h-screen bg-ocean-deep py-24 px-4", isRTL && "text-right")}>
+        <div className={cn("min-h-screen py-24 px-4", isRTL && "text-right")}>
             <div className="max-w-7xl mx-auto">
                 {/* Hero */}
                 <div className="mb-16 text-center max-w-3xl mx-auto">

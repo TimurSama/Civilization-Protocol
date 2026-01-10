@@ -33,7 +33,7 @@ const presentations: Presentation[] = [
     number: 0,
     title: "Интерактивное путешествие",
     subtitle: "Основная презентация",
-    description: "Scroll-based storytelling с 3D глобусом, анимациями и Learn-to-Earn механикой. Погрузитесь в историю водного кризиса и решения VODeco.",
+    description: "Scroll-based storytelling с 3D глобусом, анимациями и Learn-to-Earn механикой. Погрузитесь в историю водного кризиса и решения CivilizationProtocol.",
     icon: <Globe size={32} />,
     color: "cyan",
     gradient: "from-cyan-500 to-blue-600",
@@ -195,7 +195,7 @@ export default function PresentationsPage() {
   );
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-ocean-deep via-slate-900 to-ocean-deep py-24 px-4">
+    <div className="min-h-screen py-24 px-4">
       <div className="max-w-7xl mx-auto">
         {/* Header */}
         <motion.div
@@ -205,7 +205,7 @@ export default function PresentationsPage() {
         >
           <div className="flex items-center justify-center gap-3 mb-6">
             <Sparkles className="text-cyan-glow" size={40} />
-            <h1 className="text-5xl md:text-6xl font-black">Презентации VODeco</h1>
+            <h1 className="text-5xl md:text-6xl font-black">Презентации CivilizationProtocol</h1>
           </div>
           <p className="text-xl text-slate-400 max-w-3xl mx-auto mb-8">
             Выберите формат презентации, который лучше всего подходит для вашей аудитории

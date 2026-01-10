@@ -37,7 +37,7 @@ interface Story {
 const demoStories: Story[] = [
   {
     id: "1",
-    author: { id: "1", name: "VODeco", avatar: "VE", verified: true },
+    author: { id: "1", name: "CivilizationProtocol", avatar: "VE", verified: true },
     slides: [
       { 
         id: "1-1", 
@@ -120,7 +120,7 @@ const demoStories: Story[] = [
       { 
         id: "5-1", 
         type: "announcement", 
-        content: "📚 Новый курс в VODeco Academy: 'IoT мониторинг водных ресурсов'. Бесплатно!",
+        content: "📚 Новый курс в CivilizationProtocol Academy: 'IoT мониторинг водных ресурсов'. Бесплатно!",
         background: "from-indigo-600 to-purple-600",
         link: { url: "/missions", label: "Начать обучение" }
       }
@@ -591,6 +591,14 @@ export default function Stories() {
     </>
   );
 }
+
+
+
+
+
+
+
+
 
 
 

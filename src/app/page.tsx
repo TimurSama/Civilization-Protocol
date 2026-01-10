@@ -6,6 +6,10 @@ import FeedPost from "@/components/FeedPost";
 import NewsSidebar from "@/components/NewsSidebar";
 import CreatePostModal from "@/components/CreatePostModal";
 import Stories from "@/components/Stories";
+import CivilizationRoadmap from "@/components/CivilizationRoadmap";
+import GlobalMetricsSection from "@/components/GlobalMetricsSection";
+import PlatformActivityFeed from "@/components/PlatformActivityFeed";
+import QuickAccessCards from "@/components/QuickAccessCards";
 import { useLanguage } from "@/context/LanguageContext";
 import { useAuth } from "@/context/AuthContext";
 import { usePosts } from "@/hooks/useApi";
@@ -50,14 +54,14 @@ export default function HomePage() {
     {
       id: "demo-1",
       author: {
-        name: "VODeco Global",
-        handle: "vodeco_earth",
-        avatar: "VE",
+        name: "CivilizationProtocol Global",
+        handle: "civilizationprotocol_earth",
+        avatar: "CP",
         verified: true
       },
       content: {
-        text: "🌍 Добро пожаловать в VODeco! Мы создаём децентрализованную платформу для управления водными ресурсами планеты. Присоединяйтесь к @dao_vod и станьте частью революции в области устойчивого развития! #VODeco #DAO",
-        tags: "#VODeco #Water #Sustainability #DAO",
+        text: "🌍 Добро пожаловать в CivilizationProtocol! Мы создаём децентрализованную платформу для управления водными ресурсами планеты. Присоединяйтесь к @dao_vod и станьте частью революции в области устойчивого развития! #CivilizationProtocol #DAO",
+        tags: "#CivilizationProtocol #Water #Sustainability #DAO",
         link: { url: "/whitepaper", label: "Читать White Paper" }
       },
       stats: { likes: 5600, comments: 420, shares: 1200 },
@@ -114,13 +118,13 @@ export default function HomePage() {
     {
       id: "demo-5",
       author: {
-        name: "VODeco Science",
-        handle: "vodeco_science",
-        avatar: "VS",
+        name: "CivilizationProtocol Science",
+        handle: "civilizationprotocol_science",
+        avatar: "CP",
         verified: true
       },
       content: {
-        text: "🔬 Исследование: AI-модель VODeco предсказала потенциальный кризис качества воды в Юго-Восточной Азии за 45 дней до события. Точность прогноза — 94%.",
+        text: "🔬 Исследование: AI-модель CivilizationProtocol предсказала потенциальный кризис качества воды в Юго-Восточной Азии за 45 дней до события. Точность прогноза — 94%.",
         tags: "#AI #Science #Prediction #WaterCrisis",
         link: { url: "/science", label: "Читать исследование" }
       },
@@ -152,7 +156,7 @@ export default function HomePage() {
         verified: true
       },
       content: {
-        text: "🤝 VODeco официально признана UN-Water как инновационная платформа для достижения SDG 6 (Чистая вода и санитария). Это огромный шаг вперёд!",
+        text: "🤝 CivilizationProtocol официально признана UN-Water как инновационная платформа для достижения SDG 6 (Чистая вода и санитария). Это огромный шаг вперёд!",
         tags: "#UN #SDG6 #Partnership #CleanWater",
         link: { url: "/whitepaper", label: "Читать White Paper" }
       },
@@ -168,8 +172,8 @@ export default function HomePage() {
         verified: true
       },
       content: {
-        text: "🚀 Версия 2.0 платформы VODeco запущена! Новые функции: социальная сеть, расширенная аналитика, мобильное приложение VOD Check, улучшенный UI/UX.",
-        tags: "#Release #VODeco #Platform #Update",
+        text: "🚀 Версия 2.0 платформы CivilizationProtocol запущена! Новые функции: социальная сеть, расширенная аналитика, мобильное приложение VOD Check, улучшенный UI/UX.",
+        tags: "#Release #CivilizationProtocol #Platform #Update",
         link: { url: "/", label: "Обновить профиль" }
       },
       stats: { likes: 7200, comments: 490, shares: 1100 },
@@ -262,8 +266,19 @@ export default function HomePage() {
     : demoPosts;
 
   return (
-    <div className="max-w-7xl mx-auto px-4 py-8">
-      <div className={cn("grid grid-cols-1 lg:grid-cols-12 gap-8", isRTL && "direction-rtl")}>
+    <div className="min-h-screen">
+      {/* Civilization Protocol Roadmap */}
+      <CivilizationRoadmap />
+
+      {/* Global Environmental Metrics */}
+      <GlobalMetricsSection />
+
+      {/* Quick Access to Functions */}
+      <QuickAccessCards />
+
+      {/* Main Content Area */}
+      <div className="max-w-7xl mx-auto px-4 py-8">
+        <div className={cn("grid grid-cols-1 lg:grid-cols-12 gap-8", isRTL && "direction-rtl")}>
         {/* Left Sidebar - Navigation & Profile Quick View */}
         <div className={cn("hidden lg:block lg:col-span-3 space-y-6", isRTL && "order-last")}>
           <div className="glass-card overflow-hidden border-white/5 bg-white/[0.01] h-[300px] relative group">
@@ -398,6 +413,9 @@ export default function HomePage() {
 
         {/* Main Feed */}
         <div className="lg:col-span-6 space-y-6">
+          {/* Platform Activity Feed */}
+          <PlatformActivityFeed />
+
           {/* Featured Pages Cards */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
             <motion.div
@@ -412,7 +430,7 @@ export default function HomePage() {
                   </div>
                   <h3 className="font-black text-sm uppercase tracking-wider">Презентация</h3>
                 </div>
-                <p className="text-xs text-slate-400 mb-4">Узнайте о платформе VODeco</p>
+                <p className="text-xs text-slate-400 mb-4">Узнайте о платформе CivilizationProtocol</p>
                 <div className="flex items-center gap-2 text-cyan-400 text-xs font-bold group-hover:gap-3 transition-all">
                   Открыть <ArrowRight size={14} />
                 </div>
@@ -557,6 +575,7 @@ export default function HomePage() {
         {/* Right Sidebar - News & Trends */}
         <div className={cn("hidden lg:block lg:col-span-3", isRTL && "order-first")}>
           <NewsSidebar />
+        </div>
         </div>
       </div>
 

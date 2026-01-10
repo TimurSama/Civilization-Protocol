@@ -587,7 +587,7 @@ export default function APIDocsPage() {
   );
 
   return (
-    <div className="min-h-screen bg-ocean-deep py-24 px-4">
+    <div className="min-h-screen py-24 px-4">
       <div className="max-w-6xl mx-auto">
         {/* Header */}
         <motion.div
@@ -600,7 +600,7 @@ export default function APIDocsPage() {
             <h1 className="text-5xl font-black">API Documentation</h1>
           </div>
           <p className="text-slate-400 text-lg max-w-2xl mx-auto">
-            Complete REST API reference for VODeco platform integration
+            Complete REST API reference for CivilizationProtocol platform integration
           </p>
           
           <div className="flex flex-wrap justify-center gap-4 mt-6">

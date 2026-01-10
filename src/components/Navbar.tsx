@@ -91,7 +91,7 @@ export default function Navbar() {
                             <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-cyan-500 to-blue-600 flex items-center justify-center shadow-lg shadow-cyan-500/20 group-hover:scale-110 transition-transform">
                                 <Building2 className="text-white" size={24} />
                             </div>
-                            <span className="text-xl font-black tracking-tighter text-glow-cyan hidden sm:block">VODeco</span>
+                            <span className="text-xl font-black tracking-tighter text-glow-cyan hidden sm:block">CivilizationProtocol</span>
                         </Link>
                     </div>
 

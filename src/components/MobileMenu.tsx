@@ -23,6 +23,7 @@ interface MobileMenuProps {
 export default function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
     const { isConnected, address, connect, disconnect } = useWallet();
     const [mounted, setMounted] = useState(false);
+    const [isPresentationsOpen, setIsPresentationsOpen] = useState(false);
 
     useEffect(() => {
         setMounted(true);
@@ -176,15 +177,60 @@ export default function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
 
                     {/* ПРЕЗЕНТАЦИИ */}
                     <Section title="ПРЕЗЕНТАЦИИ">
-                        <div style={{ display: 'grid', gridTemplateColumns: '1fr', gap: '6px' }}>
-                            <MenuItem href="/presentations" icon={<Sparkles size={16} />} label="Все презентации" onClose={onClose} />
-                            <MenuItem href="/interactive-presentation" icon={<Globe size={16} />} label="Интерактивная" onClose={onClose} badge="Main" />
-                            <MenuItem href="/presentations/game" icon={<Gamepad2 size={16} />} label="Игра: Спаси экологию" onClose={onClose} />
-                            <MenuItem href="/presentations/diplomatic" icon={<Building2 size={16} />} label="Для ООН и политиков" onClose={onClose} />
-                            <MenuItem href="/presentations/investors" icon={<TrendingUp size={16} />} label="Для инвесторов" onClose={onClose} />
-                            <MenuItem href="/presentations/ecosystem" icon={<Globe size={16} />} label="Карта экосистемы" onClose={onClose} />
-                            <MenuItem href="/presentations/ecology-transformation" icon={<TreePine size={16} />} label="Трансформация экологии" onClose={onClose} />
-                            <MenuItem href="/presentations/whitepaper" icon={<BookOpen size={16} />} label="Smart WhitePaper" onClose={onClose} />
+                        <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+                            <button
+                                onClick={() => setIsPresentationsOpen(!isPresentationsOpen)}
+                                style={{
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    justifyContent: 'space-between',
+                                    gap: '12px',
+                                    padding: '12px 14px',
+                                    borderRadius: '10px',
+                                    color: '#e2e8f0',
+                                    fontSize: '14px',
+                                    fontWeight: 500,
+                                    background: 'rgba(255,255,255,0.02)',
+                                    border: '1px solid rgba(255,255,255,0.05)',
+                                    transition: 'all 0.2s ease',
+                                    cursor: 'pointer'
+                                }}
+                            >
+                                <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                                    <span style={{ color: '#94a3b8' }}><Sparkles size={16} /></span>
+                                    <span>Презентации</span>
+                                </div>
+                                <ChevronDown 
+                                    size={16} 
+                                    style={{ 
+                                        color: '#94a3b8',
+                                        transform: isPresentationsOpen ? 'rotate(180deg)' : 'rotate(0deg)',
+                                        transition: 'transform 0.2s ease'
+                                    }} 
+                                />
+                            </button>
+                            <AnimatePresence>
+                                {isPresentationsOpen && (
+                                    <motion.div
+                                        initial={{ height: 0, opacity: 0 }}
+                                        animate={{ height: 'auto', opacity: 1 }}
+                                        exit={{ height: 0, opacity: 0 }}
+                                        transition={{ duration: 0.2 }}
+                                        style={{ overflow: 'hidden' }}
+                                    >
+                                        <div style={{ display: 'flex', flexDirection: 'column', gap: '6px', paddingLeft: '12px', marginTop: '6px' }}>
+                                            <MenuItem href="/presentations" icon={<Sparkles size={14} />} label="Все презентации" onClose={onClose} compact />
+                                            <MenuItem href="/interactive-presentation" icon={<Globe size={14} />} label="Интерактивная" onClose={onClose} compact badge="Main" />
+                                            <MenuItem href="/presentations/game" icon={<Gamepad2 size={14} />} label="Игра: Спаси экологию" onClose={onClose} compact />
+                                            <MenuItem href="/presentations/diplomatic" icon={<Building2 size={14} />} label="Для ООН и политиков" onClose={onClose} compact />
+                                            <MenuItem href="/presentations/investors" icon={<TrendingUp size={14} />} label="Для инвесторов" onClose={onClose} compact />
+                                            <MenuItem href="/presentations/ecosystem" icon={<Globe size={14} />} label="Карта экосистемы" onClose={onClose} compact />
+                                            <MenuItem href="/presentations/ecology-transformation" icon={<TreePine size={14} />} label="Трансформация экологии" onClose={onClose} compact />
+                                            <MenuItem href="/presentations/whitepaper" icon={<BookOpen size={14} />} label="Smart WhitePaper" onClose={onClose} compact />
+                                        </div>
+                                    </motion.div>
+                                )}
+                            </AnimatePresence>
                         </div>
                     </Section>
 

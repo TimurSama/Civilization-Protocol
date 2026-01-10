@@ -106,7 +106,7 @@ function Hotspot({ position, data }: { position: [number, number, number], data:
     );
 }
 
-function World({ mode }: { mode: "standard" | "satellite" | "ecology" | "infra" }) {
+function World({ mode, pauseRotation }: { mode: "standard" | "satellite" | "ecology" | "infra"; pauseRotation?: boolean }) {
     const globeRef = useRef<THREE.Mesh>(null!);
 
     // Загрузка текстур
@@ -118,7 +118,7 @@ function World({ mode }: { mode: "standard" | "satellite" | "ecology" | "infra" 
     ]);
 
     useFrame((state) => {
-        if (globeRef.current) {
+        if (globeRef.current && !pauseRotation) {
             globeRef.current.rotation.y += 0.0015;
         }
     });
@@ -182,13 +182,13 @@ function World({ mode }: { mode: "standard" | "satellite" | "ecology" | "infra" 
     );
 }
 
-export default function Globe3D() {
+export default function Globe3D({ pauseRotation }: { pauseRotation?: boolean } = {}) {
     const [viewMode, setViewMode] = useState<"standard" | "satellite" | "ecology" | "infra">("standard");
 
     return (
         <div className="w-full h-full relative group">
             <Canvas camera={{ position: [0, 0, 5.5], fov: 45 }}>
-                <World mode={viewMode} />
+                <World mode={viewMode} pauseRotation={pauseRotation} />
                 <OrbitControls
                     enablePan={false}
                     enableZoom={true}

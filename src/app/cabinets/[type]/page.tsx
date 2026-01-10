@@ -249,7 +249,7 @@ const cabinetConfigs: Record<string, any> = {
     ],
     modules: {
       portfolio: [
-        { name: "VODeco Core", allocation: 40, value: 50000, change: "+12%", type: "Token", risk: "medium" },
+        { name: "CivilizationProtocol Core", allocation: 40, value: 50000, change: "+12%", type: "Token", risk: "medium" },
         { name: "Smart Pumping", allocation: 25, value: 31250, change: "+8%", type: "Project", risk: "low" },
         { name: "Carbon Credits", allocation: 20, value: 25000, change: "+15%", type: "ESG", risk: "low" },
         { name: "Desalination 2.0", allocation: 15, value: 18750, change: "+5%", type: "Infrastructure", risk: "high" }

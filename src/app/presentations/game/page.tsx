@@ -12,6 +12,7 @@ import {
 import Link from "next/link";
 import { cn } from "@/lib/utils";
 import { useAuth } from "@/context/AuthContext";
+import InfoPopup from "@/components/InfoPopup";
 
 // Game state types
 interface GameState {
@@ -147,7 +148,7 @@ const quizQuestions = [
     explanation: "По данным ООН, к 2030 году 2 млрд человек столкнутся с дефицитом воды."
   },
   {
-    question: "Какая технология обеспечивает прозрачность данных в VODeco?",
+    question: "Какая технология обеспечивает прозрачность данных в CivilizationProtocol?",
     options: ["AI", "Blockchain", "IoT", "Cloud"],
     correct: 1,
     explanation: "Блокчейн гарантирует неизменность и прозрачность всех данных экосистемы."
@@ -310,7 +311,7 @@ export default function GamePresentation() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950 overflow-hidden">
+    <div className="min-h-screen overflow-hidden">
       {/* Particle effects */}
       <AnimatePresence>
         {particles.map((p, i) => (
@@ -417,26 +418,114 @@ export default function GamePresentation() {
               >
                 <h2 className="text-2xl font-bold mb-6">Выберите вашу роль</h2>
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                  {roles.map((role, i) => (
-                    <motion.button
-                      key={role.id}
-                      initial={{ opacity: 0, y: 20 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ delay: 0.7 + i * 0.1 }}
-                      onClick={() => selectRole(role.id)}
-                      className={cn(
-                        "p-6 rounded-2xl border-2 transition-all hover:scale-105",
-                        `border-${role.color}-500/30 bg-${role.color}-500/10`,
-                        `hover:border-${role.color}-500 hover:bg-${role.color}-500/20`
-                      )}
-                    >
-                      <div className={`text-${role.color}-400 mb-3`}>
-                        {role.icon}
-                      </div>
-                      <div className="font-bold text-lg">{role.name}</div>
-                      <div className="text-xs text-slate-500 mt-2">{role.description}</div>
-                    </motion.button>
-                  ))}
+                  {roles.map((role, i) => {
+                    const roleDetails = {
+                      ecologist: {
+                        details: "Экологи специализируются на изучении и защите экосистем. В игре вы получите бонус +20% к улучшению качества воды. Ваша роль включает мониторинг водных ресурсов, анализ экологических данных и разработку природоохранных стратегий.",
+                        skills: [
+                          "Анализ качества воды",
+                          "Оценка экосистем",
+                          "Разработка природоохранных мер",
+                          "Мониторинг биоразнообразия",
+                        ],
+                      },
+                      engineer: {
+                        details: "Инженеры отвечают за техническую инфраструктуру. В игре вы получите бонус +20% к эффективности сенсоров. Ваша роль включает установку IoT-устройств, настройку систем мониторинга и оптимизацию технологических процессов.",
+                        skills: [
+                          "Установка IoT-сенсоров",
+                          "Настройка систем мониторинга",
+                          "Оптимизация технологий",
+                          "Техническая поддержка",
+                        ],
+                      },
+                      politician: {
+                        details: "Политики влияют на принятие решений и распределение ресурсов. В игре вы получите бонус +20% к экономике. Ваша роль включает лоббирование экологических инициатив, координацию между ведомствами и привлечение финансирования.",
+                        skills: [
+                          "Принятие политических решений",
+                          "Координация ведомств",
+                          "Привлечение финансирования",
+                          "Лоббирование инициатив",
+                        ],
+                      },
+                      investor: {
+                        details: "Инвесторы обеспечивают финансовую поддержку проектов. В игре вы получите бонус +20% к количеству проектов. Ваша роль включает оценку проектов, инвестирование в экологические решения и управление финансовыми ресурсами.",
+                        skills: [
+                          "Оценка проектов",
+                          "Инвестирование в решения",
+                          "Управление финансами",
+                          "Анализ ROI",
+                        ],
+                      },
+                    };
+                    
+                    const details = roleDetails[role.id as keyof typeof roleDetails];
+                    
+                    return (
+                      <InfoPopup
+                        key={role.id}
+                        title={role.name}
+                        content={
+                          <div className="space-y-3">
+                            <p className="text-sm">{details.details}</p>
+                            <div>
+                              <h4 className="font-bold mb-2">Навыки:</h4>
+                              <ul className="list-disc list-inside space-y-1 text-sm text-slate-400">
+                                {details.skills.map((skill, j) => (
+                                  <li key={j}>{skill}</li>
+                                ))}
+                              </ul>
+                            </div>
+                            <div className="pt-2 border-t border-white/10">
+                              <p className="text-sm">
+                                <strong>Игровой бонус:</strong> {role.description}
+                              </p>
+                            </div>
+                          </div>
+                        }
+                        trigger={
+                          <motion.button
+                            initial={{ opacity: 0, y: 20, scale: 0.9 }}
+                            animate={{ opacity: 1, y: 0, scale: 1 }}
+                            transition={{ delay: 0.7 + i * 0.1, type: "spring" }}
+                            onClick={() => selectRole(role.id)}
+                            whileHover={{ 
+                              scale: 1.05,
+                              y: -5,
+                              transition: { duration: 0.2 }
+                            }}
+                            className={cn(
+                              "p-6 rounded-2xl border-2 transition-all cursor-pointer group relative overflow-hidden",
+                              `border-${role.color}-500/30 bg-${role.color}-500/10`,
+                              `hover:border-${role.color}-500 hover:bg-${role.color}-500/20`
+                            )}
+                          >
+                            {/* Градиентный фон при hover */}
+                            <motion.div
+                              className={`absolute inset-0 bg-gradient-to-br from-${role.color}-500/0 to-${role.color}-500/0 group-hover:from-${role.color}-500/10 group-hover:to-${role.color}-500/5 transition-all duration-300`}
+                            />
+                            
+                            <motion.div
+                              className={`text-${role.color}-400 mb-3 relative z-10 group-hover:scale-110 transition-transform`}
+                              whileHover={{ rotate: 360 }}
+                              transition={{ duration: 0.5 }}
+                            >
+                              {role.icon}
+                            </motion.div>
+                            <div className="font-bold text-lg relative z-10 group-hover:text-white transition-colors">
+                              {role.name}
+                            </div>
+                            <div className="text-xs text-slate-500 mt-2 relative z-10 group-hover:text-slate-400 transition-colors">
+                              {role.description}
+                            </div>
+                            
+                            {/* Декоративные элементы */}
+                            <div className={`absolute top-2 right-2 w-2 h-2 rounded-full bg-${role.color}-400 opacity-0 group-hover:opacity-100 transition-opacity`} />
+                          </motion.button>
+                        }
+                        size="md"
+                      />
+                    );
+                  })}
                 </div>
               </motion.div>
             </motion.div>
@@ -514,47 +603,101 @@ export default function GamePresentation() {
                   <div className="glass-card p-6">
                     <h3 className="font-bold text-lg mb-4">Задания</h3>
                     <div className="space-y-3">
-                      {levels[gameState.level - 1].tasks.map((task, i) => (
-                        <motion.div
-                          key={task.id}
-                          initial={{ opacity: 0, x: 20 }}
-                          animate={{ opacity: 1, x: 0 }}
-                          transition={{ delay: i * 0.1 }}
-                          className={cn(
-                            "flex items-center justify-between p-4 rounded-xl border-2 transition-all",
-                            i < currentTask 
-                              ? "border-emerald-500/50 bg-emerald-500/10" 
-                              : i === currentTask 
-                                ? "border-cyan-500 bg-cyan-500/10 animate-pulse" 
-                                : "border-white/10 bg-white/5 opacity-50"
-                          )}
-                        >
-                          <div className="flex items-center gap-3">
-                            {i < currentTask ? (
-                              <CheckCircle2 className="text-emerald-400" size={24} />
-                            ) : i === currentTask ? (
-                              <div className="w-6 h-6 rounded-full border-2 border-cyan-400 animate-spin border-t-transparent" />
-                            ) : (
-                              <div className="w-6 h-6 rounded-full border-2 border-white/30" />
-                            )}
-                            <span className={i <= currentTask ? "font-bold" : ""}>{task.name}</span>
-                          </div>
-                          <div className="flex items-center gap-3">
-                            <span className="text-sm text-yellow-400">+{task.xp} XP</span>
-                            {i === currentTask && (
-                              <button
-                                onClick={(e) => {
-                                  addParticle(e.clientX, e.clientY, "xp");
-                                  completeTask(task.xp);
-                                }}
-                                className="px-4 py-2 bg-cyan-500 text-ocean-deep font-bold rounded-lg hover:bg-cyan-400 transition-colors"
+                      {levels[gameState.level - 1].tasks.map((task, i) => {
+                        const taskDetails = {
+                          scan_planet: "Сканирование планеты позволяет выявить критические проблемы с водными ресурсами. Используйте спутниковые данные и IoT-сенсоры для полного анализа состояния экосистемы.",
+                          identify_problems: "Идентификация проблем включает анализ данных о качестве воды, доступности ресурсов и экологических угрозах. Это основа для разработки решений.",
+                          analyze_data: "Анализ данных использует AI-алгоритмы для выявления паттернов и прогнозирования тенденций. Это помогает принимать обоснованные решения.",
+                          place_sensors: "Установка IoT-сенсоров в критических точках обеспечивает непрерывный мониторинг качества воды, уровня и других параметров в режиме реального времени.",
+                          calibrate: "Калибровка сенсоров гарантирует точность измерений. Правильно настроенные сенсоры обеспечивают достоверность данных для принятия решений.",
+                          network: "Создание сети сенсоров позволяет объединить все точки мониторинга в единую систему, обеспечивая комплексный анализ водных ресурсов.",
+                          ai_analysis: "AI-анализ использует машинное обучение для обработки больших объёмов данных, выявления аномалий и прогнозирования изменений.",
+                          predictions: "Прогнозирование помогает предсказать будущие изменения в водных ресурсах, что критично для планирования и предотвращения кризисов.",
+                          report: "Создание отчёта структурирует все собранные данные и выводы, делая их доступными для принятия решений и дальнейших действий.",
+                          draft_projects: "Разработка проектов включает создание конкретных решений для улучшения экологии, с учётом технических, экономических и экологических факторов.",
+                          budget: "Расчёт бюджета определяет необходимые финансовые ресурсы для реализации проектов и обеспечивает их экономическую обоснованность.",
+                          submit: "Подача на голосование DAO позволяет сообществу оценить проекты и принять решение о их реализации через демократический процесс.",
+                          dao_vote: "Проведение голосования DAO обеспечивает участие всех заинтересованных сторон в принятии решений о водных ресурсах.",
+                          implement: "Реализация проектов включает выполнение всех запланированных мероприятий по улучшению экологии и водных ресурсов.",
+                          verify: "Верификация результатов подтверждает эффективность реализованных проектов и их влияние на состояние водных ресурсов.",
+                        };
+                        
+                        const detail = taskDetails[task.id as keyof typeof taskDetails] || "Выполните это задание для продвижения к спасению планеты.";
+                        
+                        return (
+                          <InfoPopup
+                            key={task.id}
+                            title={task.name}
+                            content={
+                              <div className="space-y-3">
+                                <p className="text-sm">{detail}</p>
+                                <div>
+                                  <h4 className="font-bold mb-2">Награда:</h4>
+                                  <p className="text-sm text-slate-400">
+                                    За выполнение этого задания вы получите <strong className="text-yellow-400">+{task.xp} XP</strong>.
+                                    {gameState.role && " Бонус вашей роли увеличит награду на 20%!"}
+                                  </p>
+                                </div>
+                                <div>
+                                  <h4 className="font-bold mb-2">Влияние на планету:</h4>
+                                  <p className="text-sm text-slate-400">
+                                    Выполнение задания улучшит состояние планеты: здоровье +5%, качество воды +4-8%, биоразнообразие +3%, экономика +3-6%.
+                                  </p>
+                                </div>
+                              </div>
+                            }
+                            trigger={
+                              <motion.div
+                                initial={{ opacity: 0, x: 20 }}
+                                animate={{ opacity: 1, x: 0 }}
+                                transition={{ delay: i * 0.1 }}
+                                className={cn(
+                                  "flex items-center justify-between p-4 rounded-xl border-2 transition-all cursor-pointer group",
+                                  i < currentTask 
+                                    ? "border-emerald-500/50 bg-emerald-500/10 hover:border-emerald-500" 
+                                    : i === currentTask 
+                                      ? "border-cyan-500 bg-cyan-500/10 animate-pulse hover:border-cyan-400" 
+                                      : "border-white/10 bg-white/5 opacity-50 hover:opacity-70"
+                                )}
                               >
-                                Выполнить
-                              </button>
-                            )}
-                          </div>
-                        </motion.div>
-                      ))}
+                                <div className="flex items-center gap-3">
+                                  {i < currentTask ? (
+                                    <CheckCircle2 className="text-emerald-400" size={24} />
+                                  ) : i === currentTask ? (
+                                    <div className="w-6 h-6 rounded-full border-2 border-cyan-400 animate-spin border-t-transparent" />
+                                  ) : (
+                                    <div className="w-6 h-6 rounded-full border-2 border-white/30" />
+                                  )}
+                                  <span className={cn(
+                                    i <= currentTask ? "font-bold" : "",
+                                    "group-hover:text-white transition-colors"
+                                  )}>
+                                    {task.name}
+                                  </span>
+                                </div>
+                                <div className="flex items-center gap-3">
+                                  <span className="text-sm text-yellow-400 font-bold group-hover:scale-110 transition-transform">
+                                    +{task.xp} XP
+                                  </span>
+                                  {i === currentTask && (
+                                    <button
+                                      onClick={(e) => {
+                                        e.stopPropagation();
+                                        addParticle(e.clientX, e.clientY, "xp");
+                                        completeTask(task.xp);
+                                      }}
+                                      className="px-4 py-2 bg-cyan-500 text-ocean-deep font-bold rounded-lg hover:bg-cyan-400 transition-colors"
+                                    >
+                                      Выполнить
+                                    </button>
+                                  )}
+                                </div>
+                              </motion.div>
+                            }
+                            size="md"
+                          />
+                        );
+                      })}
                     </div>
                   </div>
 

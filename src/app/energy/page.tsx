@@ -41,7 +41,7 @@ export default function EnergyPage() {
     ];
 
     return (
-        <div className={cn("min-h-screen bg-ocean-deep py-24 px-4", isRTL && "text-right")}>
+        <div className={cn("min-h-screen py-24 px-4", isRTL && "text-right")}>
             <div className="max-w-7xl mx-auto">
                 {/* Hero */}
                 <div className="mb-24 text-center max-w-4xl mx-auto">

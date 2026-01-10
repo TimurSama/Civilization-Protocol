@@ -11,6 +11,8 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
+import InfoPopup from "@/components/InfoPopup";
+import StatisticCard from "@/components/StatisticCard";
 
 // SDG data
 const sdgGoals = [
@@ -54,7 +56,7 @@ export default function DiplomaticPresentation() {
   const progress = useTransform(scrollYProgress, [0, 1], [0, 100]);
 
   return (
-    <div ref={containerRef} className="min-h-screen bg-gradient-to-b from-slate-950 via-[#0a1628] to-slate-950">
+    <div ref={containerRef} className="min-h-screen">
       {/* Formal Header - под главным Navbar */}
       <div className="sticky top-20 left-0 right-0 z-[90] bg-[#0a1628]/95 backdrop-blur-xl border-b border-[#1a3a5c]">
         <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
@@ -63,7 +65,7 @@ export default function DiplomaticPresentation() {
               <Globe className="text-[#4a9eff]" size={24} />
             </div>
             <div>
-              <div className="font-bold text-lg tracking-wide">VODeco Initiative</div>
+              <div className="font-bold text-lg tracking-wide">CivilizationProtocol Initiative</div>
               <div className="text-xs text-[#6a8caf]">Strategic Water Management Platform</div>
             </div>
           </div>
@@ -150,20 +152,82 @@ export default function DiplomaticPresentation() {
               </div>
 
               {/* Statistics */}
-              <div className="grid md:grid-cols-4 gap-6">
-                {globalStats.map((stat, i) => (
-                  <motion.div
-                    key={i}
-                    initial={{ opacity: 0, y: 30 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    transition={{ delay: i * 0.1 }}
-                    className="p-6 rounded-2xl bg-gradient-to-b from-[#1a3a5c]/50 to-transparent border border-[#2a5a8c]/50"
-                  >
-                    <div className="text-4xl font-black text-[#4a9eff] mb-2">{stat.value}</div>
-                    <div className="text-[#8aaccc] text-sm mb-3">{stat.label}</div>
-                    <div className="text-xs text-[#5a7a9c]">Источник: {stat.source}</div>
-                  </motion.div>
-                ))}
+              <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+                {globalStats.map((stat, i) => {
+                  const icons = [Users, TrendingUp, AlertTriangle, Globe];
+                  const Icon = icons[i];
+                  
+                  return (
+                    <InfoPopup
+                      key={i}
+                      title={stat.label}
+                      content={
+                        <div className="space-y-3">
+                          <p>
+                            <strong>{stat.value}</strong> — {stat.label.toLowerCase()}
+                          </p>
+                          <div>
+                            <h4 className="font-bold mb-2">Детали:</h4>
+                            <p className="text-sm text-slate-400">
+                              {stat.label === "людей без доступа к чистой воде" && "По данным WHO/UNICEF, 2.2 миллиарда человек не имеют доступа к безопасной питьевой воде. Это составляет 29% населения планеты. Большинство из них живут в сельских районах развивающихся стран."}
+                              {stat.label === "объём мирового водного рынка к 2030" && "Рынок водных ресурсов растёт экспоненциально. К 2030 году ожидается объём в $8.6 триллионов, включая инфраструктуру, технологии, управление и экологические услуги."}
+                              {stat.label === "дефицит воды к 2030 году" && "Ожидается, что к 2030 году спрос на воду превысит предложение на 40%. Это приведёт к серьёзным экономическим и социальным последствиям, особенно в регионах с ограниченными водными ресурсами."}
+                              {stat.label === "климатических мигрантов к 2030" && "Изменение климата и водный кризис вынудят 700 миллионов человек покинуть свои дома к 2030 году. Это создаст серьёзные геополитические и гуманитарные вызовы."}
+                            </p>
+                          </div>
+                          <p className="text-xs text-slate-500">
+                            Источник: {stat.source}
+                          </p>
+                        </div>
+                      }
+                      trigger={
+                        <motion.div
+                          initial={{ opacity: 0, y: 30, scale: 0.9 }}
+                          whileInView={{ opacity: 1, y: 0, scale: 1 }}
+                          transition={{ delay: i * 0.1, type: "spring" }}
+                          whileHover={{ 
+                            y: -8,
+                            scale: 1.05,
+                            transition: { duration: 0.2 }
+                          }}
+                          className="p-6 rounded-2xl glass-card border border-[#2a5a8c]/50 hover:border-[#4a9eff]/50 transition-all cursor-pointer group relative overflow-hidden"
+                        >
+                          {/* Градиентный фон */}
+                          <motion.div
+                            className="absolute inset-0 bg-gradient-to-br from-[#1a3a5c]/50 to-transparent group-hover:from-[#1a4d7c]/70 group-hover:to-[#1a3a5c]/50 transition-all duration-300"
+                          />
+                          
+                          {/* Иконка */}
+                          <motion.div
+                            className="w-12 h-12 mb-4 rounded-xl bg-[#4a9eff]/20 flex items-center justify-center relative z-10 group-hover:scale-110 transition-transform"
+                            whileHover={{ rotate: 360 }}
+                            transition={{ duration: 0.5 }}
+                          >
+                            <Icon className="text-[#4a9eff]" size={24} />
+                          </motion.div>
+                          
+                          <motion.div
+                            className="text-4xl font-black text-[#4a9eff] mb-2 relative z-10"
+                            animate={{
+                              scale: [1, 1.05, 1],
+                            }}
+                            transition={{ duration: 2, repeat: Infinity, delay: i * 0.1 }}
+                          >
+                            {stat.value}
+                          </motion.div>
+                          <div className="text-[#8aaccc] text-sm mb-3 relative z-10 group-hover:text-white transition-colors">
+                            {stat.label}
+                          </div>
+                          <div className="text-xs text-[#5a7a9c] relative z-10">Источник: {stat.source}</div>
+                          
+                          {/* Декоративные элементы */}
+                          <div className="absolute top-2 right-2 w-2 h-2 rounded-full bg-[#4a9eff] opacity-0 group-hover:opacity-100 transition-opacity" />
+                        </motion.div>
+                      }
+                      size="md"
+                    />
+                  );
+                })}
               </div>
 
               {/* World Map Visualization */}
@@ -325,57 +389,150 @@ export default function DiplomaticPresentation() {
                 <span className="text-[#4a9eff]">Целями устойчивого развития ООН</span>
               </h2>
               <p className="text-xl text-[#8aaccc] mb-12 max-w-3xl">
-                VODeco напрямую поддерживает 6 из 17 Целей устойчивого развития, 
+                CivilizationProtocol напрямую поддерживает 6 из 17 Целей устойчивого развития, 
                 обеспечивая комплексный подход к глобальным вызовам
               </p>
 
-              <div className="grid md:grid-cols-3 gap-6">
+              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {sdgGoals.map((goal, i) => (
-                  <motion.button
+                  <InfoPopup
                     key={goal.number}
-                    initial={{ opacity: 0, y: 30 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    transition={{ delay: i * 0.1 }}
-                    onClick={() => setExpandedSDG(expandedSDG === goal.number ? null : goal.number)}
-                    className={cn(
-                      "p-6 rounded-2xl text-left transition-all",
-                      "border-2",
-                      expandedSDG === goal.number
-                        ? "bg-[#1a3a5c]"
-                        : "bg-transparent hover:bg-[#1a3a5c]/30"
-                    )}
-                    style={{ borderColor: goal.color }}
-                  >
-                    <div className="flex items-center gap-4 mb-4">
-                      <div 
-                        className="w-14 h-14 rounded-xl flex items-center justify-center"
-                        style={{ backgroundColor: goal.color }}
+                    title={`SDG ${goal.number}: ${goal.title}`}
+                    content={
+                      <div className="space-y-3">
+                        <p className="text-sm">{goal.description}</p>
+                        <div>
+                          <h4 className="font-bold mb-2">Как CivilizationProtocol поддерживает эту цель:</h4>
+                          <ul className="list-disc list-inside space-y-1 text-sm text-slate-400">
+                            {goal.number === 6 && (
+                              <>
+                                <li>Обеспечение доступа к данным о водных ресурсах</li>
+                                <li>Мониторинг качества воды в реальном времени</li>
+                                <li>Оптимизация распределения водных ресурсов</li>
+                                <li>Предотвращение загрязнения через прозрачность</li>
+                              </>
+                            )}
+                            {goal.number === 9 && (
+                              <>
+                                <li>Блокчейн-инфраструктура для водного сектора</li>
+                                <li>IoT-сенсоры для мониторинга</li>
+                                <li>Инновационные технологии управления</li>
+                                <li>Устойчивая цифровая инфраструктура</li>
+                              </>
+                            )}
+                            {goal.number === 11 && (
+                              <>
+                                <li>Умное управление водными ресурсами в городах</li>
+                                <li>Снижение потерь воды в городской инфраструктуре</li>
+                                <li>Участие граждан в управлении</li>
+                                <li>Экологически устойчивые решения</li>
+                              </>
+                            )}
+                            {goal.number === 13 && (
+                              <>
+                                <li>Мониторинг влияния климата на водные ресурсы</li>
+                                <li>Адаптация к изменению климата</li>
+                                <li>Снижение углеродного следа через оптимизацию</li>
+                                <li>Поддержка климатических инициатив</li>
+                              </>
+                            )}
+                            {goal.number === 16 && (
+                              <>
+                                <li>Прозрачность через блокчейн</li>
+                                <li>Децентрализованное управление (DAO)</li>
+                                <li>Справедливое распределение ресурсов</li>
+                                <li>Борьба с коррупцией в водном секторе</li>
+                              </>
+                            )}
+                            {goal.number === 17 && (
+                              <>
+                                <li>Глобальное партнёрство через платформу</li>
+                                <li>Международное сотрудничество</li>
+                                <li>Обмен данными и лучшими практиками</li>
+                                <li>Поддержка международных инициатив</li>
+                              </>
+                            )}
+                          </ul>
+                        </div>
+                        <div className="flex items-center gap-2 text-cyan-400 pt-2 border-t border-white/10">
+                          <CheckCircle2 size={16} />
+                          <span className="text-sm font-medium">Полное соответствие</span>
+                        </div>
+                      </div>
+                    }
+                    trigger={
+                      <motion.button
+                        initial={{ opacity: 0, y: 30, scale: 0.9 }}
+                        whileInView={{ opacity: 1, y: 0, scale: 1 }}
+                        transition={{ delay: i * 0.1, type: "spring" }}
+                        whileHover={{ 
+                          y: -5,
+                          scale: 1.03,
+                          transition: { duration: 0.2 }
+                        }}
+                        onClick={(e) => {
+                          e.preventDefault();
+                          setExpandedSDG(expandedSDG === goal.number ? null : goal.number);
+                        }}
+                        className={cn(
+                          "p-6 rounded-2xl text-left transition-all cursor-pointer group relative overflow-hidden",
+                          "border-2",
+                          expandedSDG === goal.number
+                            ? "bg-[#1a3a5c] border-opacity-100"
+                            : "bg-transparent hover:bg-[#1a3a5c]/30 border-opacity-50"
+                        )}
+                        style={{ borderColor: goal.color }}
                       >
-                        <span className="text-2xl font-black text-white">{goal.number}</span>
-                      </div>
-                      <div>
-                        <div className="font-bold text-lg">{goal.title}</div>
-                        <div className="text-sm text-[#6a8caf]">SDG {goal.number}</div>
-                      </div>
-                    </div>
-                    
-                    <AnimatePresence>
-                      {expandedSDG === goal.number && (
+                        {/* Градиентный фон при hover */}
                         <motion.div
-                          initial={{ opacity: 0, height: 0 }}
-                          animate={{ opacity: 1, height: "auto" }}
-                          exit={{ opacity: 0, height: 0 }}
-                          className="text-sm text-[#8aaccc]"
-                        >
-                          <p className="mb-3">{goal.description}</p>
-                          <div className="flex items-center gap-2 text-[#4a9eff]">
-                            <CheckCircle2 size={16} />
-                            <span>Полное соответствие</span>
+                          className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity"
+                          style={{
+                            background: `linear-gradient(135deg, ${goal.color}15, transparent)`,
+                          }}
+                        />
+                        
+                        <div className="flex items-center gap-4 mb-4 relative z-10">
+                          <motion.div
+                            className="w-14 h-14 rounded-xl flex items-center justify-center shadow-lg"
+                            style={{ backgroundColor: goal.color }}
+                            whileHover={{ rotate: 360, scale: 1.1 }}
+                            transition={{ duration: 0.5 }}
+                          >
+                            <span className="text-2xl font-black text-white">{goal.number}</span>
+                          </motion.div>
+                          <div>
+                            <div className="font-bold text-lg group-hover:text-white transition-colors">
+                              {goal.title}
+                            </div>
+                            <div className="text-sm text-[#6a8caf] group-hover:text-[#8aaccc] transition-colors">
+                              SDG {goal.number}
+                            </div>
                           </div>
-                        </motion.div>
-                      )}
-                    </AnimatePresence>
-                  </motion.button>
+                        </div>
+                        
+                        <AnimatePresence>
+                          {expandedSDG === goal.number && (
+                            <motion.div
+                              initial={{ opacity: 0, height: 0 }}
+                              animate={{ opacity: 1, height: "auto" }}
+                              exit={{ opacity: 0, height: 0 }}
+                              className="text-sm text-[#8aaccc] relative z-10"
+                            >
+                              <p className="mb-3">{goal.description}</p>
+                              <div className="flex items-center gap-2 text-[#4a9eff]">
+                                <CheckCircle2 size={16} />
+                                <span>Полное соответствие</span>
+                              </div>
+                            </motion.div>
+                          )}
+                        </AnimatePresence>
+                        
+                        {/* Декоративные элементы */}
+                        <div className="absolute top-2 right-2 w-1 h-1 rounded-full opacity-0 group-hover:opacity-100 transition-opacity" style={{ backgroundColor: goal.color }} />
+                      </motion.button>
+                    }
+                    size="lg"
+                  />
                 ))}
               </div>
             </motion.div>
@@ -402,27 +559,120 @@ export default function DiplomaticPresentation() {
               <div className="p-8 rounded-3xl bg-gradient-to-b from-[#0d2440] to-[#0a1c30] border border-[#2a5a8c]/30 mb-12">
                 <h3 className="text-xl font-bold mb-8 text-center">Архитектура платформы</h3>
                 
-                <div className="grid md:grid-cols-4 gap-4">
+                <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
                   {[
-                    { icon: <Droplets size={24} />, title: "IoT сенсоры", desc: "Мониторинг в реальном времени" },
-                    { icon: <Shield size={24} />, title: "Блокчейн", desc: "Неизменность данных" },
-                    { icon: <Users size={24} />, title: "DAO", desc: "Децентрализованное управление" },
-                    { icon: <TrendingUp size={24} />, title: "Токеномика", desc: "Экономические стимулы" },
-                  ].map((item, i) => (
-                    <motion.div
-                      key={i}
-                      initial={{ opacity: 0, y: 20 }}
-                      whileInView={{ opacity: 1, y: 0 }}
-                      transition={{ delay: i * 0.1 }}
-                      className="p-6 rounded-xl bg-[#1a3a5c]/30 border border-[#2a5a8c]/30 text-center"
-                    >
-                      <div className="w-12 h-12 mx-auto rounded-xl bg-[#4a9eff]/20 flex items-center justify-center text-[#4a9eff] mb-4">
-                        {item.icon}
-                      </div>
-                      <div className="font-bold mb-1">{item.title}</div>
-                      <div className="text-sm text-[#6a8caf]">{item.desc}</div>
-                    </motion.div>
-                  ))}
+                    { 
+                      icon: Droplets, 
+                      title: "IoT сенсоры", 
+                      desc: "Мониторинг в реальном времени",
+                      details: "Сеть IoT-сенсоров собирает данные о качестве воды, уровне, температуре, химическом составе и других параметрах в режиме реального времени. Данные передаются через защищённые каналы на блокчейн-платформу для хранения и анализа."
+                    },
+                    { 
+                      icon: Shield, 
+                      title: "Блокчейн", 
+                      desc: "Неизменность данных",
+                      details: "Блокчейн обеспечивает неизменяемое хранение всех данных о водных ресурсах. Каждая транзакция, измерение и решение записывается в распределённый реестр, обеспечивая прозрачность и доверие между всеми участниками экосистемы."
+                    },
+                    { 
+                      icon: Users, 
+                      title: "DAO", 
+                      desc: "Децентрализованное управление",
+                      details: "Децентрализованная автономная организация (DAO) позволяет всем заинтересованным сторонам участвовать в принятии решений о водных ресурсах. Голосование происходит через смарт-контракты, обеспечивая демократичность и прозрачность."
+                    },
+                    { 
+                      icon: TrendingUp, 
+                      title: "Токеномика", 
+                      desc: "Экономические стимулы",
+                      details: "Двойная система токенов (CivilizationProtocol utility token и VOD stable token) создаёт экономические стимулы для всех участников. Стейкинг, награды за участие, инвестиционные пулы и другие механики обеспечивают устойчивую экономическую модель."
+                    },
+                  ].map((item, i) => {
+                    const Icon = item.icon;
+                    
+                    return (
+                      <InfoPopup
+                        key={i}
+                        title={item.title}
+                        content={
+                          <div className="space-y-3">
+                            <p className="text-sm">{item.details}</p>
+                            <div>
+                              <h4 className="font-bold mb-2">Преимущества:</h4>
+                              <ul className="list-disc list-inside space-y-1 text-sm text-slate-400">
+                                {item.title === "IoT сенсоры" && (
+                                  <>
+                                    <li>Непрерывный мониторинг 24/7</li>
+                                    <li>Раннее обнаружение проблем</li>
+                                    <li>Автоматизация сбора данных</li>
+                                    <li>Снижение затрат на мониторинг</li>
+                                  </>
+                                )}
+                                {item.title === "Блокчейн" && (
+                                  <>
+                                    <li>Неизменяемость данных</li>
+                                    <li>Прозрачность всех операций</li>
+                                    <li>Децентрализация (нет единой точки отказа)</li>
+                                    <li>Аудит в реальном времени</li>
+                                  </>
+                                )}
+                                {item.title === "DAO" && (
+                                  <>
+                                    <li>Демократическое принятие решений</li>
+                                    <li>Участие всех заинтересованных сторон</li>
+                                    <li>Прозрачность голосований</li>
+                                    <li>Снижение коррупции</li>
+                                  </>
+                                )}
+                                {item.title === "Токеномика" && (
+                                  <>
+                                    <li>Экономические стимулы для участия</li>
+                                    <li>Стейкинг с доходами</li>
+                                    <li>Learn-to-Earn механика</li>
+                                    <li>Устойчивая экономическая модель</li>
+                                  </>
+                                )}
+                              </ul>
+                            </div>
+                          </div>
+                        }
+                        trigger={
+                          <motion.div
+                            initial={{ opacity: 0, y: 20, scale: 0.9 }}
+                            whileInView={{ opacity: 1, y: 0, scale: 1 }}
+                            transition={{ delay: i * 0.1, type: "spring" }}
+                            whileHover={{ 
+                              y: -8,
+                              scale: 1.05,
+                              transition: { duration: 0.2 }
+                            }}
+                            className="p-6 rounded-xl glass-card border border-[#2a5a8c]/30 hover:border-[#4a9eff]/50 text-center cursor-pointer group relative overflow-hidden"
+                          >
+                            {/* Градиентный фон */}
+                            <motion.div
+                              className="absolute inset-0 bg-gradient-to-br from-[#1a3a5c]/30 to-transparent group-hover:from-[#1a4d7c]/50 group-hover:to-[#1a3a5c]/30 transition-all duration-300"
+                            />
+                            
+                            <motion.div
+                              className="w-12 h-12 mx-auto rounded-xl bg-[#4a9eff]/20 flex items-center justify-center text-[#4a9eff] mb-4 relative z-10 group-hover:scale-110 transition-transform"
+                              whileHover={{ rotate: 360 }}
+                              transition={{ duration: 0.5 }}
+                            >
+                              <Icon size={24} />
+                            </motion.div>
+                            <div className="font-bold mb-1 relative z-10 group-hover:text-white transition-colors">
+                              {item.title}
+                            </div>
+                            <div className="text-sm text-[#6a8caf] relative z-10 group-hover:text-[#8aaccc] transition-colors">
+                              {item.desc}
+                            </div>
+                            
+                            {/* Декоративные элементы */}
+                            <div className="absolute top-2 right-2 w-2 h-2 rounded-full bg-[#4a9eff] opacity-0 group-hover:opacity-100 transition-opacity" />
+                          </motion.div>
+                        }
+                        size="md"
+                      />
+                    );
+                  })}
                 </div>
               </div>
 
@@ -480,40 +730,108 @@ export default function DiplomaticPresentation() {
                   {[
                     {
                       title: "Государственные органы",
-                      icon: <Building2 size={32} />,
+                      icon: Building2,
                       role: "Регулирование и надзор",
                       weight: "40%",
+                      details: "Государственные органы получают 40% голосов в DAO, обеспечивая баланс между демократией и эффективностью управления. Они отвечают за установление правил, надзор за соблюдением стандартов и координацию между различными ведомствами.",
+                      responsibilities: [
+                        "Установление нормативных требований",
+                        "Надзор за соблюдением стандартов",
+                        "Координация межведомственного взаимодействия",
+                        "Представление интересов государства",
+                      ],
                     },
                     {
                       title: "Гражданское общество",
-                      icon: <Users size={32} />,
+                      icon: Users,
                       role: "Мониторинг и участие",
                       weight: "35%",
+                      details: "Гражданское общество получает 35% голосов, обеспечивая участие граждан в принятии решений о водных ресурсах. Это включает НПО, общественные организации, местные сообщества и активных граждан.",
+                      responsibilities: [
+                        "Мониторинг качества воды",
+                        "Участие в голосованиях DAO",
+                        "Предложение инициатив",
+                        "Общественный контроль",
+                      ],
                     },
                     {
                       title: "Экспертное сообщество",
-                      icon: <Award size={32} />,
+                      icon: Award,
                       role: "Экспертиза и валидация",
                       weight: "25%",
+                      details: "Экспертное сообщество (учёные, инженеры, экологи) получает 25% голосов, обеспечивая научно обоснованные решения. Их роль включает валидацию данных, экспертизу проектов и консультации.",
+                      responsibilities: [
+                        "Валидация научных данных",
+                        "Экспертиза проектов",
+                        "Технические консультации",
+                        "Исследования и разработки",
+                      ],
                     },
-                  ].map((stakeholder, i) => (
-                    <motion.div
-                      key={i}
-                      initial={{ opacity: 0, y: 30 }}
-                      whileInView={{ opacity: 1, y: 0 }}
-                      transition={{ delay: i * 0.1 }}
-                      className="text-center"
-                    >
-                      <div className="w-16 h-16 mx-auto rounded-2xl bg-[#4a9eff]/20 flex items-center justify-center text-[#4a9eff] mb-4">
-                        {stakeholder.icon}
-                      </div>
-                      <div className="font-bold text-lg mb-2">{stakeholder.title}</div>
-                      <div className="text-sm text-[#6a8caf] mb-3">{stakeholder.role}</div>
-                      <div className="inline-block px-4 py-2 rounded-full bg-[#4a9eff]/20 text-[#4a9eff] font-bold">
-                        {stakeholder.weight} голосов
-                      </div>
-                    </motion.div>
-                  ))}
+                  ].map((stakeholder, i) => {
+                    const Icon = stakeholder.icon;
+                    
+                    return (
+                      <InfoPopup
+                        key={i}
+                        title={stakeholder.title}
+                        content={
+                          <div className="space-y-3">
+                            <p className="text-sm">{stakeholder.details}</p>
+                            <div>
+                              <h4 className="font-bold mb-2">Обязанности:</h4>
+                              <ul className="list-disc list-inside space-y-1 text-sm text-slate-400">
+                                {stakeholder.responsibilities.map((resp, j) => (
+                                  <li key={j}>{resp}</li>
+                                ))}
+                              </ul>
+                            </div>
+                            <div className="pt-2 border-t border-white/10">
+                              <p className="text-sm">
+                                <strong>Вес голоса:</strong> {stakeholder.weight}
+                              </p>
+                            </div>
+                          </div>
+                        }
+                        trigger={
+                          <motion.div
+                            initial={{ opacity: 0, y: 30, scale: 0.9 }}
+                            whileInView={{ opacity: 1, y: 0, scale: 1 }}
+                            transition={{ delay: i * 0.1, type: "spring" }}
+                            whileHover={{ 
+                              y: -5,
+                              scale: 1.05,
+                              transition: { duration: 0.2 }
+                            }}
+                            className="text-center cursor-pointer group"
+                          >
+                            <motion.div
+                              className="w-16 h-16 mx-auto rounded-2xl bg-[#4a9eff]/20 flex items-center justify-center text-[#4a9eff] mb-4 group-hover:scale-110 transition-transform"
+                              whileHover={{ rotate: 360 }}
+                              transition={{ duration: 0.5 }}
+                            >
+                              <Icon size={32} />
+                            </motion.div>
+                            <div className="font-bold text-lg mb-2 group-hover:text-white transition-colors">
+                              {stakeholder.title}
+                            </div>
+                            <div className="text-sm text-[#6a8caf] mb-3 group-hover:text-[#8aaccc] transition-colors">
+                              {stakeholder.role}
+                            </div>
+                            <motion.div
+                              className="inline-block px-4 py-2 rounded-full bg-[#4a9eff]/20 text-[#4a9eff] font-bold group-hover:bg-[#4a9eff]/30 transition-colors"
+                              animate={{
+                                scale: [1, 1.05, 1],
+                              }}
+                              transition={{ duration: 2, repeat: Infinity, delay: i * 0.2 }}
+                            >
+                              {stakeholder.weight} голосов
+                            </motion.div>
+                          </motion.div>
+                        }
+                        size="md"
+                      />
+                    );
+                  })}
                 </div>
               </div>
             </motion.div>
@@ -541,33 +859,89 @@ export default function DiplomaticPresentation() {
                 <div className="p-8 rounded-3xl bg-gradient-to-b from-[#0d2440] to-[#0a1c30] border border-[#2a5a8c]/30">
                   <h3 className="text-xl font-bold mb-6">Расчёт эффективности</h3>
                   <div className="space-y-6">
-                    <div>
-                      <div className="flex justify-between text-sm mb-2">
-                        <span className="text-[#6a8caf]">Сокращение расходов на мониторинг</span>
-                        <span className="text-emerald-400 font-bold">-40%</span>
-                      </div>
-                      <div className="h-2 bg-[#1a3a5c] rounded-full overflow-hidden">
-                        <div className="h-full w-[40%] bg-emerald-500" />
-                      </div>
-                    </div>
-                    <div>
-                      <div className="flex justify-between text-sm mb-2">
-                        <span className="text-[#6a8caf]">Снижение потерь воды</span>
-                        <span className="text-emerald-400 font-bold">-30%</span>
-                      </div>
-                      <div className="h-2 bg-[#1a3a5c] rounded-full overflow-hidden">
-                        <div className="h-full w-[30%] bg-emerald-500" />
-                      </div>
-                    </div>
-                    <div>
-                      <div className="flex justify-between text-sm mb-2">
-                        <span className="text-[#6a8caf]">Привлечение частных инвестиций</span>
-                        <span className="text-[#4a9eff] font-bold">+250%</span>
-                      </div>
-                      <div className="h-2 bg-[#1a3a5c] rounded-full overflow-hidden">
-                        <div className="h-full w-[75%] bg-[#4a9eff]" />
-                      </div>
-                    </div>
+                    {[
+                      {
+                        label: "Сокращение расходов на мониторинг",
+                        value: "-40%",
+                        width: 40,
+                        color: "emerald",
+                        details: "Автоматизация сбора данных через IoT-сенсоры и блокчейн-платформу снижает затраты на мониторинг водных ресурсов на 40%. Это включает экономию на персонале, оборудовании и административных процессах.",
+                      },
+                      {
+                        label: "Снижение потерь воды",
+                        value: "-30%",
+                        width: 30,
+                        color: "emerald",
+                        details: "Раннее обнаружение утечек и оптимизация распределения через платформу CivilizationProtocol снижает потери воды на 30%. Это экономит миллионы кубометров воды ежегодно и снижает нагрузку на водные ресурсы.",
+                      },
+                      {
+                        label: "Привлечение частных инвестиций",
+                        value: "+250%",
+                        width: 75,
+                        color: "cyan",
+                        details: "Прозрачность и блокчейн-технологии привлекают частных инвесторов. Ожидается увеличение инвестиций на 250% благодаря токенизации активов, стейкингу и инвестиционным пулам.",
+                      },
+                    ].map((metric, i) => (
+                      <InfoPopup
+                        key={i}
+                        title={metric.label}
+                        content={
+                          <div className="space-y-3">
+                            <p className="text-sm">{metric.details}</p>
+                            <div>
+                              <h4 className="font-bold mb-2">Экономический эффект:</h4>
+                              <p className="text-sm text-slate-400">
+                                {metric.label === "Сокращение расходов на мониторинг" && "Для страны с бюджетом $100 млн на мониторинг, экономия составит $40 млн ежегодно. Эти средства можно направить на развитие инфраструктуры."}
+                                {metric.label === "Снижение потерь воды" && "Снижение потерь на 30% эквивалентно экономии миллионов кубометров воды. Это снижает нагрузку на водные ресурсы и улучшает доступность воды для населения."}
+                                {metric.label === "Привлечение частных инвестиций" && "Увеличение инвестиций на 250% означает привлечение дополнительных средств от частных инвесторов, заинтересованных в устойчивых и прозрачных проектах."}
+                              </p>
+                            </div>
+                          </div>
+                        }
+                        trigger={
+                          <motion.div
+                            initial={{ opacity: 0, x: -20 }}
+                            whileInView={{ opacity: 1, x: 0 }}
+                            transition={{ delay: i * 0.1 }}
+                            className="cursor-pointer group"
+                          >
+                            <div className="flex justify-between text-sm mb-2">
+                              <span className="text-[#6a8caf] group-hover:text-white transition-colors">
+                                {metric.label}
+                              </span>
+                              <motion.span
+                                className={`font-bold ${
+                                  metric.color === "emerald" ? "text-emerald-400" : "text-[#4a9eff]"
+                                }`}
+                                whileHover={{ scale: 1.1 }}
+                              >
+                                {metric.value}
+                              </motion.span>
+                            </div>
+                            <div className="h-3 bg-[#1a3a5c] rounded-full overflow-hidden relative">
+                              <motion.div
+                                className={`h-full bg-${
+                                  metric.color === "emerald" ? "emerald" : "cyan"
+                                }-500 relative`}
+                                initial={{ width: 0 }}
+                                whileInView={{ width: `${metric.width}%` }}
+                                transition={{ delay: 0.3 + i * 0.1, duration: 0.8 }}
+                              >
+                                {/* Блестящий эффект */}
+                                <motion.div
+                                  className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent"
+                                  animate={{
+                                    x: ["-100%", "100%"],
+                                  }}
+                                  transition={{ duration: 2, repeat: Infinity, delay: i * 0.3 }}
+                                />
+                              </motion.div>
+                            </div>
+                          </motion.div>
+                        }
+                        size="md"
+                      />
+                    ))}
                   </div>
                 </div>
 
@@ -612,7 +986,7 @@ export default function DiplomaticPresentation() {
               </h2>
               <p className="text-xl text-[#8aaccc] max-w-3xl mx-auto mb-12">
                 Приглашаем государства, международные организации и институты развития 
-                присоединиться к инициативе VODeco для совместного решения водного кризиса
+                присоединиться к инициативе CivilizationProtocol для совместного решения водного кризиса
               </p>
 
               {/* CTA Cards */}

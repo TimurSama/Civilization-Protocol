@@ -11,6 +11,7 @@ import {
 import React from "react";
 import { cn } from "@/lib/utils";
 import { useLanguage } from "@/context/LanguageContext";
+import InfoPopup from "@/components/InfoPopup";
 
 interface Step {
   id: number;
@@ -35,7 +36,7 @@ const stepTranslations: Record<string, Record<string, { title: string; descripti
       description: "Детальные чертежи старого оборудования: насосные станции с протечками (потери 30-40%), станции водоочистки с низкой эффективностью (45%), высокое энергопотребление (500 кВт на станцию)."
     },
     step4: {
-      title: "Схема установки экосистемы VODeco",
+      title: "Схема установки экосистемы CivilizationProtocol",
       description: "Архитектурная схема внедрения: IoT сенсоры на объектах, блокчейн узлы для хранения данных, AI аналитический центр, цифровые двойники объектов."
     },
     step5: {
@@ -69,7 +70,7 @@ const stepTranslations: Record<string, Record<string, { title: string; descripti
       description: "Detailed drawings of old equipment: pumping stations with leaks (30-40% losses), water treatment plants with low efficiency (45%), high energy consumption (500 kW per station)."
     },
     step4: {
-      title: "VODeco Ecosystem Installation Scheme",
+      title: "CivilizationProtocol Ecosystem Installation Scheme",
       description: "Architectural implementation scheme: IoT sensors on objects, blockchain nodes for data storage, AI analytics center, digital twins of objects."
     },
     step5: {
@@ -103,7 +104,7 @@ const stepTranslations: Record<string, Record<string, { title: string; descripti
       description: "رسومات تفصيلية للمعدات القديمة: محطات ضخ مع تسريبات (خسائر 30-40%)، محطات معالجة المياه بكفاءة منخفضة (45%)، استهلاك طاقة عالي (500 كيلوواط لكل محطة)."
     },
     step4: {
-      title: "مخطط تثبيت نظام VODeco",
+      title: "مخطط تثبيت نظام CivilizationProtocol",
       description: "مخطط التنفيذ المعماري: أجهزة استشعار IoT على الكائنات، عقد البلوك تشين لتخزين البيانات، مركز تحليلات AI، التوائم الرقمية للكائنات."
     },
     step5: {
@@ -234,7 +235,7 @@ export default function EcologyTransformationPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-slate-900 via-slate-800 to-slate-900 text-white">
+    <div className="min-h-screen text-white">
       {/* Local Header - под главным Navbar */}
       <div className="sticky top-20 left-0 right-0 z-[90] bg-slate-900/95 backdrop-blur-sm border-b border-white/10">
         <div className="max-w-7xl mx-auto px-4 py-4 flex items-center justify-between">
@@ -310,8 +311,129 @@ export default function EcologyTransformationPage() {
             animate={{ opacity: 1, y: 0 }}
             className="mb-8"
           >
-            <h2 className="text-4xl font-black mb-4 text-cyan-400">{steps[currentStep].title}</h2>
-            <p className="text-xl text-slate-300 max-w-3xl">{steps[currentStep].description}</p>
+            <div className="flex items-start gap-4 mb-4">
+              <div className="flex-1">
+                <h2 className="text-4xl font-black mb-4 text-cyan-400">{steps[currentStep].title}</h2>
+                <p className="text-xl text-slate-300 max-w-3xl">{steps[currentStep].description}</p>
+              </div>
+              <InfoPopup
+                title={steps[currentStep].title}
+                content={
+                  <div className="space-y-3">
+                    <p className="text-sm">{steps[currentStep].description}</p>
+                    <div>
+                      <h4 className="font-bold mb-2">
+                        {language === 'ru' ? 'Детальная информация:' : 
+                         language === 'ar' ? 'معلومات مفصلة:' : 
+                         'Detailed Information:'}
+                      </h4>
+                      <div className="text-sm text-slate-400 space-y-2">
+                        {currentStep === 0 && (
+                          <>
+                            <p>Среднеазиатский регион столкнулся с критическим водным кризисом. Аральское море потеряло 90% своего объёма, реки мелеют, сельскохозяйственные угодья превращаются в пустыню.</p>
+                            <ul className="list-disc list-inside space-y-1">
+                              <li>Аральское море: потеря 90% объёма с 1960 года</li>
+                              <li>Сырдарья и Амударья: снижение стока на 40-60%</li>
+                              <li>Деградация почв: 80% земель подвержены засолению</li>
+                              <li>Экономические потери: $2-3 млрд ежегодно</li>
+                            </ul>
+                          </>
+                        )}
+                        {currentStep === 1 && (
+                          <>
+                            <p>Река Сырдарья — одна из крупнейших рек Центральной Азии. Интенсивное использование воды для ирригации привело к критическому снижению уровня воды.</p>
+                            <ul className="list-disc list-inside space-y-1">
+                              <li>Длина реки: 2,212 км</li>
+                              <li>Бассейн: 219,000 км²</li>
+                              <li>Потери воды в каналах: 30-40%</li>
+                              <li>Неэффективное распределение между регионами</li>
+                            </ul>
+                          </>
+                        )}
+                        {currentStep === 2 && (
+                          <>
+                            <p>Устаревшая инфраструктура водного сектора приводит к огромным потерям воды и энергии. Необходима модернизация с использованием современных технологий.</p>
+                            <ul className="list-disc list-inside space-y-1">
+                              <li>Потери воды: 30-40% из-за протечек</li>
+                              <li>Эффективность очистки: только 45%</li>
+                              <li>Энергопотребление: 500 кВт на станцию</li>
+                              <li>Срок службы оборудования: превышен в 2-3 раза</li>
+                            </ul>
+                          </>
+                        )}
+                        {currentStep === 3 && (
+                          <>
+                            <p>CivilizationProtocol экосистема интегрируется в существующую инфраструктуру, добавляя IoT-сенсоры, блокчейн-узлы и AI-аналитику для полной цифровизации водного сектора.</p>
+                            <ul className="list-disc list-inside space-y-1">
+                              <li>IoT-сенсоры: мониторинг в реальном времени</li>
+                              <li>Блокчейн-узлы: неизменное хранение данных</li>
+                              <li>AI-аналитика: прогнозирование и оптимизация</li>
+                              <li>Цифровые двойники: виртуальные модели объектов</li>
+                            </ul>
+                          </>
+                        )}
+                        {currentStep === 4 && (
+                          <>
+                            <p>Процесс оцифровки и запечатывания данных в блокчейн обеспечивает прозрачность, доверие и автоматическую эмиссию токенов за предоставление данных.</p>
+                            <ul className="list-disc list-inside space-y-1">
+                              <li>Сбор данных: IoT-сенсоры → платформа</li>
+                              <li>Верификация: AI проверяет качество данных</li>
+                              <li>Хэширование: создание уникального идентификатора</li>
+                              <li>Блокчейн: запись в распределённый реестр</li>
+                              <li>Эмиссия токенов: автоматическая награда за данные</li>
+                            </ul>
+                          </>
+                        )}
+                        {currentStep === 5 && (
+                          <>
+                            <p>Глобальное сообщество специалистов предлагает решения через платформу CivilizationProtocol. DAO-голосование выбирает оптимальные проекты для реализации.</p>
+                            <ul className="list-disc list-inside space-y-1">
+                              <li>Специалисты: инженеры, экологи, экономисты</li>
+                              <li>Предложения: технические решения, проекты</li>
+                              <li>DAO-голосование: демократический выбор</li>
+                              <li>Пакеты решений: комплексные проекты</li>
+                            </ul>
+                          </>
+                        )}
+                        {currentStep === 6 && (
+                          <>
+                            <p>Инвестиционная модель CivilizationProtocol привлекает капитал через токенизацию активов, стейкинг и инвестиционные пулы, обеспечивая финансирование проектов.</p>
+                            <ul className="list-disc list-inside space-y-1">
+                              <li>Токенизация: водные активы → токены</li>
+                              <li>Стейкинг: пассивный доход до 17% годовых</li>
+                              <li>Инвестиционные пулы: финансирование проектов</li>
+                              <li>Управление: участие в DAO-голосованиях</li>
+                            </ul>
+                          </>
+                        )}
+                        {currentStep === 7 && (
+                          <>
+                            <p>Результаты трансформации показывают кардинальное улучшение всех показателей: эффективность, энергопотребление, потери воды и состояние экосистемы.</p>
+                            <ul className="list-disc list-inside space-y-1">
+                              <li>Эффективность: с 45% до 95% (+50%)</li>
+                              <li>Энергопотребление: снижение на 80%</li>
+                              <li>Потери воды: снижение на 90%</li>
+                              <li>Экосистема: восстановление биоразнообразия</li>
+                              <li>Экономика: рост на $500M+ ежегодно</li>
+                            </ul>
+                          </>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+                }
+                trigger={
+                  <motion.button
+                    whileHover={{ scale: 1.1 }}
+                    whileTap={{ scale: 0.9 }}
+                    className="p-3 rounded-xl bg-cyan-500/20 hover:bg-cyan-500/30 border border-cyan-500/50 transition-all"
+                  >
+                    <CheckCircle2 className="text-cyan-400" size={24} />
+                  </motion.button>
+                }
+                size="lg"
+              />
+            </div>
           </motion.div>
 
           {/* Visual Area */}
@@ -488,7 +610,7 @@ function SatelliteView() {
           <text x="60" y="95" fill="white" fontSize="11">Аральское море (высохшее)</text>
           
           <circle cx="30" cy="115" r="8" fill="#06b6d4" opacity="0.5" />
-          <text x="60" y="120" fill="white" fontSize="11">Зона мониторинга VODeco</text>
+          <text x="60" y="120" fill="white" fontSize="11">Зона мониторинга CivilizationProtocol</text>
         </g>
         
         {/* Масштаб */}

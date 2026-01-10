@@ -144,7 +144,7 @@ contract VODToken is ERC20, Ownable {
     event Staked(address indexed user, uint256 amount);
     event RewardClaimed(address indexed user, uint256 amount);
     
-    constructor() ERC20("VODeco Token", "VOD") {
+    constructor() ERC20("CivilizationProtocol Token", "VOD") {
         _mint(msg.sender, MAX_SUPPLY * 10 / 100); // 10% initial
     }
     
@@ -158,7 +158,7 @@ contract VODToken is ERC20, Ownable {
   },
   "api_example": {
     language: "javascript",
-    code: `// VODeco API Example
+    code: `// CivilizationProtocol API Example
 import { VodecoClient } from '@vodeco/sdk';
 
 const client = new VodecoClient({
@@ -230,7 +230,7 @@ export default function SmartWhitePaper() {
             </button>
             <Link href="/presentations" className="flex items-center gap-2">
               <BookOpen className="text-emerald-500" size={24} />
-              <span className="font-bold">VODeco WhitePaper</span>
+              <span className="font-bold">CivilizationProtocol WhitePaper</span>
               <span className={cn("text-xs px-2 py-0.5 rounded-full", darkMode ? "bg-emerald-500/20 text-emerald-400" : "bg-emerald-100 text-emerald-600")}>
                 v2.0
               </span>
@@ -364,7 +364,7 @@ export default function SmartWhitePaper() {
               <section id="1.1" className="mb-12">
                 <h2 className="text-2xl font-bold mb-4 pb-2 border-b border-slate-700">1.1 Executive Summary</h2>
                 <p className={cn("mb-4 leading-relaxed", darkMode ? "text-slate-300" : "text-slate-600")}>
-                  VODeco (Value of Data — Water Ecosystem) представляет собой децентрализованную 
+                  CivilizationProtocol (Value of Data — Water Ecosystem) представляет собой децентрализованную 
                   кибер-физическую платформу для управления водными ресурсами, объединяющую 
                   технологии блокчейн, IoT и AI для создания прозрачной и эффективной системы 
                   мониторинга и управления.
@@ -441,7 +441,7 @@ export default function SmartWhitePaper() {
                 <h2 className="text-2xl font-bold mb-4 pb-2 border-b border-slate-700">3.1 Data Schemas</h2>
                 
                 <p className={cn("mb-6", darkMode ? "text-slate-300" : "text-slate-600")}>
-                  Все данные в экосистеме VODeco следуют строгим схемам для обеспечения 
+                  Все данные в экосистеме CivilizationProtocol следуют строгим схемам для обеспечения 
                   совместимости и верификации.
                 </p>
                 
@@ -527,7 +527,7 @@ export default function SmartWhitePaper() {
                 <h2 className="text-2xl font-bold mb-4 pb-2 border-b border-slate-700">5.1 Token Architecture</h2>
                 
                 <p className={cn("mb-6", darkMode ? "text-slate-300" : "text-slate-600")}>
-                  Экосистема VODeco использует трёхуровневую токеномическую модель:
+                  Экосистема CivilizationProtocol использует трёхуровневую токеномическую модель:
                 </p>
                 
                 <div className="grid md:grid-cols-3 gap-4 mb-8">

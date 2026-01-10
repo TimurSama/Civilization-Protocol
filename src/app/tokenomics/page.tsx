@@ -12,6 +12,10 @@ import {
 import Link from "next/link";
 import { cn } from "@/lib/utils";
 import BuyTokenWidget from "@/components/BuyTokenWidget";
+import RevenueModelDashboard from "@/components/RevenueModelDashboard";
+import TokenDistributionDashboard from "@/components/TokenDistributionDashboard";
+import VODEmissionSimulator from "@/components/VODEmissionSimulator";
+import VODStabilityDashboard from "@/components/VODStabilityDashboard";
 
 // Constants
 const EARTH_WATER_VOLUME = 1_386_000_000; // km³
@@ -162,8 +166,20 @@ export default function TokenomicsPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-ocean-deep via-slate-900 to-ocean-deep py-24 px-4">
+    <div className="min-h-screen py-24 px-4">
       <div className="max-w-7xl mx-auto">
+        {/* Revenue Model Dashboard */}
+        <RevenueModelDashboard />
+
+        {/* Token Distribution Dashboard */}
+        <TokenDistributionDashboard />
+
+        {/* VOD Emission Simulator */}
+        <VODEmissionSimulator />
+
+        {/* VOD Stability Dashboard */}
+        <VODStabilityDashboard />
+
         {/* Header */}
         <motion.div
           initial={{ opacity: 0, y: -20 }}

@@ -125,7 +125,7 @@ export default function FriendsPage() {
 
     if (!isAuthenticated) {
         return (
-            <div className="min-h-screen bg-ocean-deep py-24 px-4 flex items-center justify-center">
+            <div className="min-h-screen py-24 px-4 flex items-center justify-center">
                 <div className="text-center glass-card p-12 rounded-2xl">
                     <Users size={64} className="mx-auto mb-6 text-cyan-400" />
                     <h2 className="text-2xl font-black mb-4">Друзья и контакты</h2>
@@ -136,7 +136,7 @@ export default function FriendsPage() {
     }
 
     return (
-        <div className={cn("min-h-screen bg-ocean-deep py-24 px-4", isRTL && "text-right")}>
+        <div className={cn("min-h-screen py-24 px-4", isRTL && "text-right")}>
             <div className="max-w-5xl mx-auto">
                 {/* Header */}
                 <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-8">

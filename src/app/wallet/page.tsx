@@ -205,7 +205,7 @@ export default function WalletPage() {
           <div className="w-20 h-20 rounded-3xl bg-gradient-to-br from-cyan-500 to-blue-600 mx-auto mb-8 flex items-center justify-center shadow-2xl shadow-cyan-500/20">
             <Wallet className="text-white" size={32} />
           </div>
-          <h1 className="text-3xl font-black mb-4">Кошелёк VODeco</h1>
+          <h1 className="text-3xl font-black mb-4">Кошелёк CivilizationProtocol</h1>
           <p className="text-slate-400 mb-8">Войдите в аккаунт для доступа к кошельку</p>
           <Link
             href="/"
@@ -229,7 +229,7 @@ export default function WalletPage() {
         <div className="flex items-center justify-between flex-wrap gap-4">
           <div>
             <h1 className="text-3xl md:text-4xl font-black mb-2">Кошелёк</h1>
-            <p className="text-slate-400">Управление вашими активами VODeco</p>
+            <p className="text-slate-400">Управление вашими активами CivilizationProtocol</p>
           </div>
           <div className="flex items-center gap-3 flex-wrap">
             <button
@@ -630,7 +630,7 @@ export default function WalletPage() {
                 <span className="font-bold text-yellow-400">Pioneer Badge</span>
               </div>
               <p className="text-sm text-slate-400">
-                Вы один из первых участников VODeco! Бонус +20% к наградам за активность.
+                Вы один из первых участников CivilizationProtocol! Бонус +20% к наградам за активность.
               </p>
             </motion.div>
           )}

@@ -17,36 +17,62 @@ export function LanguageProvider({ children }: { children: React.ReactNode }) {
 
     useEffect(() => {
         const savedLang = localStorage.getItem("Civilization Protocol-lang") as Language;
-        if (savedLang && ["en", "ru", "ar", "es", "de", "pt", "pl", "ja", "ko", "zh", "fr"].includes(savedLang)) {
+        if (savedLang && ["en", "ru", "ar", "es", "fr", "pl", "de"].includes(savedLang)) {
             setLanguage(savedLang);
+        } else {
+            // Default to English (primary language)
+            setLanguage("en");
         }
     }, []);
 
     useEffect(() => {
         localStorage.setItem("Civilization Protocol-lang", language);
         document.documentElement.lang = language;
+        // RTL languages: Arabic only
         document.documentElement.dir = language === "ar" ? "rtl" : "ltr";
     }, [language]);
 
     const t = (path: string) => {
         const keys = path.split(".");
+        
+        // Always fallback to English (primary language)
         let current: any = translations[language];
+        const englishFallback: any = translations.en;
 
-        // Fallback to English if language doesn't exist
+        // If current language doesn't exist, use English directly
         if (!current) {
             current = translations.en;
-            console.warn(`Language ${language} not found, falling back to English`);
+            console.warn(`Language ${language} not found, using English (primary language)`);
         }
 
+        // Try to get translation in current language first
+        let result: any = current;
+        let foundInCurrentLang = true;
+        
         for (const key of keys) {
-            if (current[key] === undefined) {
-                console.warn(`Translation missing for key: ${path} in language: ${language}`);
-                return path;
+            if (result[key] === undefined) {
+                foundInCurrentLang = false;
+                break;
             }
-            current = current[key];
+            result = result[key];
         }
 
-        return current;
+        // If not found in current language, fallback to English
+        if (!foundInCurrentLang) {
+            result = englishFallback;
+            for (const key of keys) {
+                if (result[key] === undefined) {
+                    console.warn(`Translation missing for key: ${path} in both ${language} and English (primary)`);
+                    return path; // Return path if even English doesn't have it
+                }
+                result = result[key];
+            }
+            if (language !== "en") {
+                console.warn(`Translation missing for key: ${path} in ${language}, using English (primary language)`);
+            }
+        }
+
+        return result;
     };
 
     const isRTL = language === "ar";

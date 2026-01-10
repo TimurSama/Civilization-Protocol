@@ -13,7 +13,7 @@ import { cn } from "@/lib/utils";
 
 const translations = {
   ru: {
-    welcome: "Добро пожаловать в VODeco!",
+    welcome: "Добро пожаловать в CivilizationProtocol!",
     welcomeDesc: "Первая DAO-платформа для управления водными ресурсами человечества",
     skip: "Пропустить",
     next: "Далее",
@@ -88,7 +88,7 @@ const translations = {
     startExploring: "Начать исследование"
   },
   en: {
-    welcome: "Welcome to VODeco!",
+    welcome: "Welcome to CivilizationProtocol!",
     welcomeDesc: "The first DAO platform for managing humanity's water resources",
     skip: "Skip",
     next: "Next",
@@ -163,7 +163,7 @@ const translations = {
     startExploring: "Start Exploring"
   },
   ar: {
-    welcome: "مرحباً بك في VODeco!",
+    welcome: "مرحباً بك في CivilizationProtocol!",
     welcomeDesc: "أول منصة DAO لإدارة موارد المياه للبشرية",
     skip: "تخطي",
     next: "التالي",
@@ -567,6 +567,14 @@ export default function OnboardingTour({ onComplete }: OnboardingTourProps) {
     </motion.div>
   );
 }
+
+
+
+
+
+
+
+
 
 
 

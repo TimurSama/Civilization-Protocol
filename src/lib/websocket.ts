@@ -1,6 +1,6 @@
 /**
  * WebSocket Service for Real-time Notifications
- * VODeco Platform
+ * CivilizationProtocol Platform
  */
 
 export type NotificationType = 
@@ -282,6 +282,14 @@ export const wsService = new WebSocketService();
 export function useWebSocket() {
   return wsService;
 }
+
+
+
+
+
+
+
+
 
 
 

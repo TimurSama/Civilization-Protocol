@@ -140,7 +140,7 @@ export default function ShareModal({ isOpen, onClose, shareType, data }: ShareMo
   const referralLink = `${baseUrl}/register?ref=${referralCode}`;
   
   const shareUrl = data?.url || referralLink;
-  const shareTitle = data?.title || "VODeco - Децентрализованная платформа водных ресурсов";
+  const shareTitle = data?.title || "CivilizationProtocol - Децентрализованная платформа водных ресурсов";
   const shareDescription = data?.description || "Присоединяйтесь к революции управления водными ресурсами!";
 
   const handleCopy = (text: string, type: string) => {
@@ -430,7 +430,7 @@ export function generateInviteCardSVG(
   <circle cx="1100" cy="100" r="150" fill="#3b82f6" opacity="0.1"/>
   
   <!-- Logo -->
-  <text x="600" y="120" font-family="Arial" font-size="60" font-weight="bold" fill="url(#accent)" text-anchor="middle">💧 VODeco</text>
+  <text x="600" y="120" font-family="Arial" font-size="60" font-weight="bold" fill="url(#accent)" text-anchor="middle">💧 CivilizationProtocol</text>
   
   <!-- Main text -->
   <text x="600" y="220" font-family="Arial" font-size="36" fill="white" text-anchor="middle">
@@ -461,6 +461,14 @@ export function generateInviteCardSVG(
 </svg>
 `;
 }
+
+
+
+
+
+
+
+
 
 
 

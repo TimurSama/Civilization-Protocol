@@ -31,13 +31,13 @@ const demoGroups: Group[] = [
     { id: "1", name: "Исследователи водной экологии", type: "research", description: "Группа ученых и исследователей, занимающихся изучением водных экосистем и разработкой инновационных решений.", memberCount: 156, projectCount: 23, activity: "Высокая", isPrivate: false, category: "science", isMember: false, createdAt: new Date().toISOString() },
     { id: "2", name: "Экологический активизм", type: "community", description: "Сообщество активистов, борющихся за сохранение водных ресурсов и защиту окружающей среды.", memberCount: 342, projectCount: 45, activity: "Очень высокая", isPrivate: false, category: "ecology", isMember: true, createdAt: new Date().toISOString() },
     { id: "3", name: "Водоочистные сооружения Москвы", type: "object", description: "Группа управления и мониторинга водоочистных сооружений в Москве.", memberCount: 28, projectCount: 8, activity: "Средняя", isPrivate: true, category: "infrastructure", isMember: false, createdAt: new Date().toISOString() },
-    { id: "4", name: "Инвесторы VODeco", type: "business", description: "Сообщество инвесторов и стейкхолдеров платформы VODeco.", memberCount: 856, projectCount: 67, activity: "Очень высокая", isPrivate: false, category: "business", isMember: true, createdAt: new Date().toISOString() },
+    { id: "4", name: "Инвесторы CivilizationProtocol", type: "business", description: "Сообщество инвесторов и стейкхолдеров платформы CivilizationProtocol.", memberCount: 856, projectCount: 67, activity: "Очень высокая", isPrivate: false, category: "business", isMember: true, createdAt: new Date().toISOString() },
     { id: "5", name: "Центральная Азия Water Network", type: "regional", description: "Сеть специалистов по водным ресурсам Центральной Азии.", memberCount: 234, projectCount: 34, activity: "Высокая", isPrivate: false, category: "regional", isMember: false, createdAt: new Date().toISOString() },
     { id: "6", name: "IoT Sensors Operators", type: "technical", description: "Группа операторов IoT датчиков. Обсуждение технических вопросов.", memberCount: 89, projectCount: 12, activity: "Средняя", isPrivate: false, category: "tech", isMember: false, createdAt: new Date().toISOString() },
     { id: "7", name: "Aral Sea Restoration", type: "ecological", description: "Программа восстановления Аральского моря.", memberCount: 567, projectCount: 15, activity: "Очень высокая", isPrivate: false, category: "ecology", isMember: true, createdAt: new Date().toISOString() },
     { id: "8", name: "DAO Governance Council", type: "governance", description: "Совет по управлению DAO. Обсуждение предложений.", memberCount: 124, projectCount: 8, activity: "Высокая", isPrivate: true, category: "governance", isMember: false, createdAt: new Date().toISOString() },
     { id: "9", name: "Water Quality Analysts", type: "professional", description: "Сообщество аналитиков качества воды.", memberCount: 198, projectCount: 28, activity: "Высокая", isPrivate: false, category: "science", isMember: false, createdAt: new Date().toISOString() },
-    { id: "10", name: "Blockchain Developers VOD", type: "technical", description: "Разработчики блокчейн решений для VODeco.", memberCount: 67, projectCount: 19, activity: "Средняя", isPrivate: false, category: "tech", isMember: false, createdAt: new Date().toISOString() },
+    { id: "10", name: "Blockchain Developers VOD", type: "technical", description: "Разработчики блокчейн решений для CivilizationProtocol.", memberCount: 67, projectCount: 19, activity: "Средняя", isPrivate: false, category: "tech", isMember: false, createdAt: new Date().toISOString() },
     { id: "11", name: "Education & Training", type: "educational", description: "Образовательные программы по устойчивому водопользованию.", memberCount: 423, projectCount: 14, activity: "Высокая", isPrivate: false, category: "education", isMember: false, createdAt: new Date().toISOString() },
     { id: "12", name: "UN-Water Partnership", type: "partnership", description: "Официальная группа партнерства с UN-Water.", memberCount: 45, projectCount: 6, activity: "Средняя", isPrivate: true, category: "international", isMember: false, createdAt: new Date().toISOString() },
 ];
@@ -182,7 +182,7 @@ export default function GroupsPage() {
     const totalMembers = groups.reduce((acc, g) => acc + g.memberCount, 0);
 
     return (
-        <div className="min-h-screen bg-ocean-deep py-24 px-4">
+        <div className="min-h-screen py-24 px-4">
             <div className="max-w-6xl mx-auto">
                 {/* Header */}
                 <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-8">

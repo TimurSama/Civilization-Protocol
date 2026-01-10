@@ -7,7 +7,7 @@ import crypto from 'crypto';
 
 // Telegram Bot Token (set in environment)
 const BOT_TOKEN = process.env.TELEGRAM_BOT_TOKEN || '';
-const BOT_USERNAME = process.env.TELEGRAM_BOT_USERNAME || 'VODecoBot';
+const BOT_USERNAME = process.env.TELEGRAM_BOT_USERNAME || 'CivilizationProtocolBot';
 
 // Telegram Web App data interface
 export interface TelegramWebAppData {
@@ -219,18 +219,18 @@ export async function sendInviteMessage(
   const isRu = language === 'ru';
   
   const text = isRu
-    ? `🌊 <b>Приглашение в VODeco</b>
+    ? `🌊 <b>Приглашение в CivilizationProtocol</b>
 
-${inviterName} приглашает вас присоединиться к VODeco — децентрализованной платформе управления водными ресурсами.
+${inviterName} приглашает вас присоединиться к CivilizationProtocol — децентрализованной платформе управления водными ресурсами.
 
 🎁 <b>Бонус за регистрацию: 200 VOD</b>
 
 ✨ Участвуйте в DAO голосованиях
 💧 Мониторьте качество воды
 🏆 Получайте награды за активность`
-    : `🌊 <b>VODeco Invitation</b>
+    : `🌊 <b>CivilizationProtocol Invitation</b>
 
-${inviterName} invites you to join VODeco — the decentralized water resource management platform.
+${inviterName} invites you to join CivilizationProtocol — the decentralized water resource management platform.
 
 🎁 <b>Registration bonus: 200 VOD</b>
 
@@ -246,7 +246,7 @@ ${inviterName} invites you to join VODeco — the decentralized water resource m
       inline_keyboard: [
         [
           {
-            text: isRu ? '🚀 Открыть VODeco' : '🚀 Open VODeco',
+            text: isRu ? '🚀 Открыть CivilizationProtocol' : '🚀 Open CivilizationProtocol',
             url: miniAppLink
           }
         ],
@@ -407,6 +407,14 @@ interface TelegramWebAppInstance {
   };
   openTelegramLink: (url: string) => void;
 }
+
+
+
+
+
+
+
+
 
 
 

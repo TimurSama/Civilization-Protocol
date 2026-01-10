@@ -47,7 +47,7 @@ interface Message {
 const demoChats: Chat[] = [
     { id: "1", partner: { id: "u1", name: "Alex Rivers", avatar: "AR", lastActive: new Date().toISOString() }, lastMessage: { content: "The water quality data is ready for review.", createdAt: new Date().toISOString(), isRead: false }, unreadCount: 2 },
     { id: "2", partner: { id: "u2", name: "Elena Eco", avatar: "EE", lastActive: new Date().toISOString() }, lastMessage: { content: "Did you see the new petition?", createdAt: new Date(Date.now() - 3600000).toISOString(), isRead: true }, unreadCount: 0 },
-    { id: "3", partner: { id: "u3", name: "VODeco Support", avatar: "VS", lastActive: new Date(Date.now() - 86400000).toISOString() }, lastMessage: { content: "Your account has been verified.", createdAt: new Date(Date.now() - 86400000).toISOString(), isRead: true }, unreadCount: 0 },
+    { id: "3", partner: { id: "u3", name: "CivilizationProtocol Support", avatar: "VS", lastActive: new Date(Date.now() - 86400000).toISOString() }, lastMessage: { content: "Your account has been verified.", createdAt: new Date(Date.now() - 86400000).toISOString(), isRead: true }, unreadCount: 0 },
     { id: "4", partner: { id: "u4", name: "Water Research Team", avatar: "WR", lastActive: new Date().toISOString() }, lastMessage: { content: "New findings from the Aral Sea project", createdAt: new Date(Date.now() - 7200000).toISOString(), isRead: false }, unreadCount: 5 },
     { id: "5", partner: { id: "u5", name: "Sarah Green", avatar: "SG", lastActive: new Date().toISOString() }, lastMessage: { content: "Can we schedule a meeting?", createdAt: new Date(Date.now() - 172800000).toISOString(), isRead: false }, unreadCount: 1 },
     { id: "6", partner: { id: "u6", name: "DAO Council", avatar: "DC", lastActive: new Date(Date.now() - 259200000).toISOString() }, lastMessage: { content: "Voting results for proposal #VOD-125", createdAt: new Date(Date.now() - 259200000).toISOString(), isRead: true }, unreadCount: 0 },
@@ -208,7 +208,7 @@ export default function MessagesPage() {
 
     if (!isAuthenticated) {
         return (
-            <div className="h-screen bg-ocean-deep pt-20 flex items-center justify-center">
+            <div className="h-screen pt-20 flex items-center justify-center">
                 <div className="text-center glass-card p-12 rounded-2xl">
                     <MessageSquare size={64} className="mx-auto mb-6 text-cyan-400" />
                     <h2 className="text-2xl font-black mb-4">Сообщения</h2>
@@ -219,7 +219,7 @@ export default function MessagesPage() {
     }
 
     return (
-        <div className={cn("h-screen bg-ocean-deep pt-20 flex overflow-hidden", isRTL && "flex-row-reverse")}>
+        <div className={cn("h-screen pt-20 flex overflow-hidden", isRTL && "flex-row-reverse")}>
             {/* Sidebar: Chat List */}
             <div className={cn(
                 "w-full md:w-96 glass border-r border-white/5 flex flex-col",

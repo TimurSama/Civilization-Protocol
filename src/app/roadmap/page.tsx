@@ -136,7 +136,7 @@ const roadmapData = [
           { text: "Формирование команды", done: true },
           { text: "Партнёрство с научными институтами", done: true },
         ],
-        achievements: ["Концепция VODeco", "White Paper v1.0", "Партнёрство TIIAME"],
+        achievements: ["Концепция CivilizationProtocol", "White Paper v1.0", "Партнёрство TIIAME"],
       },
     ],
   },
@@ -837,7 +837,7 @@ export default function RoadmapPage() {
         <Rocket className="mx-auto mb-4 text-cyan-glow" size={48} />
         <h2 className="text-3xl font-black mb-4">Видение 2030</h2>
         <p className="text-slate-400 max-w-3xl mx-auto mb-8">
-          К 2030 году VODeco станет глобальной платформой управления водными ресурсами,
+          К 2030 году CivilizationProtocol станет глобальной платформой управления водными ресурсами,
           объединяющей миллионы пользователей, тысячи IoT устройств и сотни организаций
           для устойчивого развития планеты.
         </p>

@@ -16,7 +16,7 @@ import { useAuth } from "@/context/AuthContext";
 const translations = {
   ru: {
     title: "Социальный слой",
-    subtitle: "Центр взаимодействия сообщества VODeco",
+    subtitle: "Центр взаимодействия сообщества CivilizationProtocol",
     newTopic: "Новая тема",
     search: "Поиск обсуждений...",
     hot: "Горячее",
@@ -69,7 +69,7 @@ const translations = {
   },
   en: {
     title: "Social Layer",
-    subtitle: "VODeco Community Interaction Center",
+    subtitle: "CivilizationProtocol Community Interaction Center",
     newTopic: "New Topic",
     search: "Search discussions...",
     hot: "Hot",
@@ -122,7 +122,7 @@ const translations = {
   },
   ar: {
     title: "الطبقة الاجتماعية",
-    subtitle: "مركز تفاعل مجتمع VODeco",
+    subtitle: "مركز تفاعل مجتمع CivilizationProtocol",
     newTopic: "موضوع جديد",
     search: "البحث في النقاشات...",
     hot: "ساخن",
@@ -251,7 +251,7 @@ const discussions = [
   { 
     id: 6,
     title: "Интеграция с IoT датчиками: Опыт внедрения",
-    excerpt: "Делюсь опытом подключения 50+ датчиков качества воды к платформе VODeco...",
+    excerpt: "Делюсь опытом подключения 50+ датчиков качества воды к платформе CivilizationProtocol...",
     replies: 78, views: 1234, likes: 56, 
     categoryId: "technology", 
     author: { name: "IoT_Expert", avatar: "IE", verified: true, role: "Engineer" },
@@ -286,7 +286,7 @@ const discussions = [
   },
   {
     id: 9,
-    title: "Образовательная программа VODeco Academy: Набор 2025",
+    title: "Образовательная программа CivilizationProtocol Academy: Набор 2025",
     excerpt: "Открыт набор на бесплатную программу подготовки специалистов по управлению водными ресурсами. Сертификаты и награды за обучение.",
     replies: 234, views: 3456, likes: 189,
     categoryId: "education",
@@ -299,7 +299,7 @@ const discussions = [
   {
     id: 10,
     title: "Модернизация водоканала в Алматы: Кейс внедрения",
-    excerpt: "Подробный разбор проекта по цифровизации городской водной инфраструктуры с использованием платформы VODeco.",
+    excerpt: "Подробный разбор проекта по цифровизации городской водной инфраструктуры с использованием платформы CivilizationProtocol.",
     replies: 145, views: 2890, likes: 167,
     categoryId: "infrastructure",
     author: { name: "CityWater_KZ", avatar: "CW", verified: true, role: "Government" },
@@ -358,7 +358,7 @@ const discussions = [
   },
   {
     id: 15,
-    title: "Технический вебинар: Настройка IoT датчиков для VODeco",
+    title: "Технический вебинар: Настройка IoT датчиков для CivilizationProtocol",
     excerpt: "Практический мастер-класс по подключению и калибровке датчиков качества воды. Запись доступна.",
     replies: 89, views: 1234, likes: 78,
     categoryId: "technology",

@@ -1,5 +1,5 @@
 /**
- * Email Service for VODeco Platform
+ * Email Service for CivilizationProtocol Platform
  * Handles email verification, notifications, and transactional emails
  */
 
@@ -8,20 +8,20 @@ import crypto from 'crypto';
 // Email templates
 export const EMAIL_TEMPLATES = {
   verification: {
-    subject: 'Подтвердите ваш email - VODeco',
-    subjectEn: 'Verify your email - VODeco',
+    subject: 'Подтвердите ваш email - CivilizationProtocol',
+    subjectEn: 'Verify your email - CivilizationProtocol',
   },
   welcome: {
-    subject: 'Добро пожаловать в VODeco! 🌊',
-    subjectEn: 'Welcome to VODeco! 🌊',
+    subject: 'Добро пожаловать в CivilizationProtocol! 🌊',
+    subjectEn: 'Welcome to CivilizationProtocol! 🌊',
   },
   passwordReset: {
-    subject: 'Сброс пароля - VODeco',
-    subjectEn: 'Password Reset - VODeco',
+    subject: 'Сброс пароля - CivilizationProtocol',
+    subjectEn: 'Password Reset - CivilizationProtocol',
   },
   referralInvite: {
-    subject: 'Ваш друг приглашает вас в VODeco',
-    subjectEn: 'Your friend invites you to VODeco',
+    subject: 'Ваш друг приглашает вас в CivilizationProtocol',
+    subjectEn: 'Your friend invites you to CivilizationProtocol',
   },
   daoProposal: {
     subject: 'Новое предложение в DAO VOD',
@@ -158,14 +158,14 @@ export function getVerificationEmailHTML(
 <body>
   <div class="container">
     <div class="logo">
-      <span class="logo-text">💧 VODeco</span>
+      <span class="logo-text">💧 CivilizationProtocol</span>
     </div>
     
     <h1>${isRu ? 'Подтвердите ваш email' : 'Verify Your Email'}</h1>
     
     <p>${isRu 
-      ? `Привет, <strong>${username}</strong>! Добро пожаловать в VODeco — децентрализованную платформу управления водными ресурсами.`
-      : `Hi, <strong>${username}</strong>! Welcome to VODeco — the decentralized water resource management platform.`
+      ? `Привет, <strong>${username}</strong>! Добро пожаловать в CivilizationProtocol — децентрализованную платформу управления водными ресурсами.`
+      : `Hi, <strong>${username}</strong>! Welcome to CivilizationProtocol — the decentralized water resource management platform.`
     }</p>
     
     <p>${isRu
@@ -186,13 +186,13 @@ export function getVerificationEmailHTML(
     
     <div class="warning">
       ⚠️ ${isRu
-        ? 'Если вы не регистрировались на VODeco, просто проигнорируйте это письмо.'
-        : 'If you did not register on VODeco, please ignore this email.'
+        ? 'Если вы не регистрировались на CivilizationProtocol, просто проигнорируйте это письмо.'
+        : 'If you did not register on CivilizationProtocol, please ignore this email.'
       }
     </div>
     
     <div class="footer">
-      <p>© 2024 VODeco. ${isRu ? 'Все права защищены.' : 'All rights reserved.'}</p>
+      <p>© 2024 CivilizationProtocol. ${isRu ? 'Все права защищены.' : 'All rights reserved.'}</p>
       <p>${isRu ? 'DAO управление водными ресурсами планеты' : 'DAO for planetary water resource management'}</p>
       <div class="social-links">
         <a href="https://t.me/vodeco">Telegram</a>
@@ -337,7 +337,7 @@ export function getReferralInviteEmailHTML(
   <div class="container">
     <div class="header-image">
       <div class="header-content">
-        <h1>💧 VODeco</h1>
+        <h1>💧 CivilizationProtocol</h1>
         <p>${isRu ? 'Децентрализованная экосистема водных ресурсов' : 'Decentralized Water Resource Ecosystem'}</p>
       </div>
     </div>
@@ -387,7 +387,7 @@ export function getReferralInviteEmailHTML(
     </div>
     
     <div class="footer">
-      <p>© 2024 VODeco. ${isRu ? 'Все права защищены.' : 'All rights reserved.'}</p>
+      <p>© 2024 CivilizationProtocol. ${isRu ? 'Все права защищены.' : 'All rights reserved.'}</p>
     </div>
   </div>
 </body>
@@ -440,6 +440,14 @@ export async function sendEmail(
     messageId: `msg_${Date.now()}`
   };
 }
+
+
+
+
+
+
+
+
 
 
 

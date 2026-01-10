@@ -16,7 +16,7 @@ import Link from "next/link";
 const screens = [
   {
     id: 1,
-    title: "Welcome to VODeco",
+    title: "Welcome to CivilizationProtocol",
     subtitle: "Value of Data — Water Ecosystem",
     description: "Water is the foundation of life, ecosystems and economies. Yet today, water is managed with fragmented data, outdated infrastructure and limited transparency.",
     stats: [
@@ -57,9 +57,9 @@ const screens = [
   },
   {
     id: 4,
-    title: "Что такое VODeco",
+    title: "Что такое CivilizationProtocol",
     subtitle: "Децентрализованная кибер-физическая платформа",
-    description: "VODeco is a digital ecosystem for transparent, data-driven water resource governance. It integrates monitoring, data trust, economic mechanisms and decision-making.",
+    description: "CivilizationProtocol is a digital ecosystem for transparent, data-driven water resource governance. It integrates monitoring, data trust, economic mechanisms and decision-making.",
     features: [
       { icon: Globe, text: "Глобальный охват", desc: "От региона до планеты" },
       { icon: Shield, text: "Блокчейн доверие", desc: "Неизменяемость данных" },
@@ -94,7 +94,7 @@ const screens = [
     id: 6,
     title: "Данные и Доверие",
     subtitle: "Reliable water governance begins with trusted data",
-    description: "VODeco ensures transparency, traceability and integrity of environmental information through blockchain-based verification.",
+    description: "CivilizationProtocol ensures transparency, traceability and integrity of environmental information through blockchain-based verification.",
     dataFlow: [
       { step: "Raw Data", desc: "IoT датчики, измерения", icon: Activity },
       { step: "Validation", desc: "Проверка и верификация", icon: CheckCircle2 },
@@ -120,7 +120,7 @@ const screens = [
     id: 8,
     title: "Экономика Воды — Nexus Exchange",
     subtitle: "Центральный хаб обмена токенов, данных и услуг",
-    description: "Sustainable water management requires economic instruments. VODeco connects environmental data with investment transparency.",
+    description: "Sustainable water management requires economic instruments. CivilizationProtocol connects environmental data with investment transparency.",
     nexusModules: [
       { name: "Token & Data Exchange", desc: "Обмен VOD/R-VOD/P-VOD, торговля данными", fee: "0.1-0.3%" },
       { name: "Staking & Impact Pools", desc: "Stake-to-build, климатические пулы", apy: "5-25% APY" },
@@ -156,7 +156,7 @@ const screens = [
     id: 10,
     title: "DAO Управление",
     subtitle: "Decisions made through transparent governance mechanisms",
-    description: "VODeco supports collaboration between public institutions, experts, investors and society through decentralized autonomous organization.",
+    description: "CivilizationProtocol supports collaboration between public institutions, experts, investors and society through decentralized autonomous organization.",
     daoFeatures: [
       { feature: "Предложения", desc: "Создание и обсуждение инициатив", icon: FileText },
       { feature: "Голосование", desc: "Взвешенное голосование токенами", icon: Vote },
@@ -195,7 +195,7 @@ const screens = [
     subtitle: "Investment marketplace for water infrastructure",
     description: "Financing projects through tokenized mechanisms with transparent tracking and DAO governance.",
     projects: [
-      { name: "VODeco Core", type: "O-VOD", irr: "12%", status: "Active", desc: "Global Data Infrastructure" },
+      { name: "CivilizationProtocol Core", type: "O-VOD", irr: "12%", status: "Active", desc: "Global Data Infrastructure" },
       { name: "Smart Pumping Network", type: "P-VOD", irr: "18%", status: "Funding", desc: "IoT насосные станции" },
       { name: "Desalination 2.0", type: "P-VOD", irr: "22%", status: "Planning", desc: "Опреснение нового поколения" },
       { name: "Carbon Credits", type: "R-VOD", irr: "15%", status: "Active", desc: "Regen Network интеграция" },
@@ -208,7 +208,7 @@ const screens = [
     id: 13,
     title: "Международный Контекст",
     subtitle: "Aligned with global sustainability frameworks",
-    description: "VODeco is aligned with international sustainability frameworks and supports cross-border cooperation and institutional reporting.",
+    description: "CivilizationProtocol is aligned with international sustainability frameworks and supports cross-border cooperation and institutional reporting.",
     sdgAlignment: [
       { sdg: "SDG 6", name: "Clean Water & Sanitation", contribution: "Основной фокус платформы" },
       { sdg: "SDG 9", name: "Industry & Innovation", contribution: "IoT, AI, Blockchain технологии" },
@@ -236,7 +236,7 @@ const screens = [
   {
     id: 15,
     title: "Присоединяйтесь к Экосистеме",
-    subtitle: "VODeco is not about controlling water",
+    subtitle: "CivilizationProtocol is not about controlling water",
     description: "It is about creating the digital infrastructure for responsible coexistence with it. Join the movement for transparent, sustainable water governance.",
     investmentTiers: [
       { tier: "Seed", amount: "от 10,000 VOD", benefits: ["Ранний доступ", "Базовые права голосования", "Pioneer Badge"] },
@@ -269,7 +269,7 @@ export default function PresentationPage() {
   const [activeScreen, setActiveScreen] = useState(0);
 
     return (
-    <div ref={containerRef} className="relative bg-ocean-deep">
+    <div ref={containerRef} className="relative">
             {/* Progress Bar */}
             <motion.div
         className="fixed top-[80px] left-0 right-0 h-1 bg-gradient-to-r from-cyan-glow via-blue-500 to-purple-500 z-[90] origin-left"
@@ -401,8 +401,8 @@ function ScreenContent({ screen, index }: { screen: any; index: number }) {
       return <ProblemsScreen screen={screen} />;
     case 2: // Transition
       return <TransitionScreen screen={screen} />;
-    case 3: // What is VODeco
-      return <VODecoScreen screen={screen} />;
+    case 3: // What is CivilizationProtocol
+      return <CivilizationProtocolScreen screen={screen} />;
     case 4: // Architecture
       return <ArchitectureScreen screen={screen} />;
     case 5: // Data & Trust
@@ -559,9 +559,9 @@ function TransitionScreen({ screen }: { screen: any }) {
   );
 }
 
-// Screen 4: What is VODeco
+// Screen 4: What is CivilizationProtocol
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-function VODecoScreen({ screen }: { screen: any }) {
+function CivilizationProtocolScreen({ screen }: { screen: any }) {
   return (
     <div className="space-y-12">
       <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">

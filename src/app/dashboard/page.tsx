@@ -662,7 +662,7 @@ export default function DashboardPage() {
                     <div className="glass-card p-6">
                         <h4 className="text-sm font-black uppercase tracking-widest text-purple-400 mb-4 flex items-center gap-2">
                             <Database size={14} />
-                            Платформа VODeco
+                            Платформа CivilizationProtocol
                         </h4>
                         <div className="space-y-3">
                             <div className="flex justify-between items-center p-2 rounded-lg bg-white/[0.02]">

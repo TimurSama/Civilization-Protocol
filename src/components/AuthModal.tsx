@@ -46,7 +46,7 @@ export default function AuthModal({ isOpen, onClose }: AuthModalProps) {
         }
         const result = await register({ email, password, name, referralCode: referralCode || undefined });
         if (result.success) {
-          setSuccess('Регистрация успешна! Добро пожаловать в VODeco!');
+          setSuccess('Регистрация успешна! Добро пожаловать в CivilizationProtocol!');
           setTimeout(() => onClose(), 1500);
         } else {
           setError(result.error || 'Ошибка регистрации');
@@ -131,7 +131,7 @@ export default function AuthModal({ isOpen, onClose }: AuthModalProps) {
                   <span className="text-2xl">💧</span>
                 </div>
                 <div>
-                  <h2 className="text-xl font-bold">VODeco</h2>
+                  <h2 className="text-xl font-bold">CivilizationProtocol</h2>
                   <p className="text-sm text-white/60">
                     {mode === 'login' ? 'Вход в аккаунт' : 'Регистрация'}
                   </p>
@@ -285,6 +285,14 @@ export default function AuthModal({ isOpen, onClose }: AuthModalProps) {
     </AnimatePresence>
   );
 }
+
+
+
+
+
+
+
+
 
 
 

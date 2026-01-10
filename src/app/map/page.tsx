@@ -70,7 +70,7 @@ export default function WaterMapPage() {
     }, [activeLayer, isFutureMode]);
 
     return (
-        <div className={cn("h-screen bg-ocean-deep pt-20 flex flex-col overflow-hidden", isRTL && "text-right")}>
+        <div className={cn("h-screen pt-20 flex flex-col overflow-hidden", isRTL && "text-right")}>
             {/* Top Bar */}
             <div className="glass border-b border-white/5 px-6 py-4 flex items-center justify-between z-20">
                 <div className={cn("flex items-center gap-4", isRTL && "flex-row-reverse")}>
@@ -189,7 +189,7 @@ export default function WaterMapPage() {
                 </div>
 
                 {/* Map View */}
-                <div className="flex-1 relative bg-ocean-deep overflow-hidden">
+                <div className="flex-1 relative overflow-hidden">
                     <AnimatePresence mode="wait">
                         {!isZoomed ? (
                             <motion.div

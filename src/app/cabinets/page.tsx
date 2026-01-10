@@ -132,7 +132,7 @@ export default function CabinetsPage() {
                         Профессиональные <span className="text-cyan-glow">Кабинеты</span>
                     </h1>
                     <p className="text-slate-400 text-lg max-w-3xl mx-auto">
-                        Каждый кабинет предоставляет специализированные инструменты и данные для вашей роли в экосистеме VODeco.
+                        Каждый кабинет предоставляет специализированные инструменты и данные для вашей роли в экосистеме CivilizationProtocol.
                         Выберите кабинет для доступа к персонализированному функционалу.
                     </p>
                 </motion.div>
@@ -226,7 +226,7 @@ export default function CabinetsPage() {
                             </h3>
                             <p className="text-slate-400 mb-6">
                                 Независимо от вашей роли, вы можете получить доступ к основным инструментам мониторинга 
-                                и участия в экосистеме VODeco.
+                                и участия в экосистеме CivilizationProtocol.
                             </p>
                             <div className="flex flex-wrap gap-4">
                                 <Link href="/dashboard" className="px-6 py-3 bg-cyan-500/10 border border-cyan-500/30 rounded-xl font-bold text-cyan-400 hover:bg-cyan-500/20 transition-colors flex items-center gap-2">

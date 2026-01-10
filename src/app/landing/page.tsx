@@ -39,7 +39,7 @@ export default function LandingPage() {
   };
 
   return (
-    <div className="min-h-screen bg-ocean-deep">
+    <div className="min-h-screen">
       {/* Hero Section */}
       <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
         {/* Animated Background */}
@@ -100,7 +100,7 @@ export default function LandingPage() {
             className="text-5xl md:text-7xl font-black mb-6"
           >
             <span className="bg-gradient-to-r from-white via-cyan-200 to-cyan-glow bg-clip-text text-transparent">
-              VODeco
+              CivilizationProtocol
             </span>
             <br />
             <span className="text-3xl md:text-5xl text-slate-300">
@@ -240,7 +240,7 @@ export default function LandingPage() {
             whileInView={{ opacity: 1, y: 0 }}
             className="text-center mb-16"
           >
-            <h2 className="text-4xl font-black mb-4">Решение VODeco</h2>
+            <h2 className="text-4xl font-black mb-4">Решение CivilizationProtocol</h2>
             <p className="text-xl text-slate-400 max-w-2xl mx-auto">
               Объединяем IoT, AI и Blockchain в единую экосистему прозрачного управления
             </p>
@@ -618,7 +618,7 @@ export default function LandingPage() {
         <div className="max-w-6xl mx-auto">
           <div className="grid md:grid-cols-4 gap-8 mb-8">
             <div>
-              <h3 className="font-bold text-xl mb-4">VODeco</h3>
+              <h3 className="font-bold text-xl mb-4">CivilizationProtocol</h3>
               <p className="text-sm text-slate-400">
                 Value of Data — Water Ecosystem. Децентрализованная платформа управления водными ресурсами.
               </p>
@@ -652,7 +652,7 @@ export default function LandingPage() {
             </div>
           </div>
           <div className="flex flex-col md:flex-row justify-between items-center pt-8 border-t border-white/5 text-sm text-slate-500">
-            <div>© 2024 VODeco. All rights reserved.</div>
+            <div>© 2024 CivilizationProtocol. All rights reserved.</div>
             <div className="flex gap-6 mt-4 md:mt-0">
               <a href="#" className="hover:text-white">Terms</a>
               <a href="#" className="hover:text-white">Privacy</a>
