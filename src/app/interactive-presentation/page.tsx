@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useRef, useCallback, Suspense } from "react";
+import { useState, useEffect, useRef, useCallback, Suspense, useMemo } from "react";
 import { motion, AnimatePresence, useMotionValue, useTransform, useSpring } from "framer-motion";
 import {
   Globe, Shield, Zap, Droplets, ArrowRight, CheckCircle2, Cpu,
@@ -21,6 +21,7 @@ import { useAuth } from "@/context/AuthContext";
 import BuyTokenWidget from "@/components/BuyTokenWidget";
 import InfoPopup from "@/components/InfoPopup";
 import StatisticCard from "@/components/StatisticCard";
+import { useLanguage } from "@/context/LanguageContext";
 
 // Динамический импорт Globe3D для избежания SSR проблем
 const Globe3D = dynamic(() => import("@/components/Globe3D"), {
@@ -41,16 +42,7 @@ interface LearnReward {
   description: string;
 }
 
-const learnRewards: LearnReward[] = [
-  { stage: 0, xp: 1, vod: 0, description: "Начало путешествия" },
-  { stage: 1, xp: 2, vod: 0, description: "Капли жизни" },
-  { stage: 2, xp: 3, vod: 0, description: "Глобальный масштаб" },
-  { stage: 3, xp: 5, vod: 0, description: "Статистика ресурсов" },
-  { stage: 4, xp: 5, vod: 0, description: "Осознание кризиса" },
-  { stage: 5, xp: 10, vod: 0, description: "Погружение в блокчейн" },
-  { stage: 6, xp: 10, vod: 0, description: "Изучение технологий" },
-  { stage: 7, xp: 20, vod: 30, badge: "Водный Исследователь", description: "Полное прохождение" },
-];
+// learnRewards будет создан внутри компонента с использованием переводов
 
 // Типы
 interface InfoPoint {
@@ -1269,6 +1261,7 @@ const BlockchainNetwork = ({ visible }: { visible: boolean }) => {
 };
 
 export default function InteractivePresentationPage() {
+  const { t } = useLanguage();
   const [stage, setStage] = useState(0);
   const [showStats, setShowStats] = useState(false);
   const [showProblems, setShowProblems] = useState(false);
@@ -1295,6 +1288,18 @@ export default function InteractivePresentationPage() {
   
   const audioRef = useRef<HTMLAudioElement>(null);
   const { user, isAuthenticated } = useAuth();
+
+  // Создаем learnRewards с использованием переводов
+  const learnRewards: LearnReward[] = useMemo(() => [
+    { stage: 0, xp: 1, vod: 0, description: t("interactive_presentation.rewards.stage0.description") },
+    { stage: 1, xp: 2, vod: 0, description: t("interactive_presentation.rewards.stage1.description") },
+    { stage: 2, xp: 3, vod: 0, description: t("interactive_presentation.rewards.stage2.description") },
+    { stage: 3, xp: 5, vod: 0, description: t("interactive_presentation.rewards.stage3.description") },
+    { stage: 4, xp: 5, vod: 0, description: t("interactive_presentation.rewards.stage4.description") },
+    { stage: 5, xp: 10, vod: 0, description: t("interactive_presentation.rewards.stage5.description") },
+    { stage: 6, xp: 10, vod: 0, description: t("interactive_presentation.rewards.stage6.description") },
+    { stage: 7, xp: 20, vod: 30, badge: t("interactive_presentation.rewards.stage7.badge"), description: t("interactive_presentation.rewards.stage7.description") },
+  ], [t]);
   
   // Функция начисления награды за этап
   const awardStageReward = useCallback((stageNum: number) => {
@@ -1633,91 +1638,83 @@ ROI водных проектов: $4-12 на каждый вложенный $1
               animate={{ opacity: 1 }}
               transition={{ delay: 1 }}
             >
-              <h1 className="text-4xl md:text-6xl font-black mb-4 bg-gradient-to-r from-cyan-400 to-blue-500 bg-clip-text text-transparent">
-                CivilizationProtocol
+              <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black mb-3 sm:mb-4 bg-gradient-to-r from-cyan-400 to-blue-500 bg-clip-text text-transparent px-4">
+                {t("interactive_presentation.title")}
               </h1>
-              <p className="text-slate-400 mb-8">Интерактивная презентация</p>
+              <p className="text-sm sm:text-base text-slate-400 mb-6 sm:mb-8 px-4">{t("interactive_presentation.subtitle")}</p>
               
-              <div className="flex flex-col gap-3 mb-6">
+              <div className="flex flex-col gap-2 sm:gap-3 mb-4 sm:mb-6 px-4">
                 <InfoPopup
-                  title="О интерактивной презентации"
+                  title={t("interactive_presentation.welcome_title")}
                   trigger={
-                    <button className="px-6 py-3 text-sm text-cyan-400 hover:text-cyan-300 transition-all hover:scale-105 flex items-center gap-2 mx-auto glass-card rounded-xl border border-cyan-500/30">
-                      <Info size={18} />
-                      <span className="font-semibold">Узнать о презентации</span>
+                    <button className="px-4 sm:px-6 py-2 sm:py-3 text-xs sm:text-sm text-cyan-400 hover:text-cyan-300 transition-all hover:scale-105 flex items-center gap-2 mx-auto glass-card rounded-xl border border-cyan-500/30">
+                      <Info size={16} />
+                      <span className="font-semibold">{t("interactive_presentation.welcome_trigger")}</span>
                     </button>
                   }
                   content={
-                    <div className="space-y-5">
+                    <div className="space-y-4 sm:space-y-5">
                       <div>
-                        <p className="text-base leading-relaxed">
-                          Добро пожаловать в интерактивное путешествие по миру <strong>CivilizationProtocol</strong>! 
-                          Эта презентация проведёт вас через водный кризис планеты и покажет, 
-                          как блокчейн-технологии могут революционно изменить управление водными ресурсами.
-                        </p>
+                        <p className="text-sm sm:text-base leading-relaxed" dangerouslySetInnerHTML={{ __html: t("interactive_presentation.welcome_content.intro") }} />
                       </div>
                       
-                      <div className="bg-white/5 rounded-lg p-4">
-                        <h4 className="font-bold text-cyan-400 mb-3 text-lg">🎯 Что вас ждёт:</h4>
-                        <ul className="list-disc list-inside space-y-2 text-sm">
-                          <li><strong>8 интерактивных стадий</strong> - от капли воды до глобальной экосистемы</li>
-                          <li><strong>Реальные данные</strong> - актуальная статистика от ООН, World Bank, WHO</li>
-                          <li><strong>Технологии CivilizationProtocol</strong> - 12-слойная архитектура платформы</li>
-                          <li><strong>Интерактивные элементы</strong> - попапы, графики, карты, 3D визуализации</li>
-                          <li><strong>Learn-to-Earn награды</strong> - зарабатывайте XP и VOD токены за изучение</li>
+                      <div className="bg-white/5 rounded-lg p-3 sm:p-4">
+                        <h4 className="font-bold text-cyan-400 mb-2 sm:mb-3 text-base sm:text-lg">{t("interactive_presentation.welcome_content.what_awaits")}</h4>
+                        <ul className="list-disc list-inside space-y-1.5 sm:space-y-2 text-xs sm:text-sm">
+                          <li><strong>{t("interactive_presentation.welcome_content.items.stages")}</strong></li>
+                          <li><strong>{t("interactive_presentation.welcome_content.items.data")}</strong></li>
+                          <li><strong>{t("interactive_presentation.welcome_content.items.technologies")}</strong></li>
+                          <li><strong>{t("interactive_presentation.welcome_content.items.elements")}</strong></li>
+                          <li><strong>{t("interactive_presentation.welcome_content.items.rewards")}</strong></li>
                         </ul>
                       </div>
                       
-                      <div className="bg-gradient-to-r from-cyan-500/10 to-blue-500/10 rounded-lg p-4 border border-cyan-500/30">
-                        <h4 className="font-bold text-cyan-400 mb-3 text-lg flex items-center gap-2">
-                          <Star className="text-yellow-400" size={20} />
-                          Learn-to-Earn система
+                      <div className="bg-gradient-to-r from-cyan-500/10 to-blue-500/10 rounded-lg p-3 sm:p-4 border border-cyan-500/30">
+                        <h4 className="font-bold text-cyan-400 mb-2 sm:mb-3 text-base sm:text-lg flex items-center gap-2">
+                          <Star className="text-yellow-400" size={18} />
+                          {t("interactive_presentation.learn_to_earn.title")}
                         </h4>
-                        <p className="text-sm mb-3">
-                          За каждое действие вы получаете награды, которые накапливаются и могут быть использованы на платформе.
+                        <p className="text-xs sm:text-sm mb-2 sm:mb-3">
+                          {t("interactive_presentation.learn_to_earn.description")}
                         </p>
-                        <div className="grid grid-cols-2 gap-3 mt-4">
-                          <div className="bg-white/5 rounded-lg p-3">
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 sm:gap-3 mt-3 sm:mt-4">
+                          <div className="bg-white/5 rounded-lg p-2 sm:p-3">
                             <div className="flex items-center gap-2 mb-1">
-                              <Star className="text-yellow-400" size={16} />
-                              <span className="font-bold text-sm">XP (Опыт)</span>
+                              <Star className="text-yellow-400" size={14} />
+                              <span className="font-bold text-xs sm:text-sm">{t("interactive_presentation.learn_to_earn.xp.title")}</span>
                             </div>
                             <p className="text-xs text-slate-400">
-                              Получайте за прохождение стадий и открытие попапов. Повышайте уровень!
+                              {t("interactive_presentation.learn_to_earn.xp.description")}
                             </p>
                           </div>
-                          <div className="bg-white/5 rounded-lg p-3">
+                          <div className="bg-white/5 rounded-lg p-2 sm:p-3">
                             <div className="flex items-center gap-2 mb-1">
-                              <Coins className="text-cyan-400" size={16} />
-                              <span className="font-bold text-sm">VOD токены</span>
+                              <Coins className="text-cyan-400" size={14} />
+                              <span className="font-bold text-xs sm:text-sm">{t("interactive_presentation.learn_to_earn.vod.title")}</span>
                             </div>
                             <p className="text-xs text-slate-400">
-                              Зарабатывайте за полное прохождение и активность. Используйте на платформе!
+                              {t("interactive_presentation.learn_to_earn.vod.description")}
                             </p>
                           </div>
                         </div>
-                        <div className="mt-4 pt-4 border-t border-white/10">
-                          <h5 className="font-semibold mb-2 text-sm">Как получить максимум наград:</h5>
+                        <div className="mt-3 sm:mt-4 pt-3 sm:pt-4 border-t border-white/10">
+                          <h5 className="font-semibold mb-1.5 sm:mb-2 text-xs sm:text-sm">{t("interactive_presentation.learn_to_earn.max_rewards.title")}</h5>
                           <ul className="list-disc list-inside space-y-1 text-xs text-slate-300">
-                            <li>✅ Проходите все 8 стадий последовательно</li>
-                            <li>✅ Открывайте все попапы с дополнительной информацией</li>
-                            <li>✅ Изучайте интерактивные элементы и графики</li>
-                            <li>✅ Завершайте презентацию до конца</li>
+                            <li>{t("interactive_presentation.learn_to_earn.max_rewards.tips.tip1")}</li>
+                            <li>{t("interactive_presentation.learn_to_earn.max_rewards.tips.tip2")}</li>
+                            <li>{t("interactive_presentation.learn_to_earn.max_rewards.tips.tip3")}</li>
+                            <li>{t("interactive_presentation.learn_to_earn.max_rewards.tips.tip4")}</li>
                           </ul>
                         </div>
                       </div>
                       
-                      <div className="bg-white/5 rounded-lg p-4">
-                        <h4 className="font-bold mb-2 text-sm">⏱️ Продолжительность:</h4>
-                        <p className="text-sm text-slate-300">
-                          Примерно <strong>15-20 минут</strong> при полном изучении всех элементов, 
-                          или <strong>5-7 минут</strong> при быстром прохождении.
-                        </p>
+                      <div className="bg-white/5 rounded-lg p-3 sm:p-4">
+                        <h4 className="font-bold mb-1.5 sm:mb-2 text-xs sm:text-sm">{t("interactive_presentation.learn_to_earn.duration.title")}</h4>
+                        <p className="text-xs sm:text-sm text-slate-300" dangerouslySetInnerHTML={{ __html: t("interactive_presentation.learn_to_earn.duration.text") }} />
                       </div>
                       
                       <div className="text-xs text-slate-400 italic pt-2 border-t border-white/10">
-                        💡 Совет: Используйте кнопку автопроигрывания для автоматического перехода между стадиями, 
-                        или управляйте вручную для более глубокого изучения.
+                        {t("interactive_presentation.learn_to_earn.advice")}
                       </div>
                     </div>
                   }

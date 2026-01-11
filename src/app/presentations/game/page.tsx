@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   Gamepad2, Heart, Zap, Droplets, TreePine, Factory, Users,
@@ -13,6 +13,7 @@ import Link from "next/link";
 import { cn } from "@/lib/utils";
 import { useAuth } from "@/context/AuthContext";
 import InfoPopup from "@/components/InfoPopup";
+import { useLanguage } from "@/context/LanguageContext";
 
 // Game state types
 interface GameState {
@@ -33,130 +34,137 @@ interface GameState {
   victory: boolean;
 }
 
-// Role configurations
-const roles = [
-  { 
-    id: "ecologist", 
-    name: "Эколог", 
-    icon: <Leaf size={32} />, 
-    color: "emerald",
-    bonus: "waterQuality",
-    description: "Специалист по экосистемам. +20% к качеству воды"
-  },
-  { 
-    id: "engineer", 
-    name: "Инженер", 
-    icon: <Cpu size={32} />, 
-    color: "blue",
-    bonus: "sensors",
-    description: "Технический эксперт. +20% эффективность сенсоров"
-  },
-  { 
-    id: "politician", 
-    name: "Политик", 
-    icon: <Users size={32} />, 
-    color: "purple",
-    bonus: "economy",
-    description: "Влияние на политику. +20% к экономике"
-  },
-  { 
-    id: "investor", 
-    name: "Инвестор", 
-    icon: <Trophy size={32} />, 
-    color: "yellow",
-    bonus: "projects",
-    description: "Финансовый стратег. +20% к проектам"
-  },
-];
+// Role configurations will be created inside component with translations
 
-// Level configurations
-const levels = [
-  {
-    id: 1,
-    title: "Диагностика",
-    subtitle: "Изучите проблемы планеты",
-    xpReward: 100,
-    description: "Исследуйте текущее состояние водных ресурсов и выявите критические проблемы.",
-    tasks: [
-      { id: "scan_planet", name: "Сканировать планету", xp: 20 },
-      { id: "identify_problems", name: "Выявить проблемы", xp: 30 },
-      { id: "analyze_data", name: "Анализ данных", xp: 50 },
-    ]
-  },
-  {
-    id: 2,
-    title: "Сбор данных",
-    subtitle: "Разместите IoT сенсоры",
-    xpReward: 200,
-    description: "Установите сенсоры мониторинга в критических точках для сбора реальных данных.",
-    tasks: [
-      { id: "place_sensors", name: "Установить 5 сенсоров", xp: 40 },
-      { id: "calibrate", name: "Калибровка сенсоров", xp: 60 },
-      { id: "network", name: "Создать сеть", xp: 100 },
-    ]
-  },
-  {
-    id: 3,
-    title: "Анализ",
-    subtitle: "Интерпретируйте данные",
-    xpReward: 300,
-    description: "Используйте AI для анализа собранных данных и выявления паттернов.",
-    tasks: [
-      { id: "ai_analysis", name: "AI анализ", xp: 80 },
-      { id: "predictions", name: "Прогнозирование", xp: 100 },
-      { id: "report", name: "Создать отчёт", xp: 120 },
-    ]
-  },
-  {
-    id: 4,
-    title: "Решения",
-    subtitle: "Предложите проекты",
-    xpReward: 500,
-    description: "На основе анализа предложите проекты для улучшения экологии.",
-    tasks: [
-      { id: "draft_projects", name: "Разработать 3 проекта", xp: 150 },
-      { id: "budget", name: "Рассчитать бюджет", xp: 150 },
-      { id: "submit", name: "Подать на голосование", xp: 200 },
-    ]
-  },
-  {
-    id: 5,
-    title: "Реализация",
-    subtitle: "DAO голосование",
-    xpReward: 1000,
-    description: "Проведите голосование сообщества и реализуйте выбранные проекты.",
-    tasks: [
-      { id: "dao_vote", name: "Провести голосование", xp: 300 },
-      { id: "implement", name: "Реализовать проекты", xp: 400 },
-      { id: "verify", name: "Верифицировать результат", xp: 300 },
-    ]
-  },
-];
+// Level configurations will be created inside component with translations
 
-// Quiz questions
-const quizQuestions = [
-  {
-    question: "Какой % пресной воды на Земле доступен для использования?",
-    options: ["50%", "25%", "3%", "0.5%"],
-    correct: 3,
-    explanation: "Только 0.5% пресной воды легко доступно для человечества."
-  },
-  {
-    question: "К какому году прогнозируется дефицит воды для 2 млрд людей?",
-    options: ["2025", "2030", "2050", "2100"],
-    correct: 1,
-    explanation: "По данным ООН, к 2030 году 2 млрд человек столкнутся с дефицитом воды."
-  },
-  {
-    question: "Какая технология обеспечивает прозрачность данных в CivilizationProtocol?",
-    options: ["AI", "Blockchain", "IoT", "Cloud"],
-    correct: 1,
-    explanation: "Блокчейн гарантирует неизменность и прозрачность всех данных экосистемы."
-  },
-];
+// Quiz questions will be created inside component with translations
 
 export default function GamePresentation() {
+  const { t } = useLanguage();
   const { user } = useAuth();
+
+  // Role configurations with translations
+  const roles = useMemo(() => [
+    { 
+      id: "ecologist", 
+      name: t("game_presentation.roles.ecologist.name"), 
+      icon: <Leaf size={28} />, 
+      color: "emerald",
+      bonus: "waterQuality",
+      description: t("game_presentation.roles.ecologist.description")
+    },
+    { 
+      id: "engineer", 
+      name: t("game_presentation.roles.engineer.name"), 
+      icon: <Cpu size={28} />, 
+      color: "blue",
+      bonus: "sensors",
+      description: t("game_presentation.roles.engineer.description")
+    },
+    { 
+      id: "politician", 
+      name: t("game_presentation.roles.politician.name"), 
+      icon: <Users size={28} />, 
+      color: "purple",
+      bonus: "economy",
+      description: t("game_presentation.roles.politician.description")
+    },
+    { 
+      id: "investor", 
+      name: t("game_presentation.roles.investor.name"), 
+      icon: <Trophy size={28} />, 
+      color: "yellow",
+      bonus: "projects",
+      description: t("game_presentation.roles.investor.description")
+    },
+  ], [t]);
+
+  // Level configurations with translations
+  const levels = useMemo(() => [
+    {
+      id: 1,
+      title: t("game_presentation.levels.level1.title"),
+      subtitle: t("game_presentation.levels.level1.subtitle"),
+      xpReward: 100,
+      description: t("game_presentation.levels.level1.description"),
+      tasks: [
+        { id: "scan_planet", name: t("game_presentation.levels.level1.tasks.scan_planet"), xp: 20 },
+        { id: "identify_problems", name: t("game_presentation.levels.level1.tasks.identify_problems"), xp: 30 },
+        { id: "analyze_data", name: t("game_presentation.levels.level1.tasks.analyze_data"), xp: 50 },
+      ]
+    },
+    {
+      id: 2,
+      title: t("game_presentation.levels.level2.title"),
+      subtitle: t("game_presentation.levels.level2.subtitle"),
+      xpReward: 200,
+      description: t("game_presentation.levels.level2.description"),
+      tasks: [
+        { id: "place_sensors", name: t("game_presentation.levels.level2.tasks.place_sensors"), xp: 40 },
+        { id: "calibrate", name: t("game_presentation.levels.level2.tasks.calibrate"), xp: 60 },
+        { id: "network", name: t("game_presentation.levels.level2.tasks.network"), xp: 100 },
+      ]
+    },
+    {
+      id: 3,
+      title: t("game_presentation.levels.level3.title"),
+      subtitle: t("game_presentation.levels.level3.subtitle"),
+      xpReward: 300,
+      description: t("game_presentation.levels.level3.description"),
+      tasks: [
+        { id: "ai_analysis", name: t("game_presentation.levels.level3.tasks.ai_analysis"), xp: 80 },
+        { id: "predictions", name: t("game_presentation.levels.level3.tasks.predictions"), xp: 100 },
+        { id: "report", name: t("game_presentation.levels.level3.tasks.report"), xp: 120 },
+      ]
+    },
+    {
+      id: 4,
+      title: t("game_presentation.levels.level4.title"),
+      subtitle: t("game_presentation.levels.level4.subtitle"),
+      xpReward: 500,
+      description: t("game_presentation.levels.level4.description"),
+      tasks: [
+        { id: "draft_projects", name: t("game_presentation.levels.level4.tasks.draft_projects"), xp: 150 },
+        { id: "budget", name: t("game_presentation.levels.level4.tasks.budget"), xp: 150 },
+        { id: "submit", name: t("game_presentation.levels.level4.tasks.submit"), xp: 200 },
+      ]
+    },
+    {
+      id: 5,
+      title: t("game_presentation.levels.level5.title"),
+      subtitle: t("game_presentation.levels.level5.subtitle"),
+      xpReward: 1000,
+      description: t("game_presentation.levels.level5.description"),
+      tasks: [
+        { id: "dao_vote", name: t("game_presentation.levels.level5.tasks.dao_vote"), xp: 300 },
+        { id: "implement", name: t("game_presentation.levels.level5.tasks.implement"), xp: 400 },
+        { id: "verify", name: t("game_presentation.levels.level5.tasks.verify"), xp: 300 },
+      ]
+    },
+  ], [t]);
+
+  // Quiz questions with translations
+  const quizQuestions = useMemo(() => [
+    {
+      question: t("game_presentation.quiz.question1.question"),
+      options: t("game_presentation.quiz.question1.options"),
+      correct: 3,
+      explanation: t("game_presentation.quiz.question1.explanation")
+    },
+    {
+      question: t("game_presentation.quiz.question2.question"),
+      options: t("game_presentation.quiz.question2.options"),
+      correct: 1,
+      explanation: t("game_presentation.quiz.question2.explanation")
+    },
+    {
+      question: t("game_presentation.quiz.question3.question"),
+      options: t("game_presentation.quiz.question3.options"),
+      correct: 1,
+      explanation: t("game_presentation.quiz.question3.explanation")
+    },
+  ], [t]);
   
   const [gameState, setGameState] = useState<GameState>({
     level: 0, // 0 = role selection
@@ -812,11 +820,11 @@ export default function GamePresentation() {
                 <Trophy className="mx-auto text-yellow-400 mb-6" size={80} />
               </motion.div>
 
-              <h1 className="text-5xl font-black mb-4 bg-gradient-to-r from-yellow-400 via-green-400 to-cyan-400 bg-clip-text text-transparent">
-                🎉 ПОБЕДА!
+              <h1 className="text-3xl sm:text-4xl md:text-5xl font-black mb-3 sm:mb-4 bg-gradient-to-r from-yellow-400 via-green-400 to-cyan-400 bg-clip-text text-transparent px-4">
+                {t("game_presentation.victory.title")}
               </h1>
-              <p className="text-xl text-slate-400 mb-8">
-                Вы успешно спасли планету от водного кризиса!
+              <p className="text-base sm:text-lg md:text-xl text-slate-400 mb-6 sm:mb-8 px-4">
+                {t("game_presentation.victory.message")}
               </p>
 
               {/* Healthy Planet */}
@@ -832,36 +840,36 @@ export default function GamePresentation() {
               </div>
 
               {/* Stats */}
-              <div className="glass-card p-8 mb-8">
-                <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+              <div className="glass-card p-4 sm:p-6 md:p-8 mb-6 sm:mb-8 mx-4">
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6">
                   <div>
-                    <Star className="mx-auto text-yellow-400 mb-2" size={32} />
-                    <div className="text-3xl font-black text-yellow-400">{gameState.xp}</div>
-                    <div className="text-sm text-slate-500">XP заработано</div>
+                    <Star className="mx-auto text-yellow-400 mb-2" size={24} />
+                    <div className="text-2xl sm:text-3xl font-black text-yellow-400">{gameState.xp}</div>
+                    <div className="text-xs sm:text-sm text-slate-500">{t("game_presentation.victory.stats.xp_earned")}</div>
                   </div>
                   <div>
-                    <Cpu className="mx-auto text-blue-400 mb-2" size={32} />
-                    <div className="text-3xl font-black text-blue-400">{gameState.sensors}</div>
-                    <div className="text-sm text-slate-500">Сенсоров</div>
+                    <Cpu className="mx-auto text-blue-400 mb-2" size={24} />
+                    <div className="text-2xl sm:text-3xl font-black text-blue-400">{gameState.sensors}</div>
+                    <div className="text-xs sm:text-sm text-slate-500">{t("game_presentation.victory.stats.sensors")}</div>
                   </div>
                   <div>
-                    <Target className="mx-auto text-purple-400 mb-2" size={32} />
-                    <div className="text-3xl font-black text-purple-400">{gameState.projects}</div>
-                    <div className="text-sm text-slate-500">Проектов</div>
+                    <Target className="mx-auto text-purple-400 mb-2" size={24} />
+                    <div className="text-2xl sm:text-3xl font-black text-purple-400">{gameState.projects}</div>
+                    <div className="text-xs sm:text-sm text-slate-500">{t("game_presentation.victory.stats.projects")}</div>
                   </div>
                   <div>
-                    <Award className="mx-auto text-emerald-400 mb-2" size={32} />
-                    <div className="text-3xl font-black text-emerald-400">{gameState.achievements.length}</div>
-                    <div className="text-sm text-slate-500">Достижений</div>
+                    <Award className="mx-auto text-emerald-400 mb-2" size={24} />
+                    <div className="text-2xl sm:text-3xl font-black text-emerald-400">{gameState.achievements.length}</div>
+                    <div className="text-xs sm:text-sm text-slate-500">{t("game_presentation.victory.stats.achievements")}</div>
                   </div>
                 </div>
 
                 {gameState.achievements.length > 0 && (
-                  <div className="mt-6 pt-6 border-t border-white/10">
-                    <div className="text-sm text-slate-500 mb-2">Полученные достижения:</div>
+                  <div className="mt-4 sm:mt-6 pt-4 sm:pt-6 border-t border-white/10">
+                    <div className="text-xs sm:text-sm text-slate-500 mb-2">{t("game_presentation.victory.earned_achievements")}</div>
                     <div className="flex flex-wrap justify-center gap-2">
                       {gameState.achievements.map((ach, i) => (
-                        <span key={i} className="px-4 py-2 bg-yellow-500/20 text-yellow-400 rounded-full font-bold">
+                        <span key={i} className="px-3 sm:px-4 py-1.5 sm:py-2 bg-yellow-500/20 text-yellow-400 rounded-full font-bold text-xs sm:text-sm">
                           {ach}
                         </span>
                       ))}
@@ -871,24 +879,24 @@ export default function GamePresentation() {
               </div>
 
               {/* CTA */}
-              <div className="flex flex-wrap justify-center gap-4">
+              <div className="flex flex-wrap justify-center gap-3 sm:gap-4 px-4">
                 <button
                   onClick={restartGame}
-                  className="px-6 py-3 glass rounded-xl font-bold flex items-center gap-2 hover:bg-white/10"
+                  className="px-4 sm:px-6 py-2 sm:py-3 glass rounded-xl font-bold flex items-center gap-2 hover:bg-white/10 text-sm sm:text-base"
                 >
-                  <RotateCcw size={18} /> Играть снова
+                  <RotateCcw size={16} /> {t("game_presentation.victory.play_again")}
                 </button>
                 <Link
                   href="/landing"
-                  className="px-6 py-3 bg-gradient-to-r from-cyan-500 to-blue-500 text-white font-bold rounded-xl flex items-center gap-2 hover:scale-105 transition-transform"
+                  className="px-4 sm:px-6 py-2 sm:py-3 bg-gradient-to-r from-cyan-500 to-blue-500 text-white font-bold rounded-xl flex items-center gap-2 hover:scale-105 transition-transform text-sm sm:text-base"
                 >
-                  <Gift size={18} /> Получить реальные награды
+                  <Gift size={16} /> {t("game_presentation.victory.get_real_rewards")}
                 </Link>
                 <Link
                   href="/presentations"
-                  className="px-6 py-3 glass rounded-xl font-bold flex items-center gap-2 hover:bg-white/10"
+                  className="px-4 sm:px-6 py-2 sm:py-3 glass rounded-xl font-bold flex items-center gap-2 hover:bg-white/10 text-sm sm:text-base"
                 >
-                  <ArrowRight size={18} /> Другие презентации
+                  <ArrowRight size={16} /> {t("game_presentation.victory.other_presentations")}
                 </Link>
               </div>
             </motion.div>

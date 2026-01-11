@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   TrendingUp, DollarSign, Users, Globe, Shield, Zap, Target,
@@ -14,6 +14,7 @@ import { cn } from "@/lib/utils";
 import BuyTokenWidget from "@/components/BuyTokenWidget";
 import InfoPopup from "@/components/InfoPopup";
 import StatisticCard from "@/components/StatisticCard";
+import { useLanguage } from "@/context/LanguageContext";
 
 // Slide data
 const slides = [
@@ -142,8 +143,138 @@ const slides = [
 ];
 
 export default function InvestorPresentation() {
+  const { t } = useLanguage();
   const [currentSlide, setCurrentSlide] = useState(0);
   const [isPlaying, setIsPlaying] = useState(false);
+
+  // Create slides with translations
+  const slides = useMemo(() => {
+    const s = t("investors_presentation.slides");
+    return [
+      {
+        id: 1,
+        type: "hook",
+        title: s.slide1.title,
+        subtitle: s.slide1.subtitle,
+        highlight: s.slide1.highlight,
+      },
+      {
+        id: 2,
+        type: "problem",
+        title: s.slide2.title,
+        points: [
+          { icon: <AlertCircle />, text: s.slide2.points.p1 },
+          { icon: <AlertCircle />, text: s.slide2.points.p2 },
+          { icon: <AlertCircle />, text: s.slide2.points.p3 },
+          { icon: <AlertCircle />, text: s.slide2.points.p4 },
+        ],
+      },
+      {
+        id: 3,
+        type: "solution",
+        title: s.slide3.title,
+        subtitle: s.slide3.subtitle,
+        features: [
+          { icon: <Shield />, title: s.slide3.features.blockchain.title, desc: s.slide3.features.blockchain.desc },
+          { icon: <Cpu />, title: s.slide3.features.iot.title, desc: s.slide3.features.iot.desc },
+          { icon: <Users />, title: s.slide3.features.dao.title, desc: s.slide3.features.dao.desc },
+          { icon: <Coins />, title: s.slide3.features.token.title, desc: s.slide3.features.token.desc },
+        ],
+      },
+      {
+        id: 4,
+        type: "product",
+        title: s.slide4.title,
+        screens: s.slide4.screens,
+      },
+      {
+        id: 5,
+        type: "market",
+        title: s.slide5.title,
+        tam: { value: s.slide5.tam.value, label: s.slide5.tam.label },
+        sam: { value: s.slide5.sam.value, label: s.slide5.sam.label },
+        som: { value: s.slide5.som.value, label: s.slide5.som.label },
+      },
+      {
+        id: 6,
+        type: "business",
+        title: s.slide6.title,
+        revenue: [
+          { source: s.slide6.revenue.data_access, percent: 35 },
+          { source: s.slide6.revenue.token_transactions, percent: 25 },
+          { source: s.slide6.revenue.enterprise, percent: 20 },
+          { source: s.slide6.revenue.staking, percent: 15 },
+          { source: s.slide6.revenue.grants, percent: 5 },
+        ],
+      },
+      {
+        id: 7,
+        type: "traction",
+        title: s.slide7.title,
+        metrics: [
+          { value: "15+", label: s.slide7.metrics.partners },
+          { value: "$2M+", label: s.slide7.metrics.grants },
+          { value: "50K+", label: s.slide7.metrics.users },
+          { value: "3", label: s.slide7.metrics.countries },
+        ],
+        logos: ["TIIAME", "UN Water", "World Bank", "Greenpeace"],
+      },
+      {
+        id: 8,
+        type: "competition",
+        title: s.slide8.title,
+        us: { name: s.slide8.us, features: [s.slide8.features.blockchain, s.slide8.features.dao, s.slide8.features.iot, s.slide8.features.token, s.slide8.features.open_data] },
+        competitors: [
+          { name: "AQUASTAT", features: ["Data", "", "", "", ""] },
+          { name: "Xylem", features: ["", "", "IoT", "", ""] },
+          { name: "Veolia", features: ["", "", "IoT", "", ""] },
+        ],
+      },
+      {
+        id: 9,
+        type: "team",
+        title: s.slide9.title,
+        members: [
+          { name: "Founder & CEO", avatar: "AC", role: "Serial entrepreneur, 15+ years in water tech" },
+          { name: "CTO", avatar: "VK", role: "Ex-Google, Blockchain expert" },
+          { name: "COO", avatar: "MR", role: "Ex-World Bank, Water policy" },
+          { name: "Head of DAO", avatar: "DP", role: "DeFi pioneer, DAO governance" },
+        ],
+      },
+      {
+        id: 10,
+        type: "financials",
+        title: s.slide10.title,
+        allocation: [
+          { category: s.slide10.allocation.product, percent: 40, color: "#22d3ee" },
+          { category: s.slide10.allocation.marketing, percent: 25, color: "#a855f7" },
+          { category: s.slide10.allocation.operations, percent: 20, color: "#f59e0b" },
+          { category: s.slide10.allocation.legal, percent: 10, color: "#10b981" },
+          { category: s.slide10.allocation.reserve, percent: 5, color: "#6366f1" },
+        ],
+      },
+      {
+        id: 11,
+        type: "roadmap",
+        title: s.slide11.title,
+        milestones: [
+          { quarter: "Q1 2025", items: ["Public Beta Launch", "Token Generation Event"] },
+          { quarter: "Q2 2025", items: ["Mainnet Launch", "5 Country Expansion"] },
+          { quarter: "Q3 2025", items: ["Enterprise Partnerships", "DAO Full Activation"] },
+          { quarter: "Q4 2025", items: ["100K Users", "Series A"] },
+        ],
+      },
+      {
+        id: 12,
+        type: "ask",
+        title: s.slide12.title,
+        round: s.slide12.round,
+        amount: "$5M",
+        valuation: "$25M Pre-money",
+        terms: [s.slide12.terms.equity, s.slide12.terms.safe, s.slide12.terms.runway],
+      },
+    ];
+  }, [t]);
 
   const nextSlide = () => {
     if (currentSlide < slides.length - 1) {
@@ -171,23 +302,23 @@ export default function InvestorPresentation() {
             <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-cyan-500 to-blue-600 flex items-center justify-center">
               <Rocket size={18} />
             </div>
-            <span className="font-bold">CivilizationProtocol | Investor Deck</span>
+            <span className="font-bold text-xs sm:text-sm md:text-base">{t("investors_presentation.title")}</span>
           </Link>
 
           {/* Slide counter */}
-          <div className="flex items-center gap-4">
-            <div className="text-sm text-slate-400">
-              Slide {currentSlide + 1} / {slides.length}
+          <div className="flex items-center gap-3 sm:gap-4">
+            <div className="text-xs sm:text-sm text-slate-400">
+              {t("investors_presentation.slide_counter").replace("{current}", String(currentSlide + 1)).replace("{total}", String(slides.length))}
             </div>
             <div className="flex items-center gap-2">
               <button
                 onClick={togglePlay}
-                className="p-2 hover:bg-white/10 rounded-lg transition-colors"
+                className="p-1.5 sm:p-2 hover:bg-white/10 rounded-lg transition-colors"
               >
-                {isPlaying ? <Pause size={18} /> : <Play size={18} />}
+                {isPlaying ? <Pause size={16} /> : <Play size={16} />}
               </button>
-              <button className="px-4 py-2 text-sm bg-white/10 hover:bg-white/20 rounded-lg transition-colors flex items-center gap-2">
-                <Download size={16} /> Export PDF
+              <button className="px-3 sm:px-4 py-1.5 sm:py-2 text-xs sm:text-sm bg-white/10 hover:bg-white/20 rounded-lg transition-colors flex items-center gap-1.5 sm:gap-2">
+                <Download size={14} /> {t("investors_presentation.export_pdf")}
               </button>
             </div>
           </div>

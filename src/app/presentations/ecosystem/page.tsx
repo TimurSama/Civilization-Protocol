@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useRef, Suspense } from "react";
+import { useState, useRef, Suspense, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   Globe, MapPin, Layers, ZoomIn, ZoomOut, Search, Filter,
@@ -13,6 +13,7 @@ import Link from "next/link";
 import dynamic from "next/dynamic";
 import { cn } from "@/lib/utils";
 import InfoPopup from "@/components/InfoPopup";
+import { useLanguage } from "@/context/LanguageContext";
 
 // Dynamic import for 3D Globe
 const Globe3D = dynamic(() => import("@/components/Globe3D"), {
@@ -24,23 +25,7 @@ const Globe3D = dynamic(() => import("@/components/Globe3D"), {
   ),
 });
 
-// Ecosystem layers
-const layers = [
-  { id: "all", name: "Все слои", icon: <Layers size={18} />, color: "white" },
-  { id: "water", name: "Водные объекты", icon: <Droplets size={18} />, color: "cyan" },
-  { id: "infrastructure", name: "Инфраструктура", icon: <Factory size={18} />, color: "orange" },
-  { id: "sensors", name: "IoT сенсоры", icon: <Cpu size={18} />, color: "green" },
-  { id: "projects", name: "Проекты", icon: <Target size={18} />, color: "purple" },
-  { id: "research", name: "Исследования", icon: <Building2 size={18} />, color: "blue" },
-];
-
-// Zoom levels
-const zoomLevels = [
-  { level: 1, name: "Планетарный", description: "Глобальная сеть CivilizationProtocol" },
-  { level: 2, name: "Региональный", description: "Проекты по странам" },
-  { level: 3, name: "Локальный", description: "Конкретные объекты" },
-  { level: 4, name: "Детальный", description: "Real-time данные" },
-];
+// Ecosystem layers and zoom levels will be created inside component with translations
 
 // Demo data for ecosystem
 const ecosystemData = [

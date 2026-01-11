@@ -11,8 +11,10 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 import BuyTokenWidget from "@/components/BuyTokenWidget";
+import { useLanguage } from "@/context/LanguageContext";
 
 export default function LandingPage() {
+  const { t } = useLanguage();
   const [email, setEmail] = useState("");
   const [referralCode, setReferralCode] = useState("");
   const [copied, setCopied] = useState(false);
@@ -88,7 +90,7 @@ export default function LandingPage() {
             className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-gradient-to-r from-cyan-glow/20 to-purple-500/20 border border-cyan-glow/30 mb-8"
           >
             <span className="w-2 h-2 bg-green-500 rounded-full animate-pulse" />
-            <span className="text-sm font-medium">Beta Launch — Ранний доступ</span>
+            <span className="text-sm font-medium">{t("landing.beta_badge")}</span>
             <Gift className="text-cyan-glow" size={16} />
           </motion.div>
 
@@ -97,14 +99,14 @@ export default function LandingPage() {
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.1 }}
-            className="text-5xl md:text-7xl font-black mb-6"
+            className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black mb-6"
           >
             <span className="bg-gradient-to-r from-white via-cyan-200 to-cyan-glow bg-clip-text text-transparent">
-              CivilizationProtocol
+              {t("landing.hero_title")}
             </span>
             <br />
-            <span className="text-3xl md:text-5xl text-slate-300">
-              Революция в управлении водой
+            <span className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl text-slate-300">
+              {t("landing.hero_subtitle")}
             </span>
           </motion.h1>
 
@@ -112,10 +114,9 @@ export default function LandingPage() {
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.2 }}
-            className="text-xl text-slate-400 max-w-3xl mx-auto mb-8"
+            className="text-base sm:text-lg md:text-xl text-slate-400 max-w-3xl mx-auto mb-8 px-4"
           >
-            Глобальная экосистема на основе блокчейн-технологий для прозрачного, 
-            децентрализованного управления водными ресурсами планеты
+            {t("landing.hero_description")}
           </motion.p>
 
           {/* Stats */}
@@ -123,19 +124,19 @@ export default function LandingPage() {
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.3 }}
-            className="grid grid-cols-3 gap-4 max-w-2xl mx-auto mb-10"
+            className="grid grid-cols-3 gap-2 sm:gap-4 max-w-2xl mx-auto mb-10 px-4"
           >
-            <div className="glass-card p-4">
-              <div className="text-3xl font-black text-cyan-glow">$500B</div>
-              <div className="text-sm text-slate-400">ежегодных потерь</div>
+            <div className="glass-card p-3 sm:p-4">
+              <div className="text-xl sm:text-2xl md:text-3xl font-black text-cyan-glow">$500B</div>
+              <div className="text-xs sm:text-sm text-slate-400">{t("landing.stats.losses")}</div>
             </div>
-            <div className="glass-card p-4">
-              <div className="text-3xl font-black text-cyan-glow">5B+</div>
-              <div className="text-sm text-slate-400">людей под угрозой</div>
+            <div className="glass-card p-3 sm:p-4">
+              <div className="text-xl sm:text-2xl md:text-3xl font-black text-cyan-glow">5B+</div>
+              <div className="text-xs sm:text-sm text-slate-400">{t("landing.stats.people_at_risk")}</div>
             </div>
-            <div className="glass-card p-4">
-              <div className="text-3xl font-black text-cyan-glow">60%</div>
-              <div className="text-sm text-slate-400">без мониторинга</div>
+            <div className="glass-card p-3 sm:p-4">
+              <div className="text-xl sm:text-2xl md:text-3xl font-black text-cyan-glow">60%</div>
+              <div className="text-xs sm:text-sm text-slate-400">{t("landing.stats.no_monitoring")}</div>
             </div>
           </motion.div>
 
@@ -144,16 +145,16 @@ export default function LandingPage() {
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.4 }}
-            className="flex flex-wrap justify-center gap-4 mb-12"
+            className="flex flex-wrap justify-center gap-3 sm:gap-4 mb-8 sm:mb-12 px-4"
           >
-            <Link href="/presentation" className="px-8 py-4 bg-gradient-to-r from-cyan-glow to-blue-500 text-white font-bold rounded-xl hover:scale-105 transition-transform flex items-center gap-2 shadow-[0_0_30px_rgba(34,211,238,0.4)]">
-              <Play size={20} /> Смотреть презентацию
+            <Link href="/presentation" className="px-6 sm:px-8 py-3 sm:py-4 bg-gradient-to-r from-cyan-glow to-blue-500 text-white font-bold rounded-xl hover:scale-105 transition-transform flex items-center gap-2 shadow-[0_0_30px_rgba(34,211,238,0.4)] text-sm sm:text-base">
+              <Play size={18} className="sm:w-5 sm:h-5" /> {t("landing.watch_presentation")}
             </Link>
             <button
               onClick={() => document.getElementById('beta-signup')?.scrollIntoView({ behavior: 'smooth' })}
-              className="px-8 py-4 glass text-white font-bold rounded-xl hover:bg-white/10 transition-colors flex items-center gap-2"
+              className="px-6 sm:px-8 py-3 sm:py-4 glass text-white font-bold rounded-xl hover:bg-white/10 transition-colors flex items-center gap-2 text-sm sm:text-base"
             >
-              <UserPlus size={20} /> Присоединиться к Beta
+              <UserPlus size={18} className="sm:w-5 sm:h-5" /> {t("landing.join_beta")}
             </button>
           </motion.div>
 
@@ -162,18 +163,18 @@ export default function LandingPage() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.5 }}
-            className="text-center"
+            className="text-center px-4"
           >
-            <p className="text-sm text-slate-500 mb-3">До окончания раннего доступа:</p>
-            <div className="flex justify-center gap-4">
+            <p className="text-xs sm:text-sm text-slate-500 mb-3">{t("landing.countdown_prefix")}</p>
+            <div className="flex justify-center gap-2 sm:gap-4">
               {[
-                { value: countdown.days, label: "дней" },
-                { value: countdown.hours, label: "часов" },
-                { value: countdown.mins, label: "мин" },
-                { value: countdown.secs, label: "сек" },
+                { value: countdown.days, label: t("landing.countdown.days") },
+                { value: countdown.hours, label: t("landing.countdown.hours") },
+                { value: countdown.mins, label: t("landing.countdown.mins") },
+                { value: countdown.secs, label: t("landing.countdown.secs") },
               ].map((item, i) => (
-                <div key={i} className="glass-card px-4 py-2 min-w-[70px]">
-                  <div className="text-2xl font-black text-cyan-glow">{String(item.value).padStart(2, '0')}</div>
+                <div key={i} className="glass-card px-3 sm:px-4 py-2 min-w-[60px] sm:min-w-[70px]">
+                  <div className="text-xl sm:text-2xl font-black text-cyan-glow">{String(item.value).padStart(2, '0')}</div>
                   <div className="text-xs text-slate-500">{item.label}</div>
                 </div>
               ))}
@@ -198,34 +199,33 @@ export default function LandingPage() {
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
-            className="text-center mb-16"
+            className="text-center mb-12 sm:mb-16 px-4"
           >
-            <h2 className="text-4xl font-black mb-4">Глобальная проблема</h2>
-            <p className="text-xl text-slate-400 max-w-2xl mx-auto">
-              Водный кризис — это не только экологическая проблема. 
-              Это кризис данных и управления.
+            <h2 className="text-3xl sm:text-4xl font-black mb-4">{t("landing.problem_title")}</h2>
+            <p className="text-base sm:text-lg md:text-xl text-slate-400 max-w-2xl mx-auto">
+              {t("landing.problem_subtitle")}
             </p>
           </motion.div>
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
             {[
-              { icon: Droplets, title: "Дефицит воды", desc: "К 2030 году 5+ млрд человек столкнутся с нехваткой воды", color: "text-blue-400" },
-              { icon: Building2, title: "Устаревшая инфраструктура", desc: "80% водных систем требуют модернизации", color: "text-orange-400" },
-              { icon: Database, title: "Фрагментированные данные", desc: "Отсутствие единой системы мониторинга", color: "text-purple-400" },
-              { icon: Lock, title: "Непрозрачность", desc: "Коррупция и неэффективное распределение ресурсов", color: "text-red-400" },
+              { icon: Droplets, title: t("landing.problems.shortage.title"), desc: t("landing.problems.shortage.desc"), color: "text-blue-400" },
+              { icon: Building2, title: t("landing.problems.infrastructure.title"), desc: t("landing.problems.infrastructure.desc"), color: "text-orange-400" },
+              { icon: Database, title: t("landing.problems.fragmented.title"), desc: t("landing.problems.fragmented.desc"), color: "text-purple-400" },
+              { icon: Lock, title: t("landing.problems.transparency.title"), desc: t("landing.problems.transparency.desc"), color: "text-red-400" },
             ].map((item, i) => (
               <motion.div
                 key={i}
                 initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.1 * i }}
-                className="glass-card p-6 text-center hover:scale-105 transition-transform"
+                className="glass-card p-4 sm:p-6 text-center hover:scale-105 transition-transform"
               >
-                <div className={`w-16 h-16 mx-auto rounded-2xl bg-white/5 flex items-center justify-center mb-4 ${item.color}`}>
-                  <item.icon size={32} />
+                <div className={`w-12 h-12 sm:w-16 sm:h-16 mx-auto rounded-xl sm:rounded-2xl bg-white/5 flex items-center justify-center mb-3 sm:mb-4 ${item.color}`}>
+                  <item.icon size={24} />
                 </div>
-                <h3 className="font-bold mb-2">{item.title}</h3>
-                <p className="text-sm text-slate-400">{item.desc}</p>
+                <h3 className="font-bold mb-2 text-sm sm:text-base">{item.title}</h3>
+                <p className="text-xs sm:text-sm text-slate-400">{item.desc}</p>
               </motion.div>
             ))}
           </div>
@@ -238,38 +238,38 @@ export default function LandingPage() {
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
-            className="text-center mb-16"
+            className="text-center mb-12 sm:mb-16 px-4"
           >
-            <h2 className="text-4xl font-black mb-4">Решение CivilizationProtocol</h2>
-            <p className="text-xl text-slate-400 max-w-2xl mx-auto">
-              Объединяем IoT, AI и Blockchain в единую экосистему прозрачного управления
+            <h2 className="text-3xl sm:text-4xl font-black mb-4">{t("landing.solution_title")}</h2>
+            <p className="text-base sm:text-lg md:text-xl text-slate-400 max-w-2xl mx-auto">
+              {t("landing.solution_subtitle")}
             </p>
           </motion.div>
 
-          <div className="grid md:grid-cols-2 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8">
             {[
-              { icon: Activity, title: "IoT Мониторинг", desc: "Датчики качества воды в реальном времени по всему миру", features: ["Качество воды", "Уровень", "Расход", "Загрязнения"] },
-              { icon: Shield, title: "Blockchain Доверие", desc: "Неизменяемое хранение данных и прозрачные транзакции", features: ["Blockchain", "Смарт-контракты", "NFT объектов", "DAO"] },
-              { icon: Cpu, title: "AI Аналитика", desc: "Предиктивные модели и рекомендации на основе данных", features: ["Прогнозы кризисов", "Оптимизация", "Аномалии", "ML модели"] },
-              { icon: Users, title: "DAO Управление", desc: "Децентрализованное принятие решений всеми участниками", features: ["Голосование", "Делегирование", "Казначейство", "Аудит"] },
+              { icon: Activity, title: t("landing.solutions.iot.title"), desc: t("landing.solutions.iot.desc"), features: t("landing.solutions.iot.features") },
+              { icon: Shield, title: t("landing.solutions.blockchain.title"), desc: t("landing.solutions.blockchain.desc"), features: t("landing.solutions.blockchain.features") },
+              { icon: Cpu, title: t("landing.solutions.ai.title"), desc: t("landing.solutions.ai.desc"), features: t("landing.solutions.ai.features") },
+              { icon: Users, title: t("landing.solutions.dao.title"), desc: t("landing.solutions.dao.desc"), features: t("landing.solutions.dao.features") },
             ].map((item, i) => (
               <motion.div
                 key={i}
                 initial={{ opacity: 0, x: i % 2 === 0 ? -30 : 30 }}
                 whileInView={{ opacity: 1, x: 0 }}
                 transition={{ delay: 0.1 * i }}
-                className="glass-card p-8 hover:border-cyan-glow/30 transition-colors"
+                className="glass-card p-6 sm:p-8 hover:border-cyan-glow/30 transition-colors"
               >
-                <div className="flex items-start gap-4">
-                  <div className="w-14 h-14 rounded-xl bg-cyan-glow/10 flex items-center justify-center text-cyan-glow flex-shrink-0">
-                    <item.icon size={28} />
+                <div className="flex items-start gap-3 sm:gap-4">
+                  <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-xl bg-cyan-glow/10 flex items-center justify-center text-cyan-glow flex-shrink-0">
+                    <item.icon size={24} />
                   </div>
-                  <div>
-                    <h3 className="font-bold text-xl mb-2">{item.title}</h3>
-                    <p className="text-slate-400 mb-4">{item.desc}</p>
-                    <div className="flex flex-wrap gap-2">
-                      {item.features.map((f, j) => (
-                        <span key={j} className="px-3 py-1 rounded-full bg-white/5 text-xs text-slate-300">
+                  <div className="min-w-0 flex-1">
+                    <h3 className="font-bold text-lg sm:text-xl mb-2">{item.title}</h3>
+                    <p className="text-slate-400 mb-3 sm:mb-4 text-sm sm:text-base">{item.desc}</p>
+                    <div className="flex flex-wrap gap-1.5 sm:gap-2">
+                      {item.features.map((f: string, j: number) => (
+                        <span key={j} className="px-2 sm:px-3 py-1 rounded-full bg-white/5 text-xs text-slate-300">
                           {f}
                         </span>
                       ))}
@@ -288,34 +288,34 @@ export default function LandingPage() {
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
-            className="text-center mb-16"
+            className="text-center mb-12 sm:mb-16 px-4"
           >
-            <h2 className="text-4xl font-black mb-4">Как это работает</h2>
+            <h2 className="text-3xl sm:text-4xl font-black mb-4">{t("landing.how_it_works_title")}</h2>
           </motion.div>
 
-          <div className="flex flex-col md:flex-row items-center justify-center gap-4">
+          <div className="flex flex-col md:flex-row items-center justify-center gap-4 px-4">
             {[
-              { step: 1, title: "Подключение", desc: "Датчики IoT собирают данные", icon: Activity },
-              { step: 2, title: "Верификация", desc: "Данные проверяются и хэшируются", icon: Shield },
-              { step: 3, title: "Анализ", desc: "AI обрабатывает и прогнозирует", icon: Cpu },
-              { step: 4, title: "Управление", desc: "DAO принимает решения", icon: Users },
+              { step: 1, title: t("landing.steps.connection.title"), desc: t("landing.steps.connection.desc"), icon: Activity },
+              { step: 2, title: t("landing.steps.verification.title"), desc: t("landing.steps.verification.desc"), icon: Shield },
+              { step: 3, title: t("landing.steps.analysis.title"), desc: t("landing.steps.analysis.desc"), icon: Cpu },
+              { step: 4, title: t("landing.steps.governance.title"), desc: t("landing.steps.governance.desc"), icon: Users },
             ].map((item, i) => (
               <motion.div
                 key={i}
                 initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.15 * i }}
-                className="flex items-center gap-4"
+                className="flex items-center gap-2 sm:gap-4"
               >
-                <div className="glass-card p-6 text-center min-w-[180px]">
-                  <div className="w-12 h-12 mx-auto rounded-full bg-cyan-glow/20 flex items-center justify-center text-cyan-glow font-bold text-xl mb-3">
+                <div className="glass-card p-4 sm:p-6 text-center min-w-[150px] sm:min-w-[180px]">
+                  <div className="w-10 h-10 sm:w-12 sm:h-12 mx-auto rounded-full bg-cyan-glow/20 flex items-center justify-center text-cyan-glow font-bold text-lg sm:text-xl mb-3">
                     {item.step}
                   </div>
-                  <item.icon className="mx-auto mb-2 text-cyan-glow" size={24} />
-                  <h4 className="font-bold mb-1">{item.title}</h4>
+                  <item.icon className="mx-auto mb-2 text-cyan-glow" size={20} />
+                  <h4 className="font-bold mb-1 text-sm sm:text-base">{item.title}</h4>
                   <p className="text-xs text-slate-400">{item.desc}</p>
                 </div>
-                {i < 3 && <ArrowRight className="text-cyan-glow hidden md:block" size={24} />}
+                {i < 3 && <ArrowRight className="text-cyan-glow hidden md:block" size={20} />}
               </motion.div>
             ))}
           </div>
@@ -328,18 +328,18 @@ export default function LandingPage() {
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
-            className="text-center mb-16"
+            className="text-center mb-12 sm:mb-16 px-4"
           >
-            <h2 className="text-4xl font-black mb-4">Инвестиционные уровни</h2>
-            <p className="text-xl text-slate-400">Присоединяйтесь на выгодных условиях раннего доступа</p>
+            <h2 className="text-3xl sm:text-4xl font-black mb-4">{t("landing.investment_title")}</h2>
+            <p className="text-base sm:text-lg md:text-xl text-slate-400">{t("landing.investment_subtitle")}</p>
           </motion.div>
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
             {[
-              { tier: "Seed", amount: "10,000 VOD", price: "$100", benefits: ["Ранний доступ", "Базовое голосование", "Pioneer Badge", "x2 награды"], popular: false },
-              { tier: "Strategic", amount: "100,000 VOD", price: "$900", benefits: ["Все из Seed", "Расширенные права", "Аналитика Premium", "Приоритетная поддержка"], popular: true },
-              { tier: "Infrastructure", amount: "500,000 VOD", price: "$4,000", benefits: ["Все из Strategic", "Доля в проектах", "Эксклюзивный доступ", "Участие в пулах"], popular: false },
-              { tier: "Institutional", amount: "1,000,000 VOD", price: "$7,500", benefits: ["Все из Infrastructure", "Совет DAO", "Права на регионы", "Стратегическое партнёрство"], popular: false },
+              { tier: t("landing.tiers.seed.name"), amount: "10,000 VOD", price: "$100", benefits: t("landing.tiers.seed.benefits"), popular: false },
+              { tier: t("landing.tiers.strategic.name"), amount: "100,000 VOD", price: "$900", benefits: t("landing.tiers.strategic.benefits"), popular: true, popularLabel: t("landing.tiers.strategic.popular") },
+              { tier: t("landing.tiers.infrastructure.name"), amount: "500,000 VOD", price: "$4,000", benefits: t("landing.tiers.infrastructure.benefits"), popular: false },
+              { tier: t("landing.tiers.institutional.name"), amount: "1,000,000 VOD", price: "$7,500", benefits: t("landing.tiers.institutional.benefits"), popular: false },
             ].map((item, i) => (
               <motion.div
                 key={i}
@@ -348,27 +348,27 @@ export default function LandingPage() {
                 transition={{ delay: 0.1 * i }}
                 className={`glass-card p-6 relative ${item.popular ? 'border-cyan-glow/50 scale-105' : ''}`}
               >
-                {item.popular && (
+                {item.popular && item.popularLabel && (
                   <div className="absolute -top-3 left-1/2 -translate-x-1/2 px-4 py-1 bg-gradient-to-r from-cyan-glow to-blue-500 rounded-full text-xs font-bold text-white">
-                    POPULAR
+                    {item.popularLabel}
                   </div>
                 )}
-                <h3 className="font-bold text-xl mb-2">{item.tier}</h3>
-                <div className="text-3xl font-black text-cyan-glow mb-1">{item.amount}</div>
-                <div className="text-sm text-slate-400 mb-4">≈ {item.price}</div>
+                <h3 className="font-bold text-lg sm:text-xl mb-2">{item.tier}</h3>
+                <div className="text-2xl sm:text-3xl font-black text-cyan-glow mb-1">{item.amount}</div>
+                <div className="text-xs sm:text-sm text-slate-400 mb-4">≈ {item.price}</div>
                 <ul className="space-y-2 mb-6">
-                  {item.benefits.map((b, j) => (
-                    <li key={j} className="text-sm text-slate-300 flex items-center gap-2">
-                      <CheckCircle2 size={14} className="text-green-500" /> {b}
+                  {item.benefits.map((b: string, j: number) => (
+                    <li key={j} className="text-xs sm:text-sm text-slate-300 flex items-center gap-2">
+                      <CheckCircle2 size={14} className="text-green-500 flex-shrink-0" /> <span>{b}</span>
                     </li>
                   ))}
                 </ul>
-                <button className={`w-full py-3 rounded-xl font-bold transition-all ${
+                <button className={`w-full py-2.5 sm:py-3 rounded-xl font-bold transition-all text-sm sm:text-base ${
                   item.popular 
                     ? 'bg-gradient-to-r from-cyan-glow to-blue-500 text-white hover:scale-105' 
                     : 'bg-white/5 hover:bg-white/10 text-white'
                 }`}>
-                  Выбрать
+                  {t("landing.tiers.choose")}
                 </button>
               </motion.div>
             ))}
@@ -388,45 +388,44 @@ export default function LandingPage() {
             
             <div className="relative">
               <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-green-500/20 text-green-400 mb-6">
-                <Star size={16} /> Ранняя регистрация открыта
+                <Star size={16} /> {t("landing.beta_signup.badge")}
               </div>
               
-              <h2 className="text-4xl font-black mb-4">Станьте Pioneer</h2>
-              <p className="text-xl text-slate-400 mb-8 max-w-2xl mx-auto">
-                Первые 1000 участников получают статус Pioneer с двойными наградами навсегда, 
-                уникальный NFT и гарантированный airdrop
+              <h2 className="text-3xl sm:text-4xl font-black mb-4">{t("landing.beta_signup.title")}</h2>
+              <p className="text-base sm:text-lg md:text-xl text-slate-400 mb-6 sm:mb-8 max-w-2xl mx-auto px-4">
+                {t("landing.beta_signup.description")}
               </p>
 
-              <div className="grid md:grid-cols-3 gap-4 mb-8">
-                <div className="p-4 bg-white/5 rounded-xl">
-                  <div className="text-2xl font-black text-cyan-glow">x2</div>
-                  <div className="text-sm text-slate-400">Награды навсегда</div>
+              <div className="grid grid-cols-3 gap-2 sm:gap-4 mb-6 sm:mb-8 max-w-2xl mx-auto px-4">
+                <div className="p-3 sm:p-4 bg-white/5 rounded-xl">
+                  <div className="text-xl sm:text-2xl font-black text-cyan-glow">x2</div>
+                  <div className="text-xs sm:text-sm text-slate-400">{t("landing.beta_signup.stats.rewards")}</div>
                 </div>
-                <div className="p-4 bg-white/5 rounded-xl">
-                  <div className="text-2xl font-black text-purple-400">NFT</div>
-                  <div className="text-sm text-slate-400">Founder Badge</div>
+                <div className="p-3 sm:p-4 bg-white/5 rounded-xl">
+                  <div className="text-xl sm:text-2xl font-black text-purple-400">NFT</div>
+                  <div className="text-xs sm:text-sm text-slate-400">{t("landing.beta_signup.stats.nft")}</div>
                 </div>
-                <div className="p-4 bg-white/5 rounded-xl">
-                  <div className="text-2xl font-black text-green-400">100%</div>
-                  <div className="text-sm text-slate-400">Airdrop гарантия</div>
+                <div className="p-3 sm:p-4 bg-white/5 rounded-xl">
+                  <div className="text-xl sm:text-2xl font-black text-green-400">100%</div>
+                  <div className="text-xs sm:text-sm text-slate-400">{t("landing.beta_signup.stats.airdrop")}</div>
                 </div>
               </div>
 
-              <div className="flex flex-col md:flex-row gap-4 max-w-xl mx-auto mb-6">
+              <div className="flex flex-col md:flex-row gap-3 sm:gap-4 max-w-xl mx-auto mb-4 sm:mb-6 px-4">
                 <input
                   type="email"
-                  placeholder="Ваш email"
+                  placeholder={t("landing.beta_signup.email_placeholder")}
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  className="flex-1 px-6 py-4 bg-white/5 border border-white/10 rounded-xl focus:border-cyan-glow/50 focus:outline-none transition-colors"
+                  className="flex-1 px-4 sm:px-6 py-3 sm:py-4 bg-white/5 border border-white/10 rounded-xl focus:border-cyan-glow/50 focus:outline-none transition-colors text-sm sm:text-base"
                 />
-                <button className="px-8 py-4 bg-gradient-to-r from-cyan-glow to-blue-500 text-white font-bold rounded-xl hover:scale-105 transition-transform flex items-center gap-2 justify-center">
-                  <UserPlus size={20} /> Присоединиться
+                <button className="px-6 sm:px-8 py-3 sm:py-4 bg-gradient-to-r from-cyan-glow to-blue-500 text-white font-bold rounded-xl hover:scale-105 transition-transform flex items-center gap-2 justify-center text-sm sm:text-base">
+                  <UserPlus size={18} className="sm:w-5 sm:h-5" /> {t("landing.beta_signup.join")}
                 </button>
               </div>
 
-              <div className="text-sm text-slate-500">
-                <span className="text-green-400 font-bold">847</span> из 1000 мест Pioneer осталось
+              <div className="text-xs sm:text-sm text-slate-500 px-4">
+                <span className="text-green-400 font-bold">847</span> {t("landing.beta_signup.spots_left")}
               </div>
             </div>
           </motion.div>
@@ -440,28 +439,28 @@ export default function LandingPage() {
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
           >
-            <h2 className="text-4xl font-black mb-4">Реферальная программа</h2>
-            <p className="text-xl text-slate-400 mb-8">
-              Приглашайте друзей и получайте бонусы от их активности
+            <h2 className="text-3xl sm:text-4xl font-black mb-4 px-4">{t("landing.referral_title")}</h2>
+            <p className="text-base sm:text-lg md:text-xl text-slate-400 mb-6 sm:mb-8 px-4">
+              {t("landing.referral_subtitle")}
             </p>
 
-            <div className="grid md:grid-cols-3 gap-6 mb-8">
-              <div className="glass-card p-6">
-                <div className="text-3xl font-black text-cyan-glow mb-2">10%</div>
-                <div className="text-sm text-slate-400">от наград уровень 1</div>
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-6 mb-6 sm:mb-8 px-4">
+              <div className="glass-card p-4 sm:p-6">
+                <div className="text-2xl sm:text-3xl font-black text-cyan-glow mb-2">10%</div>
+                <div className="text-xs sm:text-sm text-slate-400">{t("landing.referral_levels.level1")}</div>
               </div>
-              <div className="glass-card p-6">
-                <div className="text-3xl font-black text-blue-400 mb-2">5%</div>
-                <div className="text-sm text-slate-400">от наград уровень 2</div>
+              <div className="glass-card p-4 sm:p-6">
+                <div className="text-2xl sm:text-3xl font-black text-blue-400 mb-2">5%</div>
+                <div className="text-xs sm:text-sm text-slate-400">{t("landing.referral_levels.level2")}</div>
               </div>
-              <div className="glass-card p-6">
-                <div className="text-3xl font-black text-purple-400 mb-2">2%</div>
-                <div className="text-sm text-slate-400">от наград уровень 3</div>
+              <div className="glass-card p-4 sm:p-6">
+                <div className="text-2xl sm:text-3xl font-black text-purple-400 mb-2">2%</div>
+                <div className="text-xs sm:text-sm text-slate-400">{t("landing.referral_levels.level3")}</div>
               </div>
             </div>
 
-            <div className="glass-card p-6 inline-flex items-center gap-4 flex-wrap justify-center">
-              <span className="text-slate-400">Ваша ссылка:</span>
+            <div className="glass-card p-4 sm:p-6 inline-flex items-center gap-3 sm:gap-4 flex-wrap justify-center mx-4">
+              <span className="text-slate-400 text-sm sm:text-base">{t("landing.referral_link")}</span>
               <code className="px-4 py-2 bg-white/5 rounded-lg text-cyan-glow font-mono text-sm">
                 https://vodeco.app/ref/PIONEER2024
               </code>
@@ -482,36 +481,36 @@ export default function LandingPage() {
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
-            className="text-center mb-16"
+            className="text-center mb-12 sm:mb-16 px-4"
           >
-            <h2 className="text-4xl font-black mb-4">Программы Airdrop</h2>
-            <p className="text-xl text-slate-400">Зарабатывайте токены, помогая развивать экосистему</p>
+            <h2 className="text-3xl sm:text-4xl font-black mb-4">{t("landing.airdrop_title")}</h2>
+            <p className="text-base sm:text-lg md:text-xl text-slate-400">{t("landing.airdrop_subtitle")}</p>
           </motion.div>
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 px-4">
             {[
-              { role: "Ambassador", reward: "1000-5000 VOD/мес", desc: "Ведение страницы/группы, представительство", icon: Users },
-              { role: "Researcher", reward: "Грант + % данных", desc: "Проведение исследований, анализ данных", icon: Database },
-              { role: "Media", reward: "500-2000 VOD/материал", desc: "СМИ контент, статьи, обзоры", icon: MessageCircle },
-              { role: "Developer", reward: "Bounty от задачи", desc: "Код, интеграции, смарт-контракты", icon: Cpu },
-              { role: "Translator", reward: "50-200 VOD/страница", desc: "Переводы документации и интерфейса", icon: Globe },
-              { role: "Moderator", reward: "300 VOD/неделя", desc: "Модерация сообщества, поддержка", icon: Shield },
+              { role: t("landing.airdrop_roles.ambassador.role"), reward: t("landing.airdrop_roles.ambassador.reward"), desc: t("landing.airdrop_roles.ambassador.desc"), icon: Users },
+              { role: t("landing.airdrop_roles.researcher.role"), reward: t("landing.airdrop_roles.researcher.reward"), desc: t("landing.airdrop_roles.researcher.desc"), icon: Database },
+              { role: t("landing.airdrop_roles.media.role"), reward: t("landing.airdrop_roles.media.reward"), desc: t("landing.airdrop_roles.media.desc"), icon: MessageCircle },
+              { role: t("landing.airdrop_roles.developer.role"), reward: t("landing.airdrop_roles.developer.reward"), desc: t("landing.airdrop_roles.developer.desc"), icon: Cpu },
+              { role: t("landing.airdrop_roles.translator.role"), reward: t("landing.airdrop_roles.translator.reward"), desc: t("landing.airdrop_roles.translator.desc"), icon: Globe },
+              { role: t("landing.airdrop_roles.moderator.role"), reward: t("landing.airdrop_roles.moderator.reward"), desc: t("landing.airdrop_roles.moderator.desc"), icon: Shield },
             ].map((item, i) => (
               <motion.div
                 key={i}
                 initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.1 * i }}
-                className="glass-card p-6 hover:border-cyan-glow/30 transition-colors"
+                className="glass-card p-4 sm:p-6 hover:border-cyan-glow/30 transition-colors"
               >
-                <div className="flex items-start gap-4">
-                  <div className="w-12 h-12 rounded-xl bg-cyan-glow/10 flex items-center justify-center text-cyan-glow flex-shrink-0">
-                    <item.icon size={24} />
+                <div className="flex items-start gap-3 sm:gap-4">
+                  <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-cyan-glow/10 flex items-center justify-center text-cyan-glow flex-shrink-0">
+                    <item.icon size={20} />
                   </div>
-                  <div>
-                    <h4 className="font-bold mb-1">{item.role}</h4>
-                    <div className="text-cyan-glow text-sm font-medium mb-2">{item.reward}</div>
-                    <p className="text-sm text-slate-400">{item.desc}</p>
+                  <div className="min-w-0 flex-1">
+                    <h4 className="font-bold mb-1 text-sm sm:text-base">{item.role}</h4>
+                    <div className="text-cyan-glow text-xs sm:text-sm font-medium mb-2">{item.reward}</div>
+                    <p className="text-xs sm:text-sm text-slate-400">{item.desc}</p>
                   </div>
                 </div>
               </motion.div>
@@ -526,47 +525,47 @@ export default function LandingPage() {
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
-            className="text-center mb-16"
+            className="text-center mb-12 sm:mb-16 px-4"
           >
-            <h2 className="text-4xl font-black mb-4">Дорожная карта</h2>
+            <h2 className="text-3xl sm:text-4xl font-black mb-4">{t("landing.roadmap_title")}</h2>
           </motion.div>
 
-          <div className="space-y-6">
+          <div className="space-y-4 sm:space-y-6 px-4">
             {[
-              { year: "2023", title: "MVP Development", status: "done", items: ["Архитектура", "Прототип", "Дизайн"] },
-              { year: "2024", title: "Platform Launch", status: "current", items: ["Beta релиз", "Токен VOD", "IoT интеграция"] },
-              { year: "2025", title: "Expansion", status: "future", items: ["Mobile App", "DAO", "Партнёрства"] },
-              { year: "2026", title: "Global Scale", status: "future", items: ["1M+ пользователей", "Full DAO", "Международные интеграции"] },
+              { year: t("landing.roadmap_items.mvp.year"), title: t("landing.roadmap_items.mvp.title"), status: "done", items: t("landing.roadmap_items.mvp.items") },
+              { year: t("landing.roadmap_items.launch.year"), title: t("landing.roadmap_items.launch.title"), status: "current", items: t("landing.roadmap_items.launch.items") },
+              { year: t("landing.roadmap_items.expansion.year"), title: t("landing.roadmap_items.expansion.title"), status: "future", items: t("landing.roadmap_items.expansion.items") },
+              { year: t("landing.roadmap_items.global.year"), title: t("landing.roadmap_items.global.title"), status: "future", items: t("landing.roadmap_items.global.items") },
             ].map((item, i) => (
               <motion.div
                 key={i}
                 initial={{ opacity: 0, x: -30 }}
                 whileInView={{ opacity: 1, x: 0 }}
                 transition={{ delay: 0.1 * i }}
-                className={`glass-card p-6 flex items-center gap-6 ${
+                className={`glass-card p-4 sm:p-6 flex flex-col sm:flex-row items-center gap-4 sm:gap-6 ${
                   item.status === 'done' ? 'border-green-500/30' :
                   item.status === 'current' ? 'border-cyan-glow/50' : ''
                 }`}
               >
-                <div className={`w-16 h-16 rounded-full flex items-center justify-center text-2xl font-black flex-shrink-0 ${
+                <div className={`w-14 h-14 sm:w-16 sm:h-16 rounded-full flex items-center justify-center text-xl sm:text-2xl font-black flex-shrink-0 ${
                   item.status === 'done' ? 'bg-green-500/20 text-green-400' :
                   item.status === 'current' ? 'bg-cyan-glow/20 text-cyan-glow' :
                   'bg-white/5 text-slate-400'
                 }`}>
                   {item.year}
                 </div>
-                <div className="flex-1">
-                  <h4 className="font-bold mb-2">{item.title}</h4>
-                  <div className="flex flex-wrap gap-2">
-                    {item.items.map((it, j) => (
-                      <span key={j} className="px-3 py-1 rounded-full bg-white/5 text-sm text-slate-300">
+                <div className="flex-1 text-center sm:text-left">
+                  <h4 className="font-bold mb-2 text-sm sm:text-base">{item.title}</h4>
+                  <div className="flex flex-wrap gap-2 justify-center sm:justify-start">
+                    {item.items.map((it: string, j: number) => (
+                      <span key={j} className="px-2 sm:px-3 py-1 rounded-full bg-white/5 text-xs sm:text-sm text-slate-300">
                         {it}
                       </span>
                     ))}
                   </div>
                 </div>
-                {item.status === 'done' && <CheckCircle2 className="text-green-500" size={24} />}
-                {item.status === 'current' && <Activity className="text-cyan-glow animate-pulse" size={24} />}
+                {item.status === 'done' && <CheckCircle2 className="text-green-500" size={20} />}
+                {item.status === 'current' && <Activity className="text-cyan-glow animate-pulse" size={20} />}
               </motion.div>
             ))}
           </div>
@@ -592,21 +591,21 @@ export default function LandingPage() {
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
           >
-            <h2 className="text-5xl font-black mb-6">
-              Готовы изменить мир?
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-black mb-4 sm:mb-6 px-4">
+              {t("landing.final_cta_title")}
             </h2>
-            <p className="text-xl text-slate-400 mb-8 max-w-2xl mx-auto">
-              Присоединяйтесь к глобальному движению за устойчивое управление водными ресурсами
+            <p className="text-base sm:text-lg md:text-xl text-slate-400 mb-6 sm:mb-8 max-w-2xl mx-auto px-4">
+              {t("landing.final_cta_subtitle")}
             </p>
-            <div className="flex flex-wrap justify-center gap-4">
-              <Link href="/presentation" className="px-10 py-5 bg-gradient-to-r from-cyan-glow to-blue-500 text-white font-bold rounded-2xl hover:scale-105 transition-transform flex items-center gap-2 shadow-[0_0_40px_rgba(34,211,238,0.4)]">
-                <Play size={20} /> Смотреть презентацию
+            <div className="flex flex-wrap justify-center gap-3 sm:gap-4 px-4">
+              <Link href="/presentation" className="px-6 sm:px-8 md:px-10 py-3 sm:py-4 md:py-5 bg-gradient-to-r from-cyan-glow to-blue-500 text-white font-bold rounded-xl sm:rounded-2xl hover:scale-105 transition-transform flex items-center gap-2 shadow-[0_0_40px_rgba(34,211,238,0.4)] text-sm sm:text-base">
+                <Play size={18} className="sm:w-5 sm:h-5" /> {t("landing.watch_presentation")}
               </Link>
-              <Link href="/whitepaper" className="px-10 py-5 glass text-white font-bold rounded-2xl hover:bg-white/10 transition-colors">
+              <Link href="/whitepaper" className="px-6 sm:px-8 md:px-10 py-3 sm:py-4 md:py-5 glass text-white font-bold rounded-xl sm:rounded-2xl hover:bg-white/10 transition-colors text-sm sm:text-base">
                 White Paper
               </Link>
-              <Link href="/dashboard" className="px-10 py-5 glass text-white font-bold rounded-2xl hover:bg-white/10 transition-colors">
-                Платформа
+              <Link href="/dashboard" className="px-6 sm:px-8 md:px-10 py-3 sm:py-4 md:py-5 glass text-white font-bold rounded-xl sm:rounded-2xl hover:bg-white/10 transition-colors text-sm sm:text-base">
+                {t("landing.platform")}
               </Link>
             </div>
           </motion.div>
@@ -614,18 +613,18 @@ export default function LandingPage() {
       </section>
 
       {/* Footer */}
-      <footer className="py-12 px-4 border-t border-white/5">
+      <footer className="py-8 sm:py-12 px-4 border-t border-white/5">
         <div className="max-w-6xl mx-auto">
-          <div className="grid md:grid-cols-4 gap-8 mb-8">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8 mb-6 sm:mb-8">
             <div>
-              <h3 className="font-bold text-xl mb-4">CivilizationProtocol</h3>
-              <p className="text-sm text-slate-400">
-                Value of Data — Water Ecosystem. Децентрализованная платформа управления водными ресурсами.
+              <h3 className="font-bold text-lg sm:text-xl mb-3 sm:mb-4">CivilizationProtocol</h3>
+              <p className="text-xs sm:text-sm text-slate-400">
+                {t("landing.footer.description")}
               </p>
             </div>
             <div>
-              <h4 className="font-bold mb-4">Платформа</h4>
-              <ul className="space-y-2 text-sm text-slate-400">
+              <h4 className="font-bold mb-3 sm:mb-4 text-sm sm:text-base">{t("landing.footer.platform_title")}</h4>
+              <ul className="space-y-2 text-xs sm:text-sm text-slate-400">
                 <li><Link href="/dashboard" className="hover:text-cyan-glow">Dashboard</Link></li>
                 <li><Link href="/dao" className="hover:text-cyan-glow">DAO</Link></li>
                 <li><Link href="/tokenhub" className="hover:text-cyan-glow">TokenHub</Link></li>
@@ -633,17 +632,17 @@ export default function LandingPage() {
               </ul>
             </div>
             <div>
-              <h4 className="font-bold mb-4">Ресурсы</h4>
-              <ul className="space-y-2 text-sm text-slate-400">
+              <h4 className="font-bold mb-3 sm:mb-4 text-sm sm:text-base">{t("landing.footer.resources_title")}</h4>
+              <ul className="space-y-2 text-xs sm:text-sm text-slate-400">
                 <li><Link href="/whitepaper" className="hover:text-cyan-glow">White Paper</Link></li>
-                <li><Link href="/presentation" className="hover:text-cyan-glow">Презентация</Link></li>
-                <li><a href="#" className="hover:text-cyan-glow">Документация</a></li>
+                <li><Link href="/presentation" className="hover:text-cyan-glow">{t("nav.presentation")}</Link></li>
+                <li><a href="#" className="hover:text-cyan-glow">{t("landing.footer.documentation")}</a></li>
                 <li><a href="#" className="hover:text-cyan-glow">API</a></li>
               </ul>
             </div>
             <div>
-              <h4 className="font-bold mb-4">Контакты</h4>
-              <ul className="space-y-2 text-sm text-slate-400">
+              <h4 className="font-bold mb-3 sm:mb-4 text-sm sm:text-base">{t("landing.footer.contacts_title")}</h4>
+              <ul className="space-y-2 text-xs sm:text-sm text-slate-400">
                 <li className="flex items-center gap-2"><Mail size={14} /> info@vodprom.org</li>
                 <li className="flex items-center gap-2"><Globe size={14} /> vodprom.org</li>
                 <li className="flex items-center gap-2"><Twitter size={14} /> @vodprom</li>
@@ -651,12 +650,12 @@ export default function LandingPage() {
               </ul>
             </div>
           </div>
-          <div className="flex flex-col md:flex-row justify-between items-center pt-8 border-t border-white/5 text-sm text-slate-500">
-            <div>© 2024 CivilizationProtocol. All rights reserved.</div>
-            <div className="flex gap-6 mt-4 md:mt-0">
-              <a href="#" className="hover:text-white">Terms</a>
-              <a href="#" className="hover:text-white">Privacy</a>
-              <a href="#" className="hover:text-white">Cookies</a>
+          <div className="flex flex-col md:flex-row justify-between items-center pt-6 sm:pt-8 border-t border-white/5 text-xs sm:text-sm text-slate-500">
+            <div>{t("landing.footer.copyright")}</div>
+            <div className="flex gap-4 sm:gap-6 mt-4 md:mt-0">
+              <a href="#" className="hover:text-white">{t("landing.footer.terms")}</a>
+              <a href="#" className="hover:text-white">{t("landing.footer.privacy")}</a>
+              <a href="#" className="hover:text-white">{t("landing.footer.cookies")}</a>
             </div>
           </div>
         </div>

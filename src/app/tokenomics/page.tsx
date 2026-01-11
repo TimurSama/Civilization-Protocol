@@ -16,6 +16,7 @@ import RevenueModelDashboard from "@/components/RevenueModelDashboard";
 import TokenDistributionDashboard from "@/components/TokenDistributionDashboard";
 import VODEmissionSimulator from "@/components/VODEmissionSimulator";
 import VODStabilityDashboard from "@/components/VODStabilityDashboard";
+import { useLanguage } from "@/context/LanguageContext";
 
 // Constants
 const EARTH_WATER_VOLUME = 1_386_000_000; // km³
@@ -91,6 +92,7 @@ const stakingPools = [
 ];
 
 export default function TokenomicsPage() {
+  const { t } = useLanguage();
   const [version, setVersion] = useState<"v1" | "v2">("v2");
   const [investment, setInvestment] = useState(50000);
   const [selectedTier, setSelectedTier] = useState(0);
@@ -184,75 +186,74 @@ export default function TokenomicsPage() {
         <motion.div
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="text-center mb-16"
+          className="text-center mb-12 sm:mb-16 px-4"
         >
-          <div className="flex items-center justify-center gap-3 mb-6">
-            <Droplets className="text-cyan-glow" size={48} />
-            <h1 className="text-5xl md:text-6xl font-black">VOD Tokenomics</h1>
+          <div className="flex items-center justify-center gap-2 sm:gap-3 mb-4 sm:mb-6">
+            <Droplets className="text-cyan-glow" size={40} />
+            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black">{t("tokenomics.title")}</h1>
           </div>
-          <p className="text-xl text-slate-400 max-w-3xl mx-auto mb-8">
-            Революционная модель токеномики, обеспеченная реальным ресурсом — водой.
-            Стабильная цена, независимая от спекуляций.
+          <p className="text-base sm:text-lg md:text-xl text-slate-400 max-w-3xl mx-auto mb-6 sm:mb-8 px-4">
+            {t("tokenomics.subtitle")}
           </p>
 
           {/* Version Switcher */}
-          <div className="flex justify-center mb-8">
-            <div className="glass-card p-2 rounded-xl inline-flex gap-2">
+          <div className="flex justify-center mb-6 sm:mb-8 px-4">
+            <div className="glass-card p-1.5 sm:p-2 rounded-xl inline-flex gap-1.5 sm:gap-2">
               <button
                 onClick={() => setVersion("v1")}
                 className={cn(
-                  "px-6 py-3 rounded-lg font-bold transition-all",
+                  "px-4 sm:px-6 py-2 sm:py-3 rounded-lg font-bold transition-all text-sm sm:text-base",
                   version === "v1"
                     ? "bg-cyan-500 text-ocean-deep"
                     : "text-slate-400 hover:text-white"
                 )}
               >
-                Версия 1.0
+                {t("tokenomics.version.v1")}
               </button>
               <button
                 onClick={() => setVersion("v2")}
                 className={cn(
-                  "px-6 py-3 rounded-lg font-bold transition-all",
+                  "px-4 sm:px-6 py-2 sm:py-3 rounded-lg font-bold transition-all text-sm sm:text-base",
                   version === "v2"
                     ? "bg-cyan-500 text-ocean-deep"
                     : "text-slate-400 hover:text-white"
                 )}
               >
-                Версия 2.0
+                {t("tokenomics.version.v2")}
               </button>
             </div>
           </div>
 
           {/* Version-specific stats */}
-          <div className="flex flex-wrap justify-center gap-4">
+          <div className="flex flex-wrap justify-center gap-3 sm:gap-4 px-4">
             {version === "v1" ? (
               <>
-                <div className="px-4 py-2 glass rounded-xl">
-                  <div className="text-sm text-slate-500">Базовая цена</div>
-                  <div className="text-2xl font-black text-cyan-glow">$1.3 / VOD</div>
+                <div className="px-3 sm:px-4 py-2 glass rounded-xl">
+                  <div className="text-xs sm:text-sm text-slate-500">{t("tokenomics.stats.base_price")}</div>
+                  <div className="text-xl sm:text-2xl font-black text-cyan-glow">{t("tokenomics.stats.v1.base_price_value")}</div>
                 </div>
-                <div className="px-4 py-2 glass rounded-xl">
-                  <div className="text-sm text-slate-500">Макс. эмиссия</div>
-                  <div className="text-2xl font-black text-purple-400">1.386 млрд</div>
+                <div className="px-3 sm:px-4 py-2 glass rounded-xl">
+                  <div className="text-xs sm:text-sm text-slate-500">{t("tokenomics.stats.max_emission")}</div>
+                  <div className="text-xl sm:text-2xl font-black text-purple-400">{t("tokenomics.stats.v1.max_emission_value")}</div>
                 </div>
-                <div className="px-4 py-2 glass rounded-xl">
-                  <div className="text-sm text-slate-500">1 VOD =</div>
-                  <div className="text-2xl font-black text-emerald-400">1 м³ воды</div>
+                <div className="px-3 sm:px-4 py-2 glass rounded-xl">
+                  <div className="text-xs sm:text-sm text-slate-500">{t("tokenomics.stats.vod_equals")}</div>
+                  <div className="text-xl sm:text-2xl font-black text-emerald-400">{t("tokenomics.stats.v1.vod_equals_value")}</div>
                 </div>
               </>
             ) : (
               <>
-                <div className="px-4 py-2 glass rounded-xl">
-                  <div className="text-sm text-slate-500">Базовая цена</div>
-                  <div className="text-2xl font-black text-cyan-glow">$0.005 / VOD</div>
+                <div className="px-3 sm:px-4 py-2 glass rounded-xl">
+                  <div className="text-xs sm:text-sm text-slate-500">{t("tokenomics.stats.base_price")}</div>
+                  <div className="text-xl sm:text-2xl font-black text-cyan-glow">{t("tokenomics.stats.v2.base_price_value")}</div>
                 </div>
-                <div className="px-4 py-2 glass rounded-xl">
-                  <div className="text-sm text-slate-500">Макс. эмиссия</div>
-                  <div className="text-2xl font-black text-purple-400">105 квадр.</div>
+                <div className="px-3 sm:px-4 py-2 glass rounded-xl">
+                  <div className="text-xs sm:text-sm text-slate-500">{t("tokenomics.stats.max_emission")}</div>
+                  <div className="text-xl sm:text-2xl font-black text-purple-400">{t("tokenomics.stats.v2.max_emission_value")}</div>
                 </div>
-                <div className="px-4 py-2 glass rounded-xl">
-                  <div className="text-sm text-slate-500">1 VOD =</div>
-                  <div className="text-2xl font-black text-emerald-400">1 литр воды</div>
+                <div className="px-3 sm:px-4 py-2 glass rounded-xl">
+                  <div className="text-xs sm:text-sm text-slate-500">{t("tokenomics.stats.vod_equals")}</div>
+                  <div className="text-xl sm:text-2xl font-black text-emerald-400">{t("tokenomics.stats.v2.vod_equals_value")}</div>
                 </div>
               </>
             )}
@@ -264,24 +265,24 @@ export default function TokenomicsPage() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.2 }}
-          className="grid md:grid-cols-4 gap-6 mb-16"
+          className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6 mb-12 sm:mb-16 px-4"
         >
           {[
-            { icon: <Shield size={32} />, title: "Обеспечен водой", desc: "1 VOD = 1 литр чистой воды" },
-            { icon: <TrendingUp size={32} />, title: "Стабильная цена", desc: "$0.005, не зависит от спекуляций" },
-            { icon: <Globe size={32} />, title: "Глобальная доступность", desc: "Одинаковая цена для всех" },
-            { icon: <Lock size={32} />, title: "Физический предел", desc: "Эмиссия = объём воды на Земле" },
+            { icon: <Shield size={28} />, title: t("tokenomics.principles.backed.title"), desc: t("tokenomics.principles.backed.desc") },
+            { icon: <TrendingUp size={28} />, title: t("tokenomics.principles.stable.title"), desc: t("tokenomics.principles.stable.desc") },
+            { icon: <Globe size={28} />, title: t("tokenomics.principles.global.title"), desc: t("tokenomics.principles.global.desc") },
+            { icon: <Lock size={28} />, title: t("tokenomics.principles.limit.title"), desc: t("tokenomics.principles.limit.desc") },
           ].map((principle, i) => (
             <motion.div
               key={i}
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.3 + i * 0.1 }}
-              className="glass-card p-6 text-center"
+              className="glass-card p-4 sm:p-6 text-center"
             >
-              <div className="text-cyan-glow mb-4 flex justify-center">{principle.icon}</div>
-              <h3 className="font-bold text-lg mb-2">{principle.title}</h3>
-              <p className="text-sm text-slate-400">{principle.desc}</p>
+              <div className="text-cyan-glow mb-3 sm:mb-4 flex justify-center">{principle.icon}</div>
+              <h3 className="font-bold text-base sm:text-lg mb-2">{principle.title}</h3>
+              <p className="text-xs sm:text-sm text-slate-400">{principle.desc}</p>
             </motion.div>
           ))}
         </motion.div>
@@ -291,23 +292,23 @@ export default function TokenomicsPage() {
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          className="mb-16"
+          className="mb-12 sm:mb-16 px-4"
         >
-          <h2 className="text-3xl font-black mb-8 text-center">Объём воды на Земле</h2>
-          <div className="glass-card p-8">
-            <div className="grid md:grid-cols-4 gap-6 mb-8">
+          <h2 className="text-2xl sm:text-3xl font-black mb-6 sm:mb-8 text-center">{t("tokenomics.water_volume.title")}</h2>
+          <div className="glass-card p-4 sm:p-6 md:p-8">
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6 mb-6 sm:mb-8">
               {[
-                { label: "Вся вода", value: EARTH_WATER_VOLUME, unit: "км³", color: "blue", percent: 100 },
-                { label: "Пресная вода", value: FRESH_WATER_VOLUME, unit: "км³", color: "cyan", percent: 2.5 },
-                { label: "Доступная", value: ACCESSIBLE_WATER, unit: "км³", color: "green", percent: 0.76 },
-                { label: "Питьевая", value: DRINKABLE_WATER, unit: "км³", color: "emerald", percent: 0.0076 },
+                { label: t("tokenomics.water_volume.labels.all"), value: EARTH_WATER_VOLUME, unit: "км³", color: "blue", percent: 100 },
+                { label: t("tokenomics.water_volume.labels.fresh"), value: FRESH_WATER_VOLUME, unit: "км³", color: "cyan", percent: 2.5 },
+                { label: t("tokenomics.water_volume.labels.accessible"), value: ACCESSIBLE_WATER, unit: "км³", color: "green", percent: 0.76 },
+                { label: t("tokenomics.water_volume.labels.drinkable"), value: DRINKABLE_WATER, unit: "км³", color: "emerald", percent: 0.0076 },
               ].map((item, i) => (
                 <div key={i} className="text-center">
-                  <div className={`text-4xl font-black text-${item.color}-400 mb-2`}>
+                  <div className={`text-2xl sm:text-3xl md:text-4xl font-black text-${item.color}-400 mb-2`}>
                     {item.value.toLocaleString()}
                   </div>
-                  <div className="text-sm text-slate-500 mb-2">{item.label}</div>
-                  <div className="h-2 bg-white/10 rounded-full overflow-hidden">
+                  <div className="text-xs sm:text-sm text-slate-500 mb-2">{item.label}</div>
+                  <div className="h-1.5 sm:h-2 bg-white/10 rounded-full overflow-hidden">
                     <motion.div
                       initial={{ width: 0 }}
                       whileInView={{ width: `${item.percent}%` }}
@@ -320,22 +321,21 @@ export default function TokenomicsPage() {
               ))}
             </div>
             
-            <div className="p-6 rounded-xl bg-gradient-to-r from-cyan-500/10 to-purple-500/10 border border-cyan-500/20">
-              <div className="flex items-center justify-between mb-4">
+            <div className="p-4 sm:p-6 rounded-xl bg-gradient-to-r from-cyan-500/10 to-purple-500/10 border border-cyan-500/20">
+              <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-3 sm:mb-4 gap-3">
                 <div>
-                  <div className="text-sm text-slate-500">Максимальная эмиссия VOD</div>
-                  <div className="text-3xl font-black text-cyan-glow">
+                  <div className="text-xs sm:text-sm text-slate-500">{t("tokenomics.water_volume.max_emission")}</div>
+                  <div className="text-2xl sm:text-3xl font-black text-cyan-glow">
                     {MAX_SUPPLY.toLocaleString()} VOD
                   </div>
                 </div>
-                <div className="text-right">
-                  <div className="text-sm text-slate-500">1 VOD =</div>
-                  <div className="text-2xl font-black text-emerald-400">1 литр</div>
+                <div className="text-left sm:text-right">
+                  <div className="text-xs sm:text-sm text-slate-500">{t("tokenomics.stats.vod_equals")}</div>
+                  <div className="text-xl sm:text-2xl font-black text-emerald-400">{t("tokenomics.stats.v2.vod_equals_value")}</div>
                 </div>
               </div>
-              <p className="text-sm text-slate-400">
-                Эмиссия ограничена физическим объёмом питьевой воды на планете. 
-                Токен не даёт право на воду, а служит средством контроля и прозрачности.
+              <p className="text-xs sm:text-sm text-slate-400">
+                {t("tokenomics.water_volume.emission_desc")}
               </p>
             </div>
           </div>
@@ -346,32 +346,31 @@ export default function TokenomicsPage() {
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          className="mb-16"
+          className="mb-12 sm:mb-16 px-4"
         >
-          <h2 className="text-3xl font-black mb-8 text-center">Модель ценообразования</h2>
-          <div className="glass-card p-8">
-            <div className="grid md:grid-cols-4 gap-6 mb-8">
+          <h2 className="text-2xl sm:text-3xl font-black mb-6 sm:mb-8 text-center">{t("tokenomics.pricing.title")}</h2>
+          <div className="glass-card p-4 sm:p-6 md:p-8">
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6 mb-6 sm:mb-8">
               {[
-                { label: "Источник", value: "$0.001", color: "blue" },
-                { label: "Очистка", value: "$0.002", color: "cyan" },
-                { label: "Доставка", value: "$0.001", color: "green" },
-                { label: "Верификация", value: "$0.001", color: "purple" },
+                { label: t("tokenomics.pricing.sources.source"), value: "$0.001", color: "blue" },
+                { label: t("tokenomics.pricing.sources.treatment"), value: "$0.002", color: "cyan" },
+                { label: t("tokenomics.pricing.sources.delivery"), value: "$0.001", color: "green" },
+                { label: t("tokenomics.pricing.sources.verification"), value: "$0.001", color: "purple" },
               ].map((item, i) => (
-                <div key={i} className="text-center p-4 rounded-xl bg-white/5">
-                  <div className={`text-2xl font-black text-${item.color}-400 mb-2`}>
+                <div key={i} className="text-center p-3 sm:p-4 rounded-xl bg-white/5">
+                  <div className={`text-xl sm:text-2xl font-black text-${item.color}-400 mb-2`}>
                     {item.value}
                   </div>
-                  <div className="text-sm text-slate-400">{item.label}</div>
+                  <div className="text-xs sm:text-sm text-slate-400">{item.label}</div>
                 </div>
               ))}
             </div>
             
-            <div className="p-6 rounded-xl bg-gradient-to-r from-emerald-500/10 to-cyan-500/10 border border-emerald-500/20 text-center">
-              <div className="text-sm text-slate-500 mb-2">Итоговая цена</div>
-              <div className="text-5xl font-black text-emerald-400 mb-4">$0.005 / VOD</div>
-              <p className="text-slate-400 max-w-2xl mx-auto">
-                Стабильная цена, привязанная к реальной себестоимости воды. 
-                Не зависит от спекуляций и рыночных колебаний.
+            <div className="p-4 sm:p-6 rounded-xl bg-gradient-to-r from-emerald-500/10 to-cyan-500/10 border border-emerald-500/20 text-center">
+              <div className="text-xs sm:text-sm text-slate-500 mb-2">{t("tokenomics.pricing.final_price")}</div>
+              <div className="text-3xl sm:text-4xl md:text-5xl font-black text-emerald-400 mb-3 sm:mb-4">{t("tokenomics.pricing.final_price_value")}</div>
+              <p className="text-xs sm:text-sm text-slate-400 max-w-2xl mx-auto">
+                {t("tokenomics.pricing.final_price_desc")}
               </p>
             </div>
           </div>
@@ -384,29 +383,29 @@ export default function TokenomicsPage() {
           viewport={{ once: true }}
           className="mb-16"
         >
-          <h2 className="text-3xl font-black mb-8 text-center flex items-center justify-center gap-3">
-            <Calculator className="text-cyan-glow" size={32} />
-            Калькулятор инвестиций
+          <h2 className="text-2xl sm:text-3xl font-black mb-6 sm:mb-8 text-center flex items-center justify-center gap-2 sm:gap-3 px-4">
+            <Calculator className="text-cyan-glow" size={28} />
+            {t("tokenomics.calculator.title")}
           </h2>
           
-          <div className="grid lg:grid-cols-2 gap-8">
+          <div className="grid lg:grid-cols-2 gap-6 sm:gap-8 px-4">
             {/* Inputs */}
-            <div className="glass-card p-8 space-y-6">
+            <div className="glass-card p-4 sm:p-6 md:p-8 space-y-4 sm:space-y-6">
               <div>
-                <label className="block text-sm font-bold mb-2">Раунд</label>
-                <div className="grid grid-cols-3 gap-3">
+                <label className="block text-xs sm:text-sm font-bold mb-2">{t("tokenomics.calculator.round")}</label>
+                <div className="grid grid-cols-3 gap-2 sm:gap-3">
                   {presaleTiers.map((tier, i) => (
                     <button
                       key={i}
                       onClick={() => setSelectedTier(i)}
                       className={cn(
-                        "p-4 rounded-xl border-2 transition-all text-left",
+                        "p-3 sm:p-4 rounded-xl border-2 transition-all text-left",
                         selectedTier === i
                           ? `border-cyan-500 bg-gradient-to-r ${tier.color} text-white`
                           : "border-white/10 bg-white/5 hover:border-white/20"
                       )}
                     >
-                      <div className="font-bold text-sm">{tier.name}</div>
+                      <div className="font-bold text-xs sm:text-sm">{tier.name}</div>
                       <div className="text-xs opacity-75">${tier.price.toFixed(4)}/VOD</div>
                     </button>
                   ))}
@@ -414,8 +413,8 @@ export default function TokenomicsPage() {
               </div>
 
               <div>
-                <label className="block text-sm font-bold mb-2">
-                  Сумма инвестиции: ${investment.toLocaleString()}
+                <label className="block text-xs sm:text-sm font-bold mb-2">
+                  {t("tokenomics.calculator.investment")}: ${investment.toLocaleString()}
                 </label>
                 <input
                   type="range"
@@ -439,7 +438,7 @@ export default function TokenomicsPage() {
                     onChange={e => setEarlyBird(e.target.checked)}
                     className="w-5 h-5 rounded"
                   />
-                  <span className="text-sm">Early Bird Bonus (+20%)</span>
+                  <span className="text-xs sm:text-sm">{t("tokenomics.calculator.bonuses.early_bird")}</span>
                 </label>
                 <label className="flex items-center gap-2">
                   <input
@@ -448,7 +447,7 @@ export default function TokenomicsPage() {
                     onChange={e => setReferral(e.target.checked)}
                     className="w-5 h-5 rounded"
                   />
-                  <span className="text-sm">Referral Bonus (+5%)</span>
+                  <span className="text-xs sm:text-sm">{t("tokenomics.calculator.bonuses.referral")}</span>
                 </label>
               </div>
 
@@ -466,24 +465,24 @@ export default function TokenomicsPage() {
             </div>
 
             {/* Results */}
-            <div className="glass-card p-8">
-              <h3 className="text-xl font-bold mb-6">Результаты расчёта</h3>
+            <div className="glass-card p-4 sm:p-6 md:p-8">
+              <h3 className="text-lg sm:text-xl font-bold mb-4 sm:mb-6">{t("tokenomics.calculator.results.total")}</h3>
               
-              <div className="space-y-4 mb-6">
-                <div className="flex justify-between items-center p-4 rounded-xl bg-white/5">
-                  <span className="text-slate-400">Базовые токены</span>
-                  <span className="text-2xl font-black text-cyan-400">
+              <div className="space-y-3 sm:space-y-4 mb-4 sm:mb-6">
+                <div className="flex justify-between items-center p-3 sm:p-4 rounded-xl bg-white/5">
+                  <span className="text-xs sm:text-sm text-slate-400">{t("tokenomics.calculator.results.base_tokens")}</span>
+                  <span className="text-lg sm:text-xl md:text-2xl font-black text-cyan-400">
                     {investmentResult.baseTokens.toLocaleString(undefined, { maximumFractionDigits: 0 })} VOD
                   </span>
                 </div>
 
                 <div className="space-y-2">
-                  <div className="text-sm text-slate-500 mb-2">Бонусы:</div>
+                  <div className="text-xs sm:text-sm text-slate-500 mb-2">{t("tokenomics.calculator.results.bonuses")}:</div>
                   {Object.entries(investmentResult.bonuses).map(([key, value]) => (
                     value > 0 && (
-                      <div key={key} className="flex justify-between items-center p-3 rounded-lg bg-white/5">
-                        <span className="text-sm capitalize">{key.replace(/([A-Z])/g, ' $1').trim()}</span>
-                        <span className="font-bold text-emerald-400">
+                      <div key={key} className="flex justify-between items-center p-2 sm:p-3 rounded-lg bg-white/5">
+                        <span className="text-xs sm:text-sm capitalize">{key.replace(/([A-Z])/g, ' $1').trim()}</span>
+                        <span className="font-bold text-emerald-400 text-xs sm:text-sm">
                           +{value.toLocaleString(undefined, { maximumFractionDigits: 0 })} VOD
                         </span>
                       </div>
@@ -491,19 +490,19 @@ export default function TokenomicsPage() {
                   ))}
                 </div>
 
-                <div className="p-4 rounded-xl bg-gradient-to-r from-cyan-500/20 to-purple-500/20 border border-cyan-500/30">
-                  <div className="text-sm text-slate-500 mb-1">Итого токенов</div>
-                  <div className="text-4xl font-black text-cyan-glow mb-2">
+                <div className="p-3 sm:p-4 rounded-xl bg-gradient-to-r from-cyan-500/20 to-purple-500/20 border border-cyan-500/30">
+                  <div className="text-xs sm:text-sm text-slate-500 mb-1">{t("tokenomics.calculator.results.total")}</div>
+                  <div className="text-2xl sm:text-3xl md:text-4xl font-black text-cyan-glow mb-2">
                     {investmentResult.totalTokens.toLocaleString(undefined, { maximumFractionDigits: 0 })} VOD
                   </div>
-                  <div className="flex justify-between text-sm">
-                    <span className="text-slate-400">Эффективная цена</span>
+                  <div className="flex justify-between text-xs sm:text-sm">
+                    <span className="text-slate-400">{t("tokenomics.calculator.results.effective_price")}</span>
                     <span className="font-bold text-emerald-400">
                       ${investmentResult.effectivePrice.toFixed(6)} / VOD
                     </span>
                   </div>
-                  <div className="flex justify-between text-sm mt-1">
-                    <span className="text-slate-400">Скидка</span>
+                  <div className="flex justify-between text-xs sm:text-sm mt-1">
+                    <span className="text-slate-400">{t("tokenomics.calculator.results.discount")}</span>
                     <span className="font-bold text-yellow-400">
                       {investmentResult.discount.toFixed(1)}%
                     </span>

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, useMemo } from "react";
 import { motion, AnimatePresence, useScroll, useTransform } from "framer-motion";
 import {
   Globe, Shield, Users, Building2, Scale, Award, Target,
@@ -13,6 +13,7 @@ import Link from "next/link";
 import { cn } from "@/lib/utils";
 import InfoPopup from "@/components/InfoPopup";
 import StatisticCard from "@/components/StatisticCard";
+import { useLanguage } from "@/context/LanguageContext";
 
 // SDG data
 const sdgGoals = [
@@ -32,21 +33,26 @@ const globalStats = [
   { value: "700M", label: "климатических мигрантов к 2030", source: "World Bank" },
 ];
 
-// Sections
-const sections = [
-  { id: "context", title: "Глобальный контекст", icon: <Globe size={20} /> },
-  { id: "strategic", title: "Стратегическая значимость", icon: <Target size={20} /> },
-  { id: "sdg", title: "Соответствие целям ООН", icon: <Flag size={20} /> },
-  { id: "solution", title: "Технологическое решение", icon: <Shield size={20} /> },
-  { id: "governance", title: "Модель управления", icon: <Users size={20} /> },
-  { id: "economics", title: "Экономическая модель", icon: <TrendingUp size={20} /> },
-  { id: "action", title: "Призыв к действию", icon: <Handshake size={20} /> },
-];
+// Sections will be created inside component with translations
 
 export default function DiplomaticPresentation() {
+  const { t } = useLanguage();
   const [activeSection, setActiveSection] = useState(0);
   const [expandedSDG, setExpandedSDG] = useState<number | null>(null);
   const containerRef = useRef<HTMLDivElement>(null);
+
+  const sections = useMemo(() => {
+    const s = t("diplomatic_presentation.sections");
+    return [
+      { id: "context", title: s.context, icon: <Globe size={20} /> },
+      { id: "strategic", title: s.strategic, icon: <Target size={20} /> },
+      { id: "sdg", title: s.sdg, icon: <Flag size={20} /> },
+      { id: "solution", title: s.solution, icon: <Shield size={20} /> },
+      { id: "governance", title: s.governance, icon: <Users size={20} /> },
+      { id: "economics", title: s.economics, icon: <TrendingUp size={20} /> },
+      { id: "action", title: s.action, icon: <Handshake size={20} /> },
+    ];
+  }, [t]);
 
   const { scrollYProgress } = useScroll({
     target: containerRef,
@@ -65,17 +71,17 @@ export default function DiplomaticPresentation() {
               <Globe className="text-[#4a9eff]" size={24} />
             </div>
             <div>
-              <div className="font-bold text-lg tracking-wide">CivilizationProtocol Initiative</div>
-              <div className="text-xs text-[#6a8caf]">Strategic Water Management Platform</div>
+              <div className="font-bold text-base sm:text-lg tracking-wide">{t("diplomatic_presentation.title")}</div>
+              <div className="text-xs text-[#6a8caf]">{t("diplomatic_presentation.subtitle")}</div>
             </div>
           </div>
           
           {/* Progress */}
-          <div className="hidden md:flex items-center gap-6">
-            <div className="text-sm text-[#6a8caf]">
+          <div className="hidden md:flex items-center gap-4 sm:gap-6">
+            <div className="text-xs sm:text-sm text-[#6a8caf]">
               {sections[activeSection].title}
             </div>
-            <div className="w-48 h-1 bg-[#1a3a5c] rounded-full overflow-hidden">
+            <div className="w-32 sm:w-48 h-1 bg-[#1a3a5c] rounded-full overflow-hidden">
               <motion.div 
                 className="h-full bg-gradient-to-r from-[#4a9eff] to-[#00d4aa]"
                 style={{ width: progress }}
@@ -83,15 +89,15 @@ export default function DiplomaticPresentation() {
             </div>
           </div>
 
-          <div className="flex items-center gap-3">
-            <button className="px-4 py-2 text-sm font-medium text-[#4a9eff] hover:bg-[#1a3a5c] rounded-lg transition-colors flex items-center gap-2">
-              <Download size={16} /> PDF
+          <div className="flex items-center gap-2 sm:gap-3">
+            <button className="px-3 sm:px-4 py-1.5 sm:py-2 text-xs sm:text-sm font-medium text-[#4a9eff] hover:bg-[#1a3a5c] rounded-lg transition-colors flex items-center gap-1.5 sm:gap-2">
+              <Download size={14} /> {t("diplomatic_presentation.pdf")}
             </button>
             <Link 
               href="/presentations"
-              className="px-4 py-2 text-sm font-medium bg-[#1a3a5c] hover:bg-[#2a4a6c] rounded-lg transition-colors"
+              className="px-3 sm:px-4 py-1.5 sm:py-2 text-xs sm:text-sm font-medium bg-[#1a3a5c] hover:bg-[#2a4a6c] rounded-lg transition-colors"
             >
-              Все презентации
+              {t("diplomatic_presentation.all_presentations")}
             </Link>
           </div>
         </div>

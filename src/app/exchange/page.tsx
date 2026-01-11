@@ -2,6 +2,7 @@
 
 import { motion } from "framer-motion";
 import { ArrowLeftRight, TrendingUp, TrendingDown, Search, ChevronDown } from "lucide-react";
+import { useLanguage } from "@/context/LanguageContext";
 
 const pairs = [
     { name: "VODG/USDT", price: "1.00", change: "+2.5%", positive: true },
@@ -10,8 +11,9 @@ const pairs = [
 ];
 
 export default function ExchangePage() {
+    const { t } = useLanguage();
     return (
-        <div className="max-w-7xl mx-auto px-4 py-8">
+        <div className="max-w-7xl mx-auto px-3 sm:px-4 py-6 sm:py-8">
             <div className="flex flex-col lg:flex-row gap-8">
                 {/* Trading Interface */}
                 <div className="flex-[2] space-y-8">
@@ -29,33 +31,33 @@ export default function ExchangePage() {
                                 <div className="text-sm font-bold text-cyan-glow">$1.00 <span className="text-xs text-green-400 font-normal ml-2">+2.5%</span></div>
                             </div>
                         </div>
-                        <div className="hidden md:flex gap-8 text-right">
+                        <div className="hidden md:flex gap-4 sm:gap-8 text-right">
                             <div>
-                                <div className="text-[10px] text-slate-500 uppercase font-bold">24h High</div>
-                                <div className="text-sm font-bold">$1.05</div>
+                                <div className="text-[10px] text-slate-500 uppercase font-bold">{t("exchange.stats.high_24h")}</div>
+                                <div className="text-xs sm:text-sm font-bold">$1.05</div>
                             </div>
                             <div>
-                                <div className="text-[10px] text-slate-500 uppercase font-bold">24h Low</div>
-                                <div className="text-sm font-bold">$0.98</div>
+                                <div className="text-[10px] text-slate-500 uppercase font-bold">{t("exchange.stats.low_24h")}</div>
+                                <div className="text-xs sm:text-sm font-bold">$0.98</div>
                             </div>
                             <div>
-                                <div className="text-[10px] text-slate-500 uppercase font-bold">24h Volume</div>
-                                <div className="text-sm font-bold">1.2M VODG</div>
+                                <div className="text-[10px] text-slate-500 uppercase font-bold">{t("exchange.stats.volume_24h")}</div>
+                                <div className="text-xs sm:text-sm font-bold">1.2M VODG</div>
                             </div>
                         </div>
                     </div>
 
                     {/* Chart Placeholder */}
-                    <div className="glass-card h-96 relative overflow-hidden">
-                        <div className="absolute top-4 left-4 flex gap-2">
+                    <div className="glass-card h-64 sm:h-80 md:h-96 relative overflow-hidden">
+                        <div className="absolute top-3 sm:top-4 left-3 sm:left-4 flex gap-1.5 sm:gap-2">
                             {['1m', '5m', '15m', '1h', '4h', '1d'].map(t => (
-                                <button key={t} className={`px-2 py-1 rounded text-[10px] font-bold ${t === '1h' ? 'bg-cyan-glow text-ocean-deep' : 'glass text-slate-500'}`}>
+                                <button key={t} className={`px-1.5 sm:px-2 py-0.5 sm:py-1 rounded text-[10px] font-bold ${t === '1h' ? 'bg-cyan-glow text-ocean-deep' : 'glass text-slate-500'}`}>
                                     {t}
                                 </button>
                             ))}
                         </div>
                         <div className="w-full h-full flex items-center justify-center">
-                            <div className="text-slate-700 font-black text-4xl opacity-20 uppercase tracking-[20px]">Trading View</div>
+                            <div className="text-slate-700 font-black text-2xl sm:text-3xl md:text-4xl opacity-20 uppercase tracking-[10px] sm:tracking-[20px]">Trading View</div>
                             {/* Simple animated line for effect */}
                             <svg className="absolute inset-0 w-full h-full pointer-events-none">
                                 <motion.path
@@ -72,14 +74,14 @@ export default function ExchangePage() {
                     </div>
 
                     {/* Order Book & Trade Form */}
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                        <div className="glass-card">
-                            <h3 className="font-bold mb-4">Книга ордеров</h3>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6 md:gap-8">
+                        <div className="glass-card p-4 sm:p-6">
+                            <h3 className="font-bold mb-3 sm:mb-4 text-sm sm:text-base">{t("exchange.order_book.title")}</h3>
                             <div className="space-y-1">
                                 <div className="flex justify-between text-[10px] text-slate-500 font-bold uppercase mb-2">
-                                    <span>Цена</span>
-                                    <span>Количество</span>
-                                    <span>Всего</span>
+                                    <span>{t("exchange.order_book.price")}</span>
+                                    <span>{t("exchange.order_book.amount")}</span>
+                                    <span>{t("exchange.order_book.total")}</span>
                                 </div>
                                 {[1.02, 1.01, 1.005].map(p => (
                                     <div key={p} className="flex justify-between text-xs py-1 text-red-400 bg-red-400/5 px-2 rounded">
@@ -99,32 +101,32 @@ export default function ExchangePage() {
                             </div>
                         </div>
 
-                        <div className="glass-card">
-                            <div className="flex gap-4 mb-6">
-                                <button className="flex-1 py-2 rounded-lg bg-green-500 text-ocean-deep font-bold text-sm">Купить</button>
-                                <button className="flex-1 py-2 rounded-lg glass text-slate-400 font-bold text-sm">Продать</button>
+                        <div className="glass-card p-4 sm:p-6">
+                            <div className="flex gap-3 sm:gap-4 mb-4 sm:mb-6">
+                                <button className="flex-1 py-2 rounded-lg bg-green-500 text-ocean-deep font-bold text-xs sm:text-sm">{t("exchange.trade.buy")}</button>
+                                <button className="flex-1 py-2 rounded-lg glass text-slate-400 font-bold text-xs sm:text-sm">{t("exchange.trade.sell")}</button>
                             </div>
-                            <div className="space-y-4">
+                            <div className="space-y-3 sm:space-y-4">
                                 <div className="space-y-1">
-                                    <label className="text-[10px] text-slate-500 font-bold uppercase">Цена</label>
+                                    <label className="text-[10px] text-slate-500 font-bold uppercase">{t("exchange.trade.price_label")}</label>
                                     <div className="relative">
-                                        <input type="text" value="1.00" className="w-full glass p-3 rounded-xl text-sm focus:outline-none" />
-                                        <span className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-slate-500">USDT</span>
+                                        <input type="text" value="1.00" className="w-full glass p-2.5 sm:p-3 rounded-xl text-xs sm:text-sm focus:outline-none" />
+                                        <span className="absolute right-2 sm:right-3 top-1/2 -translate-y-1/2 text-[10px] sm:text-xs text-slate-500">USDT</span>
                                     </div>
                                 </div>
                                 <div className="space-y-1">
-                                    <label className="text-[10px] text-slate-500 font-bold uppercase">Количество</label>
+                                    <label className="text-[10px] text-slate-500 font-bold uppercase">{t("exchange.trade.amount_label")}</label>
                                     <div className="relative">
-                                        <input type="text" placeholder="0.00" className="w-full glass p-3 rounded-xl text-sm focus:outline-none" />
-                                        <span className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-slate-500">VODG</span>
+                                        <input type="text" placeholder="0.00" className="w-full glass p-2.5 sm:p-3 rounded-xl text-xs sm:text-sm focus:outline-none" />
+                                        <span className="absolute right-2 sm:right-3 top-1/2 -translate-y-1/2 text-[10px] sm:text-xs text-slate-500">VODG</span>
                                     </div>
                                 </div>
                                 <div className="flex justify-between text-[10px] text-slate-500 font-bold">
-                                    <span>Доступно: 500.00 USDT</span>
-                                    <span className="text-cyan-glow">Max</span>
+                                    <span>{t("exchange.trade.available")}: 500.00 USDT</span>
+                                    <span className="text-cyan-glow">{t("exchange.trade.max")}</span>
                                 </div>
-                                <button className="w-full py-4 bg-green-500 text-ocean-deep font-black rounded-xl shadow-lg shadow-green-500/20">
-                                    Купить VODG
+                                <button className="w-full py-3 sm:py-4 bg-green-500 text-ocean-deep font-black rounded-xl shadow-lg shadow-green-500/20 text-sm sm:text-base">
+                                    {t("exchange.trade.buy_button").replace("{pair}", "VODG")}
                                 </button>
                             </div>
                         </div>
@@ -133,10 +135,10 @@ export default function ExchangePage() {
 
                 {/* Market Sidebar */}
                 <div className="flex-1 space-y-6">
-                    <div className="glass-card">
-                        <div className="relative mb-6">
-                            <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-500" size={16} />
-                            <input type="text" placeholder="Поиск пар..." className="w-full pl-10 pr-4 py-2 glass rounded-xl text-xs focus:outline-none" />
+                    <div className="glass-card p-4 sm:p-6">
+                        <div className="relative mb-4 sm:mb-6">
+                            <Search className="absolute left-2 sm:left-3 top-1/2 -translate-y-1/2 text-slate-500" size={14} />
+                            <input type="text" placeholder={t("exchange.trade.search_placeholder")} className="w-full pl-8 sm:pl-10 pr-3 sm:pr-4 py-2 glass rounded-xl text-xs focus:outline-none" />
                         </div>
                         <div className="space-y-4">
                             {pairs.map(pair => (
@@ -157,10 +159,10 @@ export default function ExchangePage() {
                         </div>
                     </div>
 
-                    <div className="glass-card bg-gold-glow/5 border-gold-glow/20">
-                        <h3 className="font-bold mb-2 text-gold-glow">Ликвидность</h3>
-                        <p className="text-xs text-slate-400 leading-relaxed">
-                            Civilization Protocol Exchange использует протокол автоматизированного маркет-мейкера (AMM) для обеспечения мгновенной ликвидности всех пар.
+                    <div className="glass-card bg-gold-glow/5 border-gold-glow/20 p-4 sm:p-6">
+                        <h3 className="font-bold mb-2 text-gold-glow text-sm sm:text-base">{t("exchange.liquidity.title")}</h3>
+                        <p className="text-[10px] sm:text-xs text-slate-400 leading-relaxed">
+                            {t("exchange.liquidity.description")}
                         </p>
                     </div>
                 </div>
