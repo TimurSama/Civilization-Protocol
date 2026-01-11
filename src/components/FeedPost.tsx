@@ -269,9 +269,11 @@ export default function FeedPost({ id, author, content, stats, timestamp, isLike
 
             {/* Content */}
             <div className="px-4 pb-4">
-                <div className="text-sm text-slate-300 leading-relaxed mb-4 whitespace-pre-wrap">
-                    {renderTextWithMentionsAndHashtags(content.text)}
-                </div>
+                {content.text && (
+                    <div className="text-sm text-slate-300 leading-relaxed mb-4 whitespace-pre-wrap">
+                        {renderTextWithMentionsAndHashtags(content.text) || <span>{content.text}</span>}
+                    </div>
+                )}
 
                 {tags.length > 0 && (
                     <div className={cn("flex flex-wrap gap-2 mb-4", isRTL && "flex-row-reverse")}>
