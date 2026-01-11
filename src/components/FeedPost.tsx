@@ -163,15 +163,24 @@ export default function FeedPost({ id, author, content, stats, timestamp, isLike
     };
 
     // Рендеринг текста с @mentions и #hashtags
-    const renderTextWithMentionsAndHashtags = (text: string) => {
-      if (!text || typeof text !== "string") return text;
+    const renderTextWithMentionsAndHashtags = (text: string | undefined) => {
+      if (!text || typeof text !== "string") {
+        // Return empty fragment if text is invalid to avoid React #418
+        return <></>;
+      }
       const parts = text.split(/(@\w+|#\w+)/g).filter(part => part.length > 0);
-      const elements = parts.map((part, index) => {
+      
+      if (parts.length === 0) {
+        return <></>;
+      }
+      
+      // Map parts to React elements - this array can be rendered directly in JSX
+      return parts.map((part, index) => {
         if (part.startsWith('@')) {
           const username = part.slice(1);
           return (
             <Link
-              key={`mention-${index}`}
+              key={`mention-${index}-${username}`}
               href={`/profile/${username}`}
               className="text-cyan-400 hover:text-cyan-300 font-medium"
             >
@@ -183,7 +192,7 @@ export default function FeedPost({ id, author, content, stats, timestamp, isLike
           const tag = part.slice(1);
           return (
             <Link
-              key={`hashtag-${index}`}
+              key={`hashtag-${index}-${tag}`}
               href={`/search?tag=${tag}`}
               className="text-cyan-500 hover:text-cyan-400"
             >
@@ -191,12 +200,9 @@ export default function FeedPost({ id, author, content, stats, timestamp, isLike
             </Link>
           );
         }
-        // Ensure strings are properly wrapped in span
+        // Ensure strings are properly wrapped in span to avoid React #418
         return <span key={`text-${index}`}>{part}</span>;
       });
-      
-      // Return fragment to avoid React #418 error
-      return <>{elements}</>;
     };
 
     return (
@@ -255,9 +261,9 @@ export default function FeedPost({ id, author, content, stats, timestamp, isLike
 
             {/* Content */}
             <div className="px-4 pb-4">
-                <p className="text-sm text-slate-300 leading-relaxed mb-4 whitespace-pre-wrap">
+                <div className="text-sm text-slate-300 leading-relaxed mb-4 whitespace-pre-wrap">
                     {renderTextWithMentionsAndHashtags(content.text)}
-                </p>
+                </div>
 
                 {tags.length > 0 && (
                     <div className={cn("flex flex-wrap gap-2 mb-4", isRTL && "flex-row-reverse")}>
