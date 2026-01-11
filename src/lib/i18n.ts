@@ -2399,6 +2399,14 @@ export const translations = {
             get_started: "Comenzar",
             explore_ecosystem: "Explorar Ecosistema"
         },
+        feed: {
+            eabr_title: "Conferencia EABR 2025",
+            eabr_date: "20 de marzo de 2025",
+            grants: "Subvenciones",
+            presale_title: "Preventa de Tokens VOD",
+            investments: "Inversiones",
+            presale_desc: "Únete a la preventa y obtén acceso anticipado a los tokens VOD con bonos y recompensas exclusivas."
+        },
         projecthub: {
             title: "ProjectHub",
             subtitle: "Plataforma de Inversión y Proyectos",
@@ -2647,6 +2655,14 @@ export const translations = {
             welcome_description: "Nous croyons que les données sont le nouveau pétrole, mais leur vraie valeur réside dans leur bénéfice pour l'humanité. Civilization Protocol collecte, vérifie et structure les données sur l'état de la planète, les transformant en un outil pour gérer l'avenir.",
             get_started: "Commencer",
             explore_ecosystem: "Explorer l'Écosystème"
+        },
+        feed: {
+            eabr_title: "Conférence EABR 2025",
+            eabr_date: "20 mars 2025",
+            grants: "Subventions",
+            presale_title: "Prévente des Tokens VOD",
+            investments: "Investissements",
+            presale_desc: "Rejoignez la prévente et obtenez un accès anticipé aux tokens VOD avec des bonus et récompenses exclusifs."
         },
         projecthub: {
             title: "ProjectHub",
@@ -2897,6 +2913,14 @@ export const translations = {
             get_started: "Zacznij",
             explore_ecosystem: "Eksploruj Ekosystem"
         },
+        feed: {
+            eabr_title: "Konferencja EABR 2025",
+            eabr_date: "20 marca 2025",
+            grants: "Granty",
+            presale_title: "Przedsprzedaż Tokenów VOD",
+            investments: "Inwestycje",
+            presale_desc: "Dołącz do przedsprzedaży i uzyskaj wczesny dostęp do tokenów VOD z ekskluzywnymi bonusami i nagrodami."
+        },
         projecthub: {
             title: "ProjectHub",
             subtitle: "Platforma Inwestycyjna i Projektowa",
@@ -3145,6 +3169,14 @@ export const translations = {
             welcome_description: "Wir glauben, dass Daten das neue Öl sind, aber ihr wahrer Wert liegt in ihrem Nutzen für die Menschheit. Civilization Protocol sammelt, verifiziert und strukturiert Daten über den Zustand des Planeten und verwandelt sie in ein Werkzeug zur Verwaltung der Zukunft.",
             get_started: "Loslegen",
             explore_ecosystem: "Ökosystem Erkunden"
+        },
+        feed: {
+            eabr_title: "EABR-Konferenz 2025",
+            eabr_date: "20. März 2025",
+            grants: "Zuschüsse",
+            presale_title: "VOD-Token Vorverkauf",
+            investments: "Investitionen",
+            presale_desc: "Nehmen Sie am Vorverkauf teil und erhalten Sie frühzeitigen Zugang zu VOD-Token mit exklusiven Boni und Belohnungen."
         },
         projecthub: {
             title: "ProjectHub",

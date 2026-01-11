@@ -165,13 +165,13 @@ export default function FeedPost({ id, author, content, stats, timestamp, isLike
     // Рендеринг текста с @mentions и #hashtags
     const renderTextWithMentionsAndHashtags = (text: string) => {
       if (!text || typeof text !== "string") return text;
-      const parts = text.split(/(@\w+|#\w+)/g);
-      return parts.map((part, index) => {
+      const parts = text.split(/(@\w+|#\w+)/g).filter(part => part.length > 0);
+      const elements = parts.map((part, index) => {
         if (part.startsWith('@')) {
           const username = part.slice(1);
           return (
             <Link
-              key={index}
+              key={`mention-${index}`}
               href={`/profile/${username}`}
               className="text-cyan-400 hover:text-cyan-300 font-medium"
             >
@@ -183,7 +183,7 @@ export default function FeedPost({ id, author, content, stats, timestamp, isLike
           const tag = part.slice(1);
           return (
             <Link
-              key={index}
+              key={`hashtag-${index}`}
               href={`/search?tag=${tag}`}
               className="text-cyan-500 hover:text-cyan-400"
             >
@@ -191,9 +191,12 @@ export default function FeedPost({ id, author, content, stats, timestamp, isLike
             </Link>
           );
         }
-        // Ensure strings are properly wrapped
-        return part ? <span key={index}>{part}</span> : null;
-      }).filter(Boolean);
+        // Ensure strings are properly wrapped in span
+        return <span key={`text-${index}`}>{part}</span>;
+      });
+      
+      // Return fragment to avoid React #418 error
+      return <>{elements}</>;
     };
 
     return (
