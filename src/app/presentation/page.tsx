@@ -19,6 +19,11 @@ export default function PresentationPage() {
   // 15 экранов презентации с полным контентом
   const screens = useMemo(() => {
     const s = t("presentation.screens");
+    // Check if translation exists and is an object
+    if (!s || typeof s !== "object" || !s.screen1) {
+      console.error("presentation.screens not found, returning empty array");
+      return [];
+    }
     return [
       {
         id: 1,
