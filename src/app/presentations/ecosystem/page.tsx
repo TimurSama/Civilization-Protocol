@@ -125,12 +125,37 @@ interface EcosystemItem {
 }
 
 export default function EcosystemPresentation() {
+  const { t } = useLanguage();
   const [zoomLevel, setZoomLevel] = useState(1);
   const [activeLayer, setActiveLayer] = useState("all");
   const [selectedItem, setSelectedItem] = useState<EcosystemItem | null>(null);
   const [searchQuery, setSearchQuery] = useState("");
   const [showTimeline, setShowTimeline] = useState(false);
   const [timelineYear, setTimelineYear] = useState(2024);
+
+  // Ecosystem layers with translations
+  const layers = useMemo(() => {
+    const l = t("ecosystem_presentation.layers");
+    return [
+      { id: "all", name: l.all, icon: <Layers size={18} />, color: "white" },
+      { id: "water", name: l.water, icon: <Droplets size={18} />, color: "cyan" },
+      { id: "infrastructure", name: l.infrastructure, icon: <Factory size={18} />, color: "orange" },
+      { id: "sensors", name: l.sensors, icon: <Cpu size={18} />, color: "green" },
+      { id: "projects", name: l.projects, icon: <Target size={18} />, color: "purple" },
+      { id: "research", name: l.research, icon: <Building2 size={18} />, color: "blue" },
+    ];
+  }, [t]);
+
+  // Zoom levels with translations
+  const zoomLevels = useMemo(() => {
+    const z = t("ecosystem_presentation.zoom");
+    return [
+      { level: 1, name: z.level1.name, description: z.level1.description },
+      { level: 2, name: z.level2.name, description: z.level2.description },
+      { level: 3, name: z.level3.name, description: z.level3.description },
+      { level: 4, name: z.level4.name, description: z.level4.description },
+    ];
+  }, [t]);
 
   const filteredData = ecosystemData.filter(item => {
     const matchesLayer = activeLayer === "all" || item.type === activeLayer;

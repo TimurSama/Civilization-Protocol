@@ -15,7 +15,6 @@ import { useLanguage } from "@/context/LanguageContext";
 
 export default function PresentationPage() {
   const { t } = useLanguage();
-  const containerRef = useRef<HTMLDivElement>(null);
   
   // 15 экранов презентации с полным контентом
   const screens = useMemo(() => {

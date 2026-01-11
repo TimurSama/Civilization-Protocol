@@ -378,6 +378,252 @@ export const translations = {
                 cookies: "Cookies",
                 copyright: "© 2024 CivilizationProtocol. All rights reserved."
             }
+        },
+        game_presentation: {
+            roles: {
+                ecologist: {
+                    name: "Ecologist",
+                    description: "Ecosystem specialist. +20% to water quality"
+                },
+                engineer: {
+                    name: "Engineer",
+                    description: "Technical expert. +20% sensor efficiency"
+                },
+                politician: {
+                    name: "Politician",
+                    description: "Policy influence. +20% to economy"
+                },
+                investor: {
+                    name: "Investor",
+                    description: "Financial strategist. +20% to projects"
+                }
+            },
+            levels: {
+                level1: {
+                    title: "Diagnosis",
+                    subtitle: "Study planet problems",
+                    description: "Explore current state of water resources and identify critical issues.",
+                    tasks: {
+                        scan_planet: "Scan planet",
+                        identify_problems: "Identify problems",
+                        analyze_data: "Data analysis"
+                    }
+                },
+                level2: {
+                    title: "Data Collection",
+                    subtitle: "Deploy IoT sensors",
+                    description: "Install monitoring sensors in critical points to collect real data.",
+                    tasks: {
+                        place_sensors: "Install 5 sensors",
+                        calibrate: "Sensor calibration",
+                        network: "Create network"
+                    }
+                },
+                level3: {
+                    title: "Analysis",
+                    subtitle: "Interpret data",
+                    description: "Use AI to analyze collected data and identify patterns.",
+                    tasks: {
+                        ai_analysis: "AI analysis",
+                        predictions: "Forecasting",
+                        report: "Create report"
+                    }
+                },
+                level4: {
+                    title: "Solutions",
+                    subtitle: "Propose projects",
+                    description: "Based on analysis, propose projects to improve ecology.",
+                    tasks: {
+                        draft_projects: "Develop 3 projects",
+                        budget: "Calculate budget",
+                        submit: "Submit for voting"
+                    }
+                },
+                level5: {
+                    title: "Implementation",
+                    subtitle: "DAO voting",
+                    description: "Conduct community voting and implement selected projects.",
+                    tasks: {
+                        dao_vote: "Conduct voting",
+                        implement: "Implement projects",
+                        verify: "Verify result"
+                    }
+                }
+            },
+            victory: {
+                title: "🎉 VICTORY!",
+                message: "You successfully saved the planet from water crisis!",
+                stats: {
+                    xp_earned: "XP earned",
+                    sensors: "Sensors",
+                    projects: "Projects",
+                    achievements: "Achievements"
+                },
+                earned_achievements: "Earned achievements:",
+                play_again: "Play Again",
+                get_real_rewards: "Get Real Rewards",
+                other_presentations: "Other Presentations"
+            },
+            quiz: {
+                question1: {
+                    question: "What % of fresh water on Earth is available for use?",
+                    options: ["50%", "25%", "3%", "0.5%"],
+                    explanation: "Only 0.5% of fresh water is easily available to humanity."
+                },
+                question2: {
+                    question: "By what year is water scarcity forecast for 2 billion people?",
+                    options: ["2025", "2030", "2050", "2100"],
+                    explanation: "According to the UN, 2 billion people will face water scarcity by 2030."
+                },
+                question3: {
+                    question: "What technology ensures data transparency in CivilizationProtocol?",
+                    options: ["AI", "Blockchain", "IoT", "Cloud"],
+                    explanation: "Blockchain guarantees immutability and transparency of all ecosystem data."
+                }
+            }
+        },
+        investors_presentation: {
+            title: "CivilizationProtocol | Investor Deck",
+            slide_counter: "Slide {current} / {total}",
+            export_pdf: "Export PDF",
+            slides: {
+                slide1: {
+                    title: "$8.6 Trillion",
+                    subtitle: "Global Water Market by 2030",
+                    highlight: "The data infrastructure is broken"
+                },
+                slide2: {
+                    title: "The Problem",
+                    points: {
+                        p1: "Fragmented data across 1000+ siloed systems",
+                        p2: "No transparency in water resource management",
+                        p3: "$260B annual losses from inefficiency",
+                        p4: "40% of infrastructure data is outdated or wrong"
+                    }
+                },
+                slide3: {
+                    title: "Our Solution",
+                    subtitle: "Decentralized Water Data Platform",
+                    features: {
+                        blockchain: { title: "Blockchain", desc: "Immutable data layer" },
+                        iot: { title: "IoT Integration", desc: "Real-time monitoring" },
+                        dao: { title: "DAO Governance", desc: "Stakeholder participation" },
+                        token: { title: "Token Economy", desc: "Incentive alignment" }
+                    }
+                },
+                slide4: {
+                    title: "The Platform",
+                    screens: ["Dashboard", "Map", "Governance", "TokenHub"]
+                },
+                slide5: {
+                    title: "Market Opportunity",
+                    tam: { value: "$8.6T", label: "Total Addressable Market" },
+                    sam: { value: "$240B", label: "Serviceable Market" },
+                    som: { value: "$12B", label: "Target Market (5 years)" }
+                },
+                slide6: {
+                    title: "Business Model",
+                    revenue: {
+                        data_access: "Data Access Fees",
+                        token_transactions: "Token Transactions",
+                        enterprise: "Enterprise Licenses",
+                        staking: "Staking Rewards",
+                        grants: "Grants & Partnerships"
+                    }
+                },
+                slide7: {
+                    title: "Traction",
+                    metrics: {
+                        partners: "Pilot Partners",
+                        grants: "Grants Secured",
+                        users: "Beta Users",
+                        countries: "Countries Active"
+                    }
+                },
+                slide8: {
+                    title: "Competitive Landscape",
+                    us: "CivilizationProtocol",
+                    features: {
+                        blockchain: "Blockchain",
+                        dao: "DAO",
+                        iot: "IoT",
+                        token: "Token",
+                        open_data: "Open Data"
+                    }
+                },
+                slide9: {
+                    title: "The Team"
+                },
+                slide10: {
+                    title: "Use of Funds",
+                    allocation: {
+                        product: "Product Development",
+                        marketing: "Marketing & Growth",
+                        operations: "Operations",
+                        legal: "Legal & Compliance",
+                        reserve: "Reserve"
+                    }
+                },
+                slide11: {
+                    title: "Roadmap"
+                },
+                slide12: {
+                    title: "The Ask",
+                    round: "Seed Round",
+                    terms: {
+                        equity: "20% equity",
+                        safe: "SAFE + Token Warrant",
+                        runway: "18-month runway"
+                    }
+                }
+            }
+        },
+        ecosystem_presentation: {
+            layers: {
+                all: "All Layers",
+                water: "Water Objects",
+                infrastructure: "Infrastructure",
+                sensors: "IoT Sensors",
+                projects: "Projects",
+                research: "Research"
+            },
+            zoom: {
+                level1: { name: "Planetary", description: "Global CivilizationProtocol Network" },
+                level2: { name: "Regional", description: "Projects by Country" },
+                level3: { name: "Local", description: "Specific Objects" },
+                level4: { name: "Detailed", description: "Real-time Data" }
+            }
+        },
+        diplomatic_presentation: {
+            title: "CivilizationProtocol Initiative",
+            subtitle: "Strategic Water Management Platform",
+            pdf: "PDF",
+            all_presentations: "All Presentations",
+            sections: {
+                context: "Global Context",
+                strategic: "Strategic Significance",
+                sdg: "SDG Alignment",
+                solution: "Technological Solution",
+                governance: "Governance Model",
+                economics: "Economic Model",
+                action: "Call to Action"
+            },
+            sdg: {
+                goal6: { title: "Clean Water", description: "Ensuring availability and sustainable management of water resources" },
+                goal9: { title: "Infrastructure", description: "Building resilient infrastructure and innovation" },
+                goal11: { title: "Sustainable Cities", description: "Making cities and human settlements inclusive, safe, resilient and sustainable" },
+                goal13: { title: "Climate Action", description: "Taking urgent action to combat climate change" },
+                goal16: { title: "Peace & Justice", description: "Promoting just, peaceful and inclusive societies" },
+                goal17: { title: "Partnerships", description: "Strengthening global partnerships" }
+            }
+        },
+        whitepaper_presentation: {
+            title: "Smart WhitePaper",
+            chapters: {
+                abstract: "Abstract",
+                architecture: "Architecture",
+                protocols: "Protocols"
+            }
         }
     },
     ru: {
@@ -964,210 +1210,6 @@ export const translations = {
                 }
             }
         },
-        presentation: {
-            screens: {
-                screen1: {
-                    title: "Welcome to CivilizationProtocol",
-                    subtitle: "Value of Data — Water Ecosystem",
-                    description: "Water is the foundation of life, ecosystems and economies. Yet today, water is managed with fragmented data, outdated infrastructure and limited transparency.",
-                    stats: {
-                        stat1: { value: "1+ млрд", label: "людей без доступа к чистой воде" },
-                        stat2: { value: "5+ млрд", label: "столкнутся с дефицитом к 2030" },
-                        stat3: { value: "$500 млрд", label: "ежегодных потерь (1% ВВП)" }
-                    },
-                    cta: "Enter the Ecosystem"
-                },
-                screen2: {
-                    title: "Глобальная Проблема",
-                    subtitle: "Водный кризис — это кризис данных и управления",
-                    description: "Water scarcity, pollution and infrastructure losses are not only environmental issues. They are governance and data problems. Decisions are often made without reliable, real-time information.",
-                    problems: {
-                        p1: "60% водных систем без мониторинга",
-                        p2: "80% инфраструктуры устарело",
-                        p3: "Фрагментированные данные",
-                        p4: "Отсутствие прозрачности"
-                    }
-                },
-                screen3: {
-                    title: "Переход к Решению",
-                    subtitle: "От проблемы к цифровой инфраструктуре",
-                    description: "To manage water sustainably, we need a new digital foundation. One that connects reality, data, economy and governance into a single transparent system.",
-                    layers: {
-                        l1: "Физический мир",
-                        l2: "Сбор данных",
-                        l3: "Верификация",
-                        l4: "Цифровые двойники",
-                        l5: "Экономика",
-                        l6: "Управление"
-                    }
-                },
-                screen4: {
-                    title: "Что такое CivilizationProtocol",
-                    subtitle: "Децентрализованная кибер-физическая платформа",
-                    description: "CivilizationProtocol is a digital ecosystem for transparent, data-driven water resource governance. It integrates monitoring, data trust, economic mechanisms and decision-making.",
-                    features: {
-                        f1: { text: "Глобальный охват", desc: "От региона до планеты" },
-                        f2: { text: "Блокчейн доверие", desc: "Неизменяемость данных" },
-                        f3: { text: "AI аналитика", desc: "Предиктивные модели" },
-                        f4: { text: "DAO управление", desc: "Децентрализованные решения" }
-                    }
-                },
-                screen5: {
-                    title: "12-Уровневая Архитектура",
-                    subtitle: "Полная вертикаль от физики до интеграций",
-                    description: "Each layer builds on the previous, creating a complete ecosystem for water governance.",
-                    architecture: {
-                        layer1: { name: "Physical Layer", desc: "Реальные водные объекты" },
-                        layer2: { name: "Data & IoT Layer", desc: "Сбор телеметрии, датчики" },
-                        layer3: { name: "Blockchain Layer", desc: "Хранение, смарт-контракты" },
-                        layer4: { name: "Economic Layer", desc: "Токеномика, стейкинг" },
-                        layer5: { name: "DAO Layer", desc: "Децентрализованное управление" },
-                        layer6: { name: "Interface Layer", desc: "7 специализированных кабинетов" },
-                        layer7: { name: "AI Layer", desc: "ML, прогнозирование" },
-                        layer8: { name: "Security Layer", desc: "Защита данных, аудит" },
-                        layer9: { name: "Educational Layer", desc: "Обучение, гранты" },
-                        layer10: { name: "Gaming Layer", desc: "Геймификация, NFT" },
-                        layer11: { name: "Social Layer", desc: "Социальная сеть" },
-                        layer12: { name: "Integration Layer", desc: "API, SDK, партнёры" }
-                    }
-                },
-                screen6: {
-                    title: "Данные и Доверие",
-                    subtitle: "Reliable water governance begins with trusted data",
-                    description: "CivilizationProtocol ensures transparency, traceability and integrity of environmental information through blockchain-based verification.",
-                    dataflow: {
-                        step1: { step: "Raw Data", desc: "IoT датчики, измерения" },
-                        step2: { step: "Validation", desc: "Проверка и верификация" },
-                        step3: { step: "Hashing", desc: "Хэширование в блокчейн" },
-                        step4: { step: "Trusted Data", desc: "Неизменяемое хранение" }
-                    }
-                },
-                screen7: {
-                    title: "Цифровые Двойники",
-                    subtitle: "Digital representation of real-world water assets",
-                    description: "Each water body and infrastructure element can be represented as a digital twin. This allows analysis, forecasting and informed decision-making.",
-                    types: {
-                        t1: { type: "Водные объекты", examples: "Реки, озёра, водохранилища" },
-                        t2: { type: "Инфраструктура", examples: "Станции, насосы, очистные" },
-                        t3: { type: "Датчики IoT", examples: "Качество, уровень, расход" },
-                        t4: { type: "Проекты", examples: "Модернизация, восстановление" }
-                    }
-                },
-                screen8: {
-                    title: "Экономика Воды — Nexus Exchange",
-                    subtitle: "Центральный хаб обмена токенов, данных и услуг",
-                    description: "Sustainable water management requires economic instruments. CivilizationProtocol connects environmental data with investment transparency.",
-                    modules: {
-                        m1: { name: "Token & Data Exchange", desc: "Обмен VOD/R-VOD/P-VOD, торговля данными", fee: "0.1-0.3%" },
-                        m2: { name: "Staking & Impact Pools", desc: "Stake-to-build, климатические пулы", apy: "5-25% APY" },
-                        m3: { name: "Investment Marketplace", desc: "PPP проекты, R&D, стартапы", dao: "DAO-голосование" },
-                        m4: { name: "Service & Partnership Hub", desc: "AI сервисы, консалтинг, SCADA", rewards: "Токен-награды" }
-                    }
-                },
-                screen9: {
-                    title: "Токеномика — 4 Фазы Эволюции",
-                    subtitle: "The VOD token evolves together with the platform",
-                    description: "Each phase builds on the previous one without breaking continuity. Token is not ownership of water — it is access, participation and governance interface.",
-                    phases: {
-                        phase1: { phase: "Phase 1", name: "Access & Participation", desc: "Доступ к платформе, участие в развитии, ранние бонусы", status: "current" },
-                        phase2: { phase: "Phase 2", name: "Staking & Governance", desc: "Стейкинг, участие в DAO, формирование веса доверия", status: "next" },
-                        phase3: { phase: "Phase 3", name: "Data Anchoring", desc: "Привязка к проверенным данным, смарт-контракты объектов", status: "future" },
-                        phase4: { phase: "Phase 4", name: "Resource-Linked Logic", desc: "Полная интеграция с цифровыми двойниками и IoT", status: "future" }
-                    },
-                    distribution: {
-                        d1: { name: "Ecosystem & Community", percent: 25 },
-                        d2: { name: "Team & Advisors", percent: 20 },
-                        d3: { name: "Private Sale", percent: 15 },
-                        d4: { name: "Pre-Seed & Seed", percent: 10 },
-                        d5: { name: "Public Sale", percent: 10 },
-                        d6: { name: "DAO Treasury", percent: 10 },
-                        d7: { name: "Liquidity", percent: 5 },
-                        d8: { name: "Partnerships", percent: 5 }
-                    }
-                },
-                screen10: {
-                    title: "DAO Управление",
-                    subtitle: "Decisions made through transparent governance mechanisms",
-                    description: "CivilizationProtocol supports collaboration between public institutions, experts, investors and society through decentralized autonomous organization.",
-                    features: {
-                        f1: { feature: "Предложения", desc: "Создание и обсуждение инициатив" },
-                        f2: { feature: "Голосование", desc: "Взвешенное голосование токенами" },
-                        f3: { feature: "Делегирование", desc: "Передача голосов экспертам" },
-                        f4: { feature: "Казначейство", desc: "Управление фондами DAO" },
-                        f5: { feature: "Исполнение", desc: "Автоматическое через смарт-контракты" },
-                        f6: { feature: "Аудит", desc: "Прозрачный контроль решений" }
-                    },
-                    participants: {
-                        p1: { role: "Государства", weight: "Высокий", focus: "Регуляция" },
-                        p2: { role: "Инвесторы", weight: "По стейку", focus: "ROI/ESG" },
-                        p3: { role: "Эксперты", weight: "Делегированный", focus: "Технологии" },
-                        p4: { role: "Граждане", weight: "Базовый", focus: "Участие" }
-                    }
-                },
-                screen11: {
-                    title: "7 Специализированных Кабинетов",
-                    subtitle: "Tailored interfaces for different stakeholders",
-                    description: "Different stakeholders interact with the ecosystem through specialized interfaces, tailored to their roles and responsibilities.",
-                    cabinets: {
-                        c1: { name: "Гражданский", features: ["Мониторинг качества", "Геймификация", "DAO участие", "Награды"] },
-                        c2: { name: "Правительственный", features: ["Аналитика регионов", "Кризисные панели", "Отчётность SDG"] },
-                        c3: { name: "Инвестиционный", features: ["ESG метрики", "ROI калькулятор", "Портфель проектов"] },
-                        c4: { name: "Инфраструктурный", features: ["Управление активами", "IoT интеграция", "CMMS"] },
-                        c5: { name: "Научный", features: ["Data Lake", "ML модели", "Публикации"] },
-                        c6: { name: "Операторский", features: ["Системный контроль", "Техподдержка", "Логи"] },
-                        c7: { name: "Административный", features: ["Конфигурация", "Безопасность", "Роли"] }
-                    }
-                },
-                screen12: {
-                    title: "Проекты TokenHub",
-                    subtitle: "Investment marketplace for water infrastructure",
-                    description: "Financing projects through tokenized mechanisms with transparent tracking and DAO governance.",
-                    projects: {
-                        p1: { name: "CivilizationProtocol Core", type: "O-VOD", irr: "12%", status: "Active", desc: "Global Data Infrastructure" },
-                        p2: { name: "Smart Pumping Network", type: "P-VOD", irr: "18%", status: "Funding", desc: "IoT насосные станции" },
-                        p3: { name: "Desalination 2.0", type: "P-VOD", irr: "22%", status: "Planning", desc: "Опреснение нового поколения" },
-                        p4: { name: "Carbon Credits", type: "R-VOD", irr: "15%", status: "Active", desc: "Regen Network интеграция" },
-                        p5: { name: "P2P Microgrids", type: "R-VOD", irr: "20%", status: "Pilot", desc: "Энергетические микросети" },
-                        p6: { name: "Bio-Data Vault", type: "O-VOD", irr: "10%", status: "R&D", desc: "Хранилище биоданных" }
-                    }
-                },
-                screen13: {
-                    title: "Международный Контекст",
-                    subtitle: "Aligned with global sustainability frameworks",
-                    description: "CivilizationProtocol is aligned with international sustainability frameworks and supports cross-border cooperation and institutional reporting.",
-                    sdg: {
-                        sdg6: { name: "Clean Water & Sanitation", contribution: "Основной фокус платформы" },
-                        sdg9: { name: "Industry & Innovation", contribution: "IoT, AI, Blockchain технологии" },
-                        sdg11: { name: "Sustainable Cities", contribution: "Городская инфраструктура" },
-                        sdg13: { name: "Climate Action", contribution: "Климатические пулы, Carbon Credits" },
-                        sdg16: { name: "Strong Institutions", contribution: "Прозрачность, DAO управление" }
-                    }
-                },
-                screen14: {
-                    title: "Дорожная Карта 2023-2026",
-                    subtitle: "The ecosystem evolves step by step",
-                    description: "From digital monitoring to smart-contract-based governance — a clear path to global water management transformation.",
-                    roadmap: {
-                        r1: { year: "2023", quarter: "Q4", title: "MVP Development", items: ["Архитектура", "Прототип", "Дизайн UI/UX"], status: "done" },
-                        r2: { year: "2024", quarter: "Q1-Q2", title: "Platform Launch", items: ["Beta платформы", "Токен VOD", "IoT интеграция"], status: "current" },
-                        r3: { year: "2024", quarter: "Q3-Q4", title: "Ecosystem Growth", items: ["Mobile App", "DAO запуск", "Token Hub"], status: "next" },
-                        r4: { year: "2025", quarter: "Full", title: "Expansion", items: ["TRINITY интеграция", "Международные партнёрства", "AI v2"], status: "future" },
-                        r5: { year: "2026", quarter: "Full", title: "Global Scale", items: ["1M+ пользователей", "10000+ объектов", "Full DAO"], status: "future" }
-                    }
-                },
-                screen15: {
-                    title: "Присоединяйтесь к Экосистеме",
-                    subtitle: "CivilizationProtocol is not about controlling water",
-                    description: "It is about creating the digital infrastructure for responsible coexistence with it. Join the movement for transparent, sustainable water governance.",
-                    tiers: {
-                        t1: { tier: "Seed", amount: "от 10,000 VOD", benefits: ["Ранний доступ", "Базовые права голосования", "Pioneer Badge"] },
-                        t2: { tier: "Strategic", amount: "от 100,000 VOD", benefits: ["Расширенные права", "Аналитика", "Приоритетная поддержка"] },
-                        t3: { tier: "Infrastructure", amount: "от 500,000 VOD", benefits: ["Участие в проектах", "Доля в доходах", "Эксклюзивный доступ"] },
-                        t4: { tier: "Institutional", amount: "от 1,000,000 VOD", benefits: ["Совет DAO", "Права на регионы", "Стратегическое партнёрство"] }
-                    }
-                }
-            }
-        },
         tokenomics: {
             title: "VOD Tokenomics",
             subtitle: "Revolutionary tokenomics model backed by a real resource — water. Stable price, independent of speculation.",
@@ -1304,145 +1346,6 @@ export const translations = {
                     stable: "Stable price mechanism",
                     global: "Global availability",
                     transparent: "Transparent emission model"
-                }
-            }
-        },
-        tokenomics: {
-            title: "VOD Tokenomics",
-            subtitle: "Революционная модель токеномики, обеспеченная реальным ресурсом — водой. Стабильная цена, независимая от спекуляций.",
-            version: {
-                v1: "Версия 1.0",
-                v2: "Версия 2.0"
-            },
-            stats: {
-                base_price: "Базовая цена",
-                max_emission: "Макс. эмиссия",
-                vod_equals: "1 VOD =",
-                v1: {
-                    base_price_value: "$1.3 / VOD",
-                    max_emission_value: "1.386 млрд",
-                    vod_equals_value: "1 м³ воды"
-                },
-                v2: {
-                    base_price_value: "$0.005 / VOD",
-                    max_emission_value: "105 квадр.",
-                    vod_equals_value: "1 литр воды"
-                }
-            },
-            principles: {
-                backed: {
-                    title: "Обеспечен водой",
-                    desc: "1 VOD = 1 литр чистой воды"
-                },
-                stable: {
-                    title: "Стабильная цена",
-                    desc: "$0.005, не зависит от спекуляций"
-                },
-                global: {
-                    title: "Глобальная доступность",
-                    desc: "Одинаковая цена для всех"
-                },
-                limit: {
-                    title: "Физический предел",
-                    desc: "Эмиссия = объём воды на Земле"
-                }
-            },
-            water_volume: {
-                title: "Объём воды на Земле",
-                labels: {
-                    all: "Вся вода",
-                    fresh: "Пресная вода",
-                    accessible: "Доступная",
-                    drinkable: "Питьевая"
-                },
-                max_emission: "Максимальная эмиссия VOD",
-                emission_desc: "Эмиссия ограничена физическим объёмом питьевой воды на планете. Токен не даёт право на воду, а служит средством контроля и прозрачности."
-            },
-            pricing: {
-                title: "Модель ценообразования",
-                sources: {
-                    source: "Источник",
-                    treatment: "Очистка",
-                    delivery: "Доставка",
-                    verification: "Верификация"
-                },
-                final_price: "Итоговая цена",
-                final_price_value: "$0.005 / VOD",
-                final_price_desc: "Стабильная цена, привязанная к реальной себестоимости воды. Не зависит от спекуляций и рыночных колебаний."
-            },
-            calculator: {
-                title: "Калькулятор инвестиций",
-                round: "Раунд",
-                investment: "Сумма инвестиции",
-                bonuses: {
-                    early_bird: "Early Bird Bonus (+20%)",
-                    referral: "Referral Bonus (+5%)",
-                    volume: "Volume Bonus"
-                },
-                results: {
-                    base_tokens: "Базовые токены",
-                    bonuses: "Бонусы",
-                    total: "Всего токенов",
-                    effective_price: "Эффективная цена",
-                    discount: "Скидка"
-                }
-            },
-            staking: {
-                title: "Стейкинг пулы",
-                pools: {
-                    governance: {
-                        name: "Governance Pool",
-                        apy: "10% APY",
-                        min: "Мин: 10,000 VOD",
-                        lock: "Блокировка: 30-365 дней",
-                        rights: "DAO Voting"
-                    },
-                    data: {
-                        name: "Data Access Pool",
-                        apy: "12% APY",
-                        min: "Мин: 50,000 VOD",
-                        lock: "Блокировка: 90-365 дней",
-                        rights: "Premium Data"
-                    },
-                    project: {
-                        name: "Project Participation",
-                        apy: "15% APY",
-                        min: "Мин: 100,000 VOD",
-                        lock: "Блокировка: 180-365 дней",
-                        rights: "TokenHub Access"
-                    }
-                },
-                calculator: {
-                    title: "Калькулятор стейкинга",
-                    amount: "Сумма стейкинга",
-                    period: "Период стейкинга (дни)",
-                    results: {
-                        apy: "APY",
-                        rewards: "Годовые награды",
-                        total: "Итого после периода"
-                    }
-                }
-            },
-            distribution: {
-                title: "Распределение токенов",
-                categories: {
-                    ecosystem: "Ecosystem & Community",
-                    team: "Team & Advisors",
-                    private: "Private Sale",
-                    preseed: "Pre-Seed & Seed",
-                    public: "Public Sale",
-                    treasury: "DAO Treasury",
-                    liquidity: "Liquidity",
-                    partnerships: "Partnerships"
-                }
-            },
-            features: {
-                title: "Особенности токена",
-                items: {
-                    backed: "Обеспечен реальным ресурсом — водой",
-                    stable: "Механизм стабильной цены",
-                    global: "Глобальная доступность",
-                    transparent: "Прозрачная модель эмиссии"
                 }
             }
         },
@@ -1627,162 +1530,6 @@ export const translations = {
             liquidity: {
                 title: "Liquidity",
                 description: "Civilization Protocol Exchange uses an Automated Market Maker (AMM) protocol to provide instant liquidity for all pairs."
-            }
-        },
-        interactive_presentation: {
-            title: "CivilizationProtocol",
-            subtitle: "Interactive Presentation",
-            welcome_title: "About Interactive Presentation",
-            welcome_trigger: "Learn About Presentation",
-            welcome_content: {
-                intro: "Welcome to an interactive journey through the world of <strong>CivilizationProtocol</strong>! This presentation will guide you through the planet's water crisis and show how blockchain technologies can revolutionize water resource management.",
-                what_awaits: "What Awaits You:",
-                items: {
-                    stages: "8 interactive stages - from a drop of water to a global ecosystem",
-                    data: "Real data - current statistics from UN, World Bank, WHO",
-                    technologies: "CivilizationProtocol Technologies - 12-layer platform architecture",
-                    elements: "Interactive elements - popups, charts, maps, 3D visualizations",
-                    rewards: "Learn-to-Earn rewards - earn XP and VOD tokens for learning"
-                }
-            },
-            learn_to_earn: {
-                title: "Learn-to-Earn System",
-                description: "For each action you receive rewards that accumulate and can be used on the platform.",
-                xp: {
-                    title: "XP (Experience)",
-                    description: "Earned for completing stages and opening popups. Level up!"
-                },
-                vod: {
-                    title: "VOD Tokens",
-                    description: "Earned for full completion and activity. Use on the platform!"
-                },
-                max_rewards: {
-                    title: "How to Get Maximum Rewards:",
-                    tips: {
-                        tip1: "Complete all 8 stages sequentially",
-                        tip2: "Open all popups with additional information",
-                        tip3: "Study interactive elements and charts",
-                        tip4: "Complete the presentation to the end"
-                    }
-                },
-                duration: {
-                    title: "Duration:",
-                    text: "Approximately <strong>15-20 minutes</strong> for full study of all elements, or <strong>5-7 minutes</strong> for quick completion."
-                },
-                advice: "💡 Tip: Use the autoplay button for automatic transitions between stages, or control manually for deeper study."
-            },
-            rewards: {
-                stage0: { description: "Journey Start" },
-                stage1: { description: "Drops of Life" },
-                stage2: { description: "Global Scale" },
-                stage3: { description: "Resource Statistics" },
-                stage4: { description: "Crisis Awareness" },
-                stage5: { description: "Blockchain Immersion" },
-                stage6: { description: "Technology Study" },
-                stage7: { description: "Full Completion", badge: "Water Researcher" }
-            }
-        },
-        game_presentation: {
-            roles: {
-                ecologist: {
-                    name: "Ecologist",
-                    description: "Ecosystem specialist. +20% to water quality"
-                },
-                engineer: {
-                    name: "Engineer",
-                    description: "Technical expert. +20% sensor efficiency"
-                },
-                politician: {
-                    name: "Politician",
-                    description: "Policy influence. +20% to economy"
-                },
-                investor: {
-                    name: "Investor",
-                    description: "Financial strategist. +20% to projects"
-                }
-            },
-            levels: {
-                level1: {
-                    title: "Diagnosis",
-                    subtitle: "Study planet problems",
-                    description: "Explore current state of water resources and identify critical issues.",
-                    tasks: {
-                        scan_planet: "Scan planet",
-                        identify_problems: "Identify problems",
-                        analyze_data: "Data analysis"
-                    }
-                },
-                level2: {
-                    title: "Data Collection",
-                    subtitle: "Deploy IoT sensors",
-                    description: "Install monitoring sensors in critical points to collect real data.",
-                    tasks: {
-                        place_sensors: "Install 5 sensors",
-                        calibrate: "Sensor calibration",
-                        network: "Create network"
-                    }
-                },
-                level3: {
-                    title: "Analysis",
-                    subtitle: "Interpret data",
-                    description: "Use AI to analyze collected data and identify patterns.",
-                    tasks: {
-                        ai_analysis: "AI analysis",
-                        predictions: "Forecasting",
-                        report: "Create report"
-                    }
-                },
-                level4: {
-                    title: "Solutions",
-                    subtitle: "Propose projects",
-                    description: "Based on analysis, propose projects to improve ecology.",
-                    tasks: {
-                        draft_projects: "Develop 3 projects",
-                        budget: "Calculate budget",
-                        submit: "Submit for voting"
-                    }
-                },
-                level5: {
-                    title: "Implementation",
-                    subtitle: "DAO voting",
-                    description: "Conduct community voting and implement selected projects.",
-                    tasks: {
-                        dao_vote: "Conduct voting",
-                        implement: "Implement projects",
-                        verify: "Verify result"
-                    }
-                }
-            },
-            victory: {
-                title: "🎉 VICTORY!",
-                message: "You successfully saved the planet from water crisis!",
-                stats: {
-                    xp_earned: "XP earned",
-                    sensors: "Sensors",
-                    projects: "Projects",
-                    achievements: "Achievements"
-                },
-                earned_achievements: "Earned achievements:",
-                play_again: "Play Again",
-                get_real_rewards: "Get Real Rewards",
-                other_presentations: "Other Presentations"
-            },
-            quiz: {
-                question1: {
-                    question: "What % of fresh water on Earth is available for use?",
-                    options: ["50%", "25%", "3%", "0.5%"],
-                    explanation: "Only 0.5% of fresh water is easily available to humanity."
-                },
-                question2: {
-                    question: "By what year is water scarcity forecast for 2 billion people?",
-                    options: ["2025", "2030", "2050", "2100"],
-                    explanation: "According to the UN, 2 billion people will face water scarcity by 2030."
-                },
-                question3: {
-                    question: "What technology ensures data transparency in CivilizationProtocol?",
-                    options: ["AI", "Blockchain", "IoT", "Cloud"],
-                    explanation: "Blockchain guarantees immutability and transparency of all ecosystem data."
-                }
             }
         },
         investors_presentation: {

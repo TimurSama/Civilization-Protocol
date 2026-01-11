@@ -749,7 +749,7 @@ export default function GamePresentation() {
                 </div>
 
                 <div className="grid grid-cols-2 gap-4 mb-6">
-                  {quizQuestions[quizIndex].options.map((option, i) => (
+                  {quizQuestions[quizIndex].options.map((option: string, i: number) => (
                     <button
                       key={i}
                       onClick={() => !showExplanation && answerQuiz(i)}

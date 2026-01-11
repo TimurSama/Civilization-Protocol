@@ -958,7 +958,7 @@ export default function InvestorPresentation() {
                   </motion.div>
                   
                   <div className="flex justify-center gap-4 mt-8">
-                    {slides[currentSlide].screens?.map((screen, i) => {
+                    {slides[currentSlide].screens?.map((screen: string, i: number) => {
                       const screenDetails: Record<string, any> = {
                         Dashboard: {
                           title: "Dashboard - Главная панель управления",
