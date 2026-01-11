@@ -379,6 +379,14 @@ export const translations = {
                 copyright: "© 2024 CivilizationProtocol. All rights reserved."
             }
         },
+        feed: {
+            eabr_title: "EABR Conference 2025",
+            eabr_date: "March 20, 2025",
+            grants: "Grants",
+            presale_title: "VOD Token Presale",
+            investments: "Investments",
+            presale_desc: "Join the presale and get early access to VOD tokens with exclusive bonuses and rewards."
+        },
         game_presentation: {
             roles: {
                 ecologist: {
@@ -623,6 +631,216 @@ export const translations = {
                 abstract: "Abstract",
                 architecture: "Architecture",
                 protocols: "Protocols"
+            }
+        },
+        presentation: {
+            screens: {
+                screen1: {
+                    title: "Welcome to CivilizationProtocol",
+                    subtitle: "Value of Data — Water Ecosystem",
+                    description: "Water is the foundation of life, ecosystems and economies. Yet today, water is managed with fragmented data, outdated infrastructure and limited transparency.",
+                    stats: {
+                        stat1: { value: "1+ billion", label: "people without access to clean water" },
+                        stat2: { value: "5+ billion", label: "will face water scarcity by 2030" },
+                        stat3: { value: "$500 billion", label: "annual losses (1% of GDP)" }
+                    },
+                    cta: "Enter the Ecosystem"
+                },
+                screen2: {
+                    title: "Global Problem",
+                    subtitle: "Water crisis is a data and governance crisis",
+                    description: "Water scarcity, pollution and infrastructure losses are not only environmental issues. They are governance and data problems. Decisions are often made without reliable, real-time information.",
+                    problems: {
+                        p1: "60% of water systems without monitoring",
+                        p2: "80% of infrastructure is outdated",
+                        p3: "Fragmented data",
+                        p4: "Lack of transparency"
+                    }
+                },
+                screen3: {
+                    title: "Transition to Solution",
+                    subtitle: "From problem to digital infrastructure",
+                    description: "To manage water sustainably, we need a new digital foundation. One that connects reality, data, economy and governance into a single transparent system.",
+                    layers: {
+                        l1: "Physical World",
+                        l2: "Data Collection",
+                        l3: "Verification",
+                        l4: "Digital Twins",
+                        l5: "Economy",
+                        l6: "Governance"
+                    }
+                },
+                screen4: {
+                    title: "What is CivilizationProtocol",
+                    subtitle: "Decentralized cyber-physical platform",
+                    description: "CivilizationProtocol is a digital ecosystem for transparent, data-driven water resource governance. It integrates monitoring, data trust, economic mechanisms and decision-making.",
+                    features: {
+                        f1: { text: "Global Coverage", desc: "From region to planet" },
+                        f2: { text: "Blockchain Trust", desc: "Data immutability" },
+                        f3: { text: "AI Analytics", desc: "Predictive models" },
+                        f4: { text: "DAO Governance", desc: "Decentralized decisions" }
+                    }
+                },
+                screen5: {
+                    title: "12-Layer Architecture",
+                    subtitle: "Full vertical from physics to integrations",
+                    description: "Each layer builds on the previous, creating a complete ecosystem for water governance.",
+                    architecture: {
+                        layer1: { name: "Physical Layer", desc: "Real water objects" },
+                        layer2: { name: "Data & IoT Layer", desc: "Telemetry collection, sensors" },
+                        layer3: { name: "Blockchain Layer", desc: "Storage, smart contracts" },
+                        layer4: { name: "Economic Layer", desc: "Tokenomics, staking" },
+                        layer5: { name: "DAO Layer", desc: "Decentralized governance" },
+                        layer6: { name: "Interface Layer", desc: "7 specialized cabinets" },
+                        layer7: { name: "AI Layer", desc: "ML, forecasting" },
+                        layer8: { name: "Security Layer", desc: "Data protection, audit" },
+                        layer9: { name: "Educational Layer", desc: "Training, grants" },
+                        layer10: { name: "Gaming Layer", desc: "Gamification, NFT" },
+                        layer11: { name: "Social Layer", desc: "Social network" },
+                        layer12: { name: "Integration Layer", desc: "API, SDK, partners" }
+                    }
+                },
+                screen6: {
+                    title: "Data and Trust",
+                    subtitle: "Reliable water governance begins with trusted data",
+                    description: "CivilizationProtocol ensures transparency, traceability and integrity of environmental information through blockchain-based verification.",
+                    dataflow: {
+                        step1: { step: "Raw Data", desc: "IoT sensors, measurements" },
+                        step2: { step: "Validation", desc: "Verification and validation" },
+                        step3: { step: "Hashing", desc: "Blockchain hashing" },
+                        step4: { step: "Trusted Data", desc: "Immutable storage" }
+                    }
+                },
+                screen7: {
+                    title: "Digital Twins",
+                    subtitle: "Digital representation of real-world water assets",
+                    description: "Each water body and infrastructure element can be represented as a digital twin. This allows analysis, forecasting and informed decision-making.",
+                    types: {
+                        t1: { type: "Water Objects", examples: "Rivers, lakes, reservoirs" },
+                        t2: { type: "Infrastructure", examples: "Stations, pumps, treatment plants" },
+                        t3: { type: "IoT Sensors", examples: "Quality, level, flow" },
+                        t4: { type: "Projects", examples: "Modernization, restoration" }
+                    }
+                },
+                screen8: {
+                    title: "Water Economy — Nexus Exchange",
+                    subtitle: "Central hub for token, data and service exchange",
+                    description: "Sustainable water management requires economic instruments. CivilizationProtocol connects environmental data with investment transparency.",
+                    modules: {
+                        m1: { name: "Token & Data Exchange", desc: "VOD/R-VOD/P-VOD exchange, data trading", fee: "0.1-0.3%" },
+                        m2: { name: "Staking & Impact Pools", desc: "Stake-to-build, climate pools", apy: "5-25% APY" },
+                        m3: { name: "Investment Marketplace", desc: "PPP projects, R&D, startups", dao: "DAO voting" },
+                        m4: { name: "Service & Partnership Hub", desc: "AI services, consulting, SCADA", rewards: "Token rewards" }
+                    }
+                },
+                screen9: {
+                    title: "Tokenomics — 4 Evolution Phases",
+                    subtitle: "The VOD token evolves together with the platform",
+                    description: "Each phase builds on the previous one without breaking continuity. Token is not ownership of water — it is access, participation and governance interface.",
+                    phases: {
+                        phase1: { phase: "Phase 1", name: "Access & Participation", desc: "Platform access, participation in development, early bonuses", status: "current" },
+                        phase2: { phase: "Phase 2", name: "Staking & Governance", desc: "Staking, DAO participation, trust weight formation", status: "next" },
+                        phase3: { phase: "Phase 3", name: "Data Anchoring", desc: "Binding to verified data, object smart contracts", status: "future" },
+                        phase4: { phase: "Phase 4", name: "Resource-Linked Logic", desc: "Full integration with digital twins and IoT", status: "future" }
+                    },
+                    distribution: {
+                        d1: { name: "Ecosystem & Community", percent: 25 },
+                        d2: { name: "Team & Advisors", percent: 20 },
+                        d3: { name: "Private Sale", percent: 15 },
+                        d4: { name: "Pre-Seed & Seed", percent: 10 },
+                        d5: { name: "Public Sale", percent: 10 },
+                        d6: { name: "DAO Treasury", percent: 10 },
+                        d7: { name: "Liquidity", percent: 5 },
+                        d8: { name: "Partnerships", percent: 5 }
+                    }
+                },
+                screen10: {
+                    title: "DAO Governance",
+                    subtitle: "Decisions made through transparent governance mechanisms",
+                    description: "CivilizationProtocol supports collaboration between public institutions, experts, investors and society through decentralized autonomous organization.",
+                    features: {
+                        f1: { feature: "Proposals", desc: "Creating and discussing initiatives" },
+                        f2: { feature: "Voting", desc: "Weighted token voting" },
+                        f3: { feature: "Delegation", desc: "Vote delegation to experts" },
+                        f4: { feature: "Treasury", desc: "DAO fund management" },
+                        f5: { feature: "Execution", desc: "Automatic via smart contracts" },
+                        f6: { feature: "Audit", desc: "Transparent decision control" }
+                    },
+                    participants: {
+                        p1: { role: "Governments", weight: "High", focus: "Regulation" },
+                        p2: { role: "Investors", weight: "By stake", focus: "ROI/ESG" },
+                        p3: { role: "Experts", weight: "Delegated", focus: "Technology" },
+                        p4: { role: "Citizens", weight: "Basic", focus: "Participation" }
+                    }
+                },
+                screen11: {
+                    title: "7 Specialized Cabinets",
+                    subtitle: "Tailored interfaces for different stakeholders",
+                    description: "Different stakeholders interact with the ecosystem through specialized interfaces, tailored to their roles and responsibilities.",
+                    cabinets: {
+                        c1: { name: "Citizen", features: ["Quality monitoring", "Gamification", "DAO participation", "Rewards"] },
+                        c2: { name: "Government", features: ["Regional analytics", "Crisis panels", "SDG reporting"] },
+                        c3: { name: "Investment", features: ["ESG metrics", "ROI calculator", "Project portfolio"] },
+                        c4: { name: "Infrastructure", features: ["Asset management", "IoT integration", "CMMS"] },
+                        c5: { name: "Science", features: ["Data Lake", "ML models", "Publications"] },
+                        c6: { name: "Operator", features: ["System control", "Tech support", "Logs"] },
+                        c7: { name: "Administrative", features: ["Configuration", "Security", "Roles"] }
+                    }
+                },
+                screen12: {
+                    title: "TokenHub Projects",
+                    subtitle: "Investment marketplace for water infrastructure",
+                    description: "Financing projects through tokenized mechanisms with transparent tracking and DAO governance.",
+                    projects: {
+                        p1: { name: "CivilizationProtocol Core", type: "O-VOD", irr: "12%", status: "Active", desc: "Global Data Infrastructure" },
+                        p2: { name: "Smart Pumping Network", type: "P-VOD", irr: "18%", status: "Funding", desc: "IoT pumping stations" },
+                        p3: { name: "Desalination 2.0", type: "P-VOD", irr: "22%", status: "Planning", desc: "Next-gen desalination" },
+                        p4: { name: "Carbon Credits", type: "R-VOD", irr: "15%", status: "Active", desc: "Regen Network integration" },
+                        p5: { name: "P2P Microgrids", type: "R-VOD", irr: "20%", status: "Pilot", desc: "Energy microgrids" },
+                        p6: { name: "Bio-Data Vault", type: "O-VOD", irr: "10%", status: "R&D", desc: "Biodata storage" }
+                    }
+                },
+                screen13: {
+                    title: "International Context",
+                    subtitle: "Aligned with global sustainability frameworks",
+                    description: "CivilizationProtocol is aligned with international sustainability frameworks and supports cross-border cooperation and institutional reporting.",
+                    sdg: {
+                        sdg6: { name: "Clean Water & Sanitation", contribution: "Main platform focus" },
+                        sdg9: { name: "Industry & Innovation", contribution: "IoT, AI, Blockchain technologies" },
+                        sdg11: { name: "Sustainable Cities", contribution: "Urban infrastructure" },
+                        sdg13: { name: "Climate Action", contribution: "Climate pools, Carbon Credits" },
+                        sdg16: { name: "Strong Institutions", contribution: "Transparency, DAO governance" }
+                    }
+                },
+                screen14: {
+                    title: "Roadmap 2023-2026",
+                    subtitle: "The ecosystem evolves step by step",
+                    description: "From digital monitoring to smart-contract-based governance — a clear path to global water management transformation.",
+                    roadmap: {
+                        r1: { year: "2023", quarter: "Q4", title: "MVP Development", items: ["Architecture", "Prototype", "UI/UX Design"], status: "done" },
+                        r2: { year: "2024", quarter: "Q1-Q2", title: "Platform Launch", items: ["Beta platform", "VOD Token", "IoT integration"], status: "current" },
+                        r3: { year: "2024", quarter: "Q3-Q4", title: "Ecosystem Growth", items: ["Mobile App", "DAO launch", "Token Hub"], status: "next" },
+                        r4: { year: "2025", quarter: "Full", title: "Expansion", items: ["TRINITY integration", "International partnerships", "AI v2"], status: "future" },
+                        r5: { year: "2026", quarter: "Full", title: "Global Scale", items: ["1M+ users", "10000+ objects", "Full DAO"], status: "future" }
+                    }
+                },
+                screen15: {
+                    title: "Join the Ecosystem",
+                    subtitle: "CivilizationProtocol is not about controlling water",
+                    description: "It is about creating the digital infrastructure for responsible coexistence with it. Join the movement for transparent, sustainable water governance.",
+                    tiers: {
+                        t1: { tier: "Seed", amount: "from 10,000 VOD", benefits: ["Early Access", "Basic Voting Rights", "Pioneer Badge"] },
+                        t2: { tier: "Strategic", amount: "from 100,000 VOD", benefits: ["Extended Rights", "Analytics", "Priority Support"] },
+                        t3: { tier: "Infrastructure", amount: "from 500,000 VOD", benefits: ["Project Participation", "Revenue Share", "Exclusive Access"] },
+                        t4: { tier: "Institutional", amount: "from 1,000,000 VOD", benefits: ["DAO Council", "Regional Rights", "Strategic Partnership"] }
+                    },
+                    contacts: {
+                        website: "vodprom.org",
+                        email: "info@vodprom.org",
+                        social: "@vodprom"
+                    },
+                    visual: "cta"
+                }
             }
         }
     },
@@ -1680,6 +1898,9 @@ export const translations = {
         nav: {
             home: "الرئيسية",
             whitepaper: "WhitePaper",
+            presentation: "العرض",
+            tokenomics: "الاقتصاد الرمزي",
+            roadmap: "خارطة الطريق",
             dao: "DAO",
             missions: "المهام",
             profile: "الملف الشخصي",
@@ -1780,6 +2001,14 @@ export const translations = {
             welcome_description: "نؤمن بأن البيانات هي النفط الجديد، لكن قيمتها الحقيقية تكمن في فائدتها للبشرية. Civilization Protocol يجمع ويتحقق ويهيكل البيانات حول حالة الكوكب، محولًا إياها إلى أداة لإدارة المستقبل.",
             get_started: "ابدأ",
             explore_ecosystem: "استكشف النظام البيئي"
+        },
+        feed: {
+            eabr_title: "مؤتمر EABR 2025",
+            eabr_date: "20 مارس 2025",
+            grants: "المنح",
+            presale_title: "البيع المسبق لرموز VOD",
+            investments: "الاستثمارات",
+            presale_desc: "انضم إلى البيع المسبق واحصل على وصول مبكر إلى رموز VOD مع مكافآت ومزايا حصرية."
         },
         projecthub: {
             title: "ProjectHub",

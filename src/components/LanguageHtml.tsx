@@ -13,6 +13,7 @@ export default function LanguageHtml() {
         }
     }, [language]);
 
-    return null;
+    // Return empty fragment instead of null to avoid hydration issues
+    return <></>;
 }
 
