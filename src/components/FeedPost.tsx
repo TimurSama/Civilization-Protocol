@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useRef, useEffect } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Heart, MessageSquare, Share2, MoreHorizontal, CheckCircle2, Globe, ExternalLink, Bookmark, Flag, Repeat2, Copy, Check } from "lucide-react";
 import { cn } from "@/lib/utils";
@@ -164,45 +164,53 @@ export default function FeedPost({ id, author, content, stats, timestamp, isLike
 
     // Рендеринг текста с @mentions и #hashtags
     const renderTextWithMentionsAndHashtags = (text: string | undefined) => {
-      if (!text || typeof text !== "string") {
-        // Return empty fragment if text is invalid to avoid React #418
-        return <></>;
+      if (!text || typeof text !== "string" || text.trim().length === 0) {
+        // Return null if text is invalid to avoid React #418
+        return null;
       }
+      
       const parts = text.split(/(@\w+|#\w+)/g).filter(part => part.length > 0);
       
       if (parts.length === 0) {
-        return <></>;
+        return null;
       }
       
-      // Map parts to React elements - this array can be rendered directly in JSX
-      return parts.map((part, index) => {
-        if (part.startsWith('@')) {
-          const username = part.slice(1);
-          return (
-            <Link
-              key={`mention-${index}-${username}`}
-              href={`/profile/${username}`}
-              className="text-cyan-400 hover:text-cyan-300 font-medium"
-            >
-              {part}
-            </Link>
-          );
-        }
-        if (part.startsWith('#')) {
-          const tag = part.slice(1);
-          return (
-            <Link
-              key={`hashtag-${index}-${tag}`}
-              href={`/search?tag=${tag}`}
-              className="text-cyan-500 hover:text-cyan-400"
-            >
-              {part}
-            </Link>
-          );
-        }
-        // Ensure strings are properly wrapped in span to avoid React #418
-        return <span key={`text-${index}`}>{part}</span>;
-      });
+      // Map parts to React elements - filter out invalid parts first
+      const elements = parts
+        .map((part, index) => {
+          if (part.startsWith('@')) {
+            const username = part.slice(1);
+            if (!username) return null;
+            return (
+              <Link
+                key={`mention-${index}-${username}`}
+                href={`/profile/${username}`}
+                className="text-cyan-400 hover:text-cyan-300 font-medium"
+              >
+                {part}
+              </Link>
+            );
+          }
+          if (part.startsWith('#')) {
+            const tag = part.slice(1);
+            if (!tag) return null;
+            return (
+              <Link
+                key={`hashtag-${index}-${tag}`}
+                href={`/search?tag=${tag}`}
+                className="text-cyan-500 hover:text-cyan-400"
+              >
+                {part}
+              </Link>
+            );
+          }
+          // Ensure strings are properly wrapped in span to avoid React #418
+          return <span key={`text-${index}`}>{part}</span>;
+        })
+        .filter((element): element is React.ReactElement => element !== null);
+      
+      // Return null if no valid elements, otherwise return array
+      return elements.length > 0 ? elements : null;
     };
 
     return (
