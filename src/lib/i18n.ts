@@ -952,6 +952,14 @@ export const translations = {
             get_started: "Начать",
             explore_ecosystem: "Исследовать экосистему"
         },
+        feed: {
+            eabr_title: "Конференция EABR 2025",
+            eabr_date: "20 марта 2025",
+            grants: "Гранты",
+            presale_title: "Предпродажа токенов VOD",
+            investments: "Инвестиции",
+            presale_desc: "Присоединяйтесь к предпродаже и получите ранний доступ к токенам VOD с эксклюзивными бонусами и наградами."
+        },
         projecthub: {
             title: "ProjectHub",
             subtitle: "Инвестиционная и проектная платформа",
