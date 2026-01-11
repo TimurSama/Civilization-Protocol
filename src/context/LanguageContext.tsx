@@ -1,6 +1,6 @@
 "use client";
 
-import React, { createContext, useContext, useState, useEffect } from "react";
+import React, { createContext, useContext, useState, useEffect, useCallback, useMemo } from "react";
 import { translations, Language, TranslationKeys } from "@/lib/i18n";
 
 interface LanguageContextType {
@@ -14,25 +14,34 @@ const LanguageContext = createContext<LanguageContextType | undefined>(undefined
 
 export function LanguageProvider({ children }: { children: React.ReactNode }) {
     const [language, setLanguage] = useState<Language>("en");
+    const [isInitialized, setIsInitialized] = useState(false);
 
+    // Initialize language from localStorage (client-side only)
     useEffect(() => {
-        const savedLang = localStorage.getItem("Civilization Protocol-lang") as Language;
-        if (savedLang && ["en", "ru", "ar", "es", "fr", "pl", "de"].includes(savedLang)) {
-            setLanguage(savedLang);
-        } else {
-            // Default to English (primary language)
-            setLanguage("en");
+        if (typeof window !== "undefined") {
+            const savedLang = localStorage.getItem("Civilization Protocol-lang") as Language;
+            if (savedLang && ["en", "ru", "ar", "es", "fr", "pl", "de"].includes(savedLang)) {
+                setLanguage(savedLang);
+            } else {
+                // Default to English (primary language)
+                setLanguage("en");
+            }
+            setIsInitialized(true);
         }
     }, []);
 
+    // Update document attributes when language changes
     useEffect(() => {
-        localStorage.setItem("Civilization Protocol-lang", language);
-        document.documentElement.lang = language;
-        // RTL languages: Arabic only
-        document.documentElement.dir = language === "ar" ? "rtl" : "ltr";
-    }, [language]);
+        if (typeof window !== "undefined" && isInitialized) {
+            localStorage.setItem("Civilization Protocol-lang", language);
+            document.documentElement.lang = language;
+            // RTL languages: Arabic only
+            document.documentElement.dir = language === "ar" ? "rtl" : "ltr";
+        }
+    }, [language, isInitialized]);
 
-    const t = (path: string) => {
+    // Memoize translation function to prevent unnecessary re-renders
+    const t = useCallback((path: string) => {
         const keys = path.split(".");
         
         // Always fallback to English (primary language)
@@ -73,9 +82,9 @@ export function LanguageProvider({ children }: { children: React.ReactNode }) {
         }
 
         return result;
-    };
+    }, [language]);
 
-    const isRTL = language === "ar";
+    const isRTL = useMemo(() => language === "ar", [language]);
 
     return (
         <LanguageContext.Provider value={{ language, setLanguage, t, isRTL }}>

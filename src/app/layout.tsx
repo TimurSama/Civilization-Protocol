@@ -11,6 +11,7 @@ import MobileShell from "@/components/MobileShell";
 import SpiderWeb from "@/components/SpiderWeb";
 import OnboardingProvider from "@/components/OnboardingProvider";
 import Analytics, { AnalyticsScripts } from "@/components/Analytics";
+import LanguageHtml from "@/components/LanguageHtml";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -20,12 +21,13 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="ru" className="dark" suppressHydrationWarning={true}>
+    <html lang="en" className="dark" suppressHydrationWarning={true}>
       <head>
         <AnalyticsScripts />
       </head>
       <body className={`${inter.className} antialiased bg-ocean-deep text-white overflow-x-hidden`}>
         <LanguageProvider>
+          <LanguageHtml />
           <AuthProvider>
             <WalletProvider>
               <OnboardingProvider>
