@@ -164,6 +164,7 @@ export default function FeedPost({ id, author, content, stats, timestamp, isLike
 
     // Рендеринг текста с @mentions и #hashtags
     const renderTextWithMentionsAndHashtags = (text: string) => {
+      if (!text || typeof text !== "string") return text;
       const parts = text.split(/(@\w+|#\w+)/g);
       return parts.map((part, index) => {
         if (part.startsWith('@')) {
@@ -190,8 +191,9 @@ export default function FeedPost({ id, author, content, stats, timestamp, isLike
             </Link>
           );
         }
-        return part;
-      });
+        // Ensure strings are properly wrapped
+        return part ? <span key={index}>{part}</span> : null;
+      }).filter(Boolean);
     };
 
     return (

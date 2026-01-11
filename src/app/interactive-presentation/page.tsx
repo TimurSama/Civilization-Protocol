@@ -1655,7 +1655,7 @@ ROI водных проектов: $4-12 на каждый вложенный $1
                   content={
                     <div className="space-y-4 sm:space-y-5">
                       <div>
-                        <p className="text-sm sm:text-base leading-relaxed" dangerouslySetInnerHTML={{ __html: t("interactive_presentation.welcome_content.intro") }} />
+                        <p className="text-sm sm:text-base leading-relaxed" dangerouslySetInnerHTML={{ __html: typeof t("interactive_presentation.welcome_content.intro") === "string" ? t("interactive_presentation.welcome_content.intro") : String(t("interactive_presentation.welcome_content.intro")) }} />
                       </div>
                       
                       <div className="bg-white/5 rounded-lg p-3 sm:p-4">
@@ -1710,7 +1710,7 @@ ROI водных проектов: $4-12 на каждый вложенный $1
                       
                       <div className="bg-white/5 rounded-lg p-3 sm:p-4">
                         <h4 className="font-bold mb-1.5 sm:mb-2 text-xs sm:text-sm">{t("interactive_presentation.learn_to_earn.duration.title")}</h4>
-                        <p className="text-xs sm:text-sm text-slate-300" dangerouslySetInnerHTML={{ __html: t("interactive_presentation.learn_to_earn.duration.text") }} />
+                        <p className="text-xs sm:text-sm text-slate-300" dangerouslySetInnerHTML={{ __html: typeof t("interactive_presentation.learn_to_earn.duration.text") === "string" ? t("interactive_presentation.learn_to_earn.duration.text") : String(t("interactive_presentation.learn_to_earn.duration.text")) }} />
                       </div>
                       
                       <div className="text-xs text-slate-400 italic pt-2 border-t border-white/10">
