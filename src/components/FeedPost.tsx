@@ -163,16 +163,25 @@ export default function FeedPost({ id, author, content, stats, timestamp, isLike
     };
 
     // Рендеринг текста с @mentions и #hashtags
+    // Важно: функция должна всегда возвращать одинаковую структуру для сервера и клиента
     const renderTextWithMentionsAndHashtags = (text: string | undefined) => {
       if (!text || typeof text !== "string" || text.trim().length === 0) {
-        // Return null if text is invalid to avoid React #418
         return null;
+      }
+      
+      // Check if text contains mentions or hashtags
+      const hasMentionsOrHashtags = /(@\w+|#\w+)/.test(text);
+      
+      // If no mentions or hashtags, return plain text wrapped in span
+      // Это критично для гидратации - всегда возвращаем span, а не просто текст
+      if (!hasMentionsOrHashtags) {
+        return <span>{text}</span>;
       }
       
       const parts = text.split(/(@\w+|#\w+)/g).filter(part => part.length > 0);
       
       if (parts.length === 0) {
-        return null;
+        return <span>{text}</span>;
       }
       
       // Map parts to React elements - filter out invalid parts first
@@ -209,8 +218,13 @@ export default function FeedPost({ id, author, content, stats, timestamp, isLike
         })
         .filter((element): element is React.ReactElement => element !== null);
       
-      // Return null if no valid elements, otherwise return array
-      return elements.length > 0 ? elements : null;
+      // Always return a single React element to avoid hydration issues
+      if (elements.length === 0) {
+        return <span>{text}</span>;
+      }
+      
+      // Return fragment - React.Fragment безопасен для гидратации
+      return <React.Fragment>{elements}</React.Fragment>;
     };
 
     return (

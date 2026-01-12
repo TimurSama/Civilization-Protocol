@@ -71,7 +71,11 @@ export function usePosts() {
     if (params?.authorId) searchParams.set('authorId', params.authorId);
     if (params?.page) searchParams.set('page', params.page.toString());
     
-    return request(`/api/posts?${searchParams}`);
+    // Формируем URL только с параметрами, если они есть
+    const queryString = searchParams.toString();
+    const url = queryString ? `/api/posts?${queryString}` : '/api/posts';
+    
+    return request(url);
   }, [request]);
 
   const createPost = useCallback(async (content: string, type?: string, tags?: string[]) => {

@@ -2,10 +2,26 @@ import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/lib/db';
 import { getUserIdFromRequest, getPagination } from '@/lib/api-utils';
 
+// Убеждаемся, что route динамический
+export const dynamic = 'force-dynamic';
+export const runtime = 'nodejs';
+
 // GET - Получение постов
 export async function GET(request: NextRequest) {
   try {
-    const { searchParams } = new URL(request.url);
+    // Обработка URL - убеждаемся, что он правильно сформирован
+    let url: URL;
+    try {
+      url = new URL(request.url);
+    } catch (error) {
+      console.error('Invalid URL:', request.url);
+      return NextResponse.json(
+        { success: false, error: 'Неверный URL запроса' },
+        { status: 400 }
+      );
+    }
+    
+    const { searchParams } = url;
     const { limit, skip } = getPagination(searchParams);
     
     const type = searchParams.get('type');
