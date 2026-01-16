@@ -5,7 +5,7 @@ import { motion } from "framer-motion";
 import {
   Gamepad2, Building2, TrendingUp, Map, BookOpen, Users, Leaf,
   Globe, ArrowRight, Play, Clock, Star, Award, ChevronRight,
-  Sparkles, Target, Shield, Cpu, Heart, Ruler
+  Sparkles, Target, Shield, Cpu, Heart, Ruler, Layers
 } from "lucide-react";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
@@ -137,6 +137,28 @@ export default function PresentationsPage() {
         features: pres.whitepaper.features,
         status: "ready",
         link: "/presentations/whitepaper",
+      },
+      {
+        id: "architecture",
+        number: 6,
+        title: "Архитектура платформы",
+        subtitle: "Подробное описание архитектуры, приложения и экосистемы",
+        description: "Лендинг-презентация с детальным описанием 12-уровневой архитектуры, функционала приложения, экосистемы и дорожной карты разработки",
+        icon: <Layers size={32} />,
+        color: "indigo",
+        gradient: "from-indigo-500 to-purple-600",
+        duration: "15-20 мин",
+        difficulty: "medium",
+        audience: ["Разработчики", "Технические специалисты", "Архитекторы"],
+        features: [
+          "12-уровневая архитектура",
+          "Описание приложения",
+          "Экосистема платформы",
+          "Дорожная карта разработки",
+          "Технологический стек"
+        ],
+        status: "ready",
+        link: "/presentations/architecture",
       },
       {
         id: "human",
