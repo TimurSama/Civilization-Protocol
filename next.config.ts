@@ -2,7 +2,8 @@ import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   /* config options here */
-  output: 'standalone',
+  // Standalone output только для production (Vercel) - убираем для локальной разработки
+  ...(process.env.NODE_ENV === 'production' ? { output: 'standalone' as const } : {}),
   reactStrictMode: true,
   images: {
     formats: ['image/avif', 'image/webp'],

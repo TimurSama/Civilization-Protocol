@@ -1,909 +1,867 @@
 "use client";
 
 import { useState, useRef } from "react";
-import { motion, useScroll, useTransform } from "framer-motion";
+import { motion, useScroll, useTransform, AnimatePresence } from "framer-motion";
 import {
   Layers, Database, Network, Shield, Cpu, Globe, Smartphone,
   Building2, Users, Droplets, Coins, Vote, Lock, GraduationCap,
-  Gamepad2, CheckCircle2, Clock, DollarSign, Calendar, ArrowRight,
-  Zap, Target, Activity, TrendingUp, MapPin, Leaf, Heart, Beaker,
-  Settings, BarChart3, Wallet, FileText, Rocket, Code, Server,
-  Cloud, GitBranch, Package, Monitor, Smartphone as PhoneIcon
+  Gamepad2, CheckCircle2, ArrowRight, Zap, Target, Activity,
+  TrendingUp, MapPin, Leaf, Heart, Beaker, Settings, BarChart3,
+  Wallet, FileText, Rocket, Code, Server, Monitor, Factory,
+  Waves, FlaskConical, Package, Box, Satellite, Radio, Info
 } from "lucide-react";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
 import { useLanguage } from "@/context/LanguageContext";
+import InfoPopup from "@/components/InfoPopup";
+import dynamic from "next/dynamic";
 
-interface RoadmapStage {
+// Динамический импорт Globe3D
+const Globe3D = dynamic(() => import("@/components/Globe3D"), {
+  ssr: false,
+  loading: () => (
+    <div className="w-full h-full flex items-center justify-center">
+      <div className="w-16 h-16 border-4 border-cyan-500/30 border-t-cyan-500 rounded-full animate-spin" />
+    </div>
+  ),
+});
+
+interface BlockData {
   id: string;
-  phase: string;
   title: string;
-  period: string;
-  cost: number;
-  status: "completed" | "in-progress" | "planned";
-  milestones: string[];
+  subtitle: string;
+  description: string;
   icon: React.ComponentType<{ size?: number; className?: string }>;
   color: string;
+  bgGradient: string;
+  details: {
+    overview: string;
+    features: string[];
+    technologies: string[];
+    useCases: string[];
+    metrics?: { label: string; value: string }[];
+  };
+  visualization?: "globe" | "layers" | "network" | "chart" | "diagram";
 }
-
-const roadmapStages: RoadmapStage[] = [
-  {
-    id: "phase1",
-    phase: "Фаза 1",
-    title: "MVP и базовая инфраструктура",
-    period: "Q3 2023 - Q2 2024",
-    cost: 120000,
-    status: "completed",
-    milestones: [
-      "Разработка Next.js приложения",
-      "12-уровневая архитектура",
-      "Базовая блокчейн интеграция",
-      "7 специализированных кабинетов",
-      "UI/UX дизайн-система"
-    ],
-    icon: Rocket,
-    color: "cyan"
-  },
-  {
-    id: "phase2",
-    phase: "Фаза 2",
-    title: "Расширение функционала",
-    period: "Q3 2024 - Q1 2025",
-    cost: 250000,
-    status: "in-progress",
-    milestones: [
-      "DAO Governance система",
-      "Токеномика и стейкинг",
-      "Интеграция IoT датчиков",
-      "Цифровые двойники",
-      "Мобильное приложение"
-    ],
-    icon: Zap,
-    color: "blue"
-  },
-  {
-    id: "phase3",
-    phase: "Фаза 3",
-    title: "Масштабирование и оптимизация",
-    period: "Q2 2025 - Q4 2025",
-    cost: 500000,
-    status: "planned",
-    milestones: [
-      "Масштабирование блокчейна",
-      "AI/ML интеграция",
-      "Международная экспансия",
-      "Партнерства с правительствами",
-      "Экосистема разработчиков"
-    ],
-    icon: TrendingUp,
-    color: "purple"
-  },
-  {
-    id: "phase4",
-    phase: "Фаза 4",
-    title: "Глобальная платформа",
-    period: "Q1 2026 - Q4 2026",
-    cost: 1000000,
-    status: "planned",
-    milestones: [
-      "Планетарное управление (PEGP)",
-      "Межпротокольная коммуникация",
-      "Суперинтеллект для управления",
-      "Глобальная сеть датчиков",
-      "Международные стандарты"
-    ],
-    icon: Globe,
-    color: "emerald"
-  },
-  {
-    id: "phase5",
-    phase: "Фаза 5",
-    title: "Устойчивое развитие",
-    period: "2027+",
-    cost: 2000000,
-    status: "planned",
-    milestones: [
-      "Автономная экосистема",
-      "Самофинансирование",
-      "Глобальное влияние",
-      "Цивилизационный протокол",
-      "Устойчивое будущее"
-    ],
-    icon: Target,
-    color: "yellow"
-  }
-];
 
 export default function ArchitecturePresentationPage() {
   const { t } = useLanguage();
   const containerRef = useRef<HTMLDivElement>(null);
-  const { scrollYProgress } = useScroll({
-    target: containerRef,
-    offset: ["start start", "end end"]
-  });
+  const [activeBlock, setActiveBlock] = useState<string | null>(null);
 
-  const totalCost = roadmapStages.reduce((sum, stage) => sum + stage.cost, 0);
-  const completedCost = roadmapStages
-    .filter(s => s.status === "completed")
-    .reduce((sum, s) => sum + s.cost, 0);
-  const inProgressCost = roadmapStages
-    .filter(s => s.status === "in-progress")
-    .reduce((sum, s) => sum + s.cost, 0);
+  const blocks: BlockData[] = [
+    {
+      id: "architecture",
+      title: "12-уровневая архитектура",
+      subtitle: "Многослойная система платформы",
+      description: "Комплексная архитектура, обеспечивающая масштабируемость, безопасность и гибкость",
+      icon: Layers,
+      color: "cyan",
+      bgGradient: "from-cyan-500/20 via-blue-500/20 to-purple-500/20",
+      visualization: "layers",
+      details: {
+        overview: "Архитектура CivilizationProtocol построена на 12 взаимосвязанных уровнях, каждый из которых отвечает за определенный аспект функциональности платформы. Это обеспечивает модульность, масштабируемость и возможность независимого развития каждого компонента.",
+        features: [
+          "Модульная структура для легкого масштабирования",
+          "Разделение ответственности между слоями",
+          "API-first подход для интеграций",
+          "Микросервисная архитектура",
+          "Горизонтальное масштабирование",
+          "Отказоустойчивость и резервирование"
+        ],
+        technologies: [
+          "Next.js 16 (App Router)",
+          "React 19 с TypeScript",
+          "Prisma ORM",
+          "PostgreSQL с PostGIS",
+          "Redis для кеширования",
+          "Ethereum L2 для блокчейна",
+          "IPFS для децентрализованного хранения",
+          "MQTT для IoT устройств"
+        ],
+        useCases: [
+          "Обработка миллионов транзакций в день",
+          "Подключение тысяч IoT датчиков",
+          "Хранение и анализ больших данных",
+          "Реальное время мониторинга",
+          "Международные интеграции"
+        ],
+        metrics: [
+          { label: "Уровней архитектуры", value: "12" },
+          { label: "API endpoints", value: "50+" },
+          { label: "Модулей", value: "25+" },
+          { label: "Время отклика", value: "<200ms" }
+        ]
+      }
+    },
+    {
+      id: "application",
+      title: "Приложение платформы",
+      subtitle: "Многофункциональная веб-платформа",
+      description: "Полнофункциональное приложение с 7 специализированными кабинетами, социальной сетью, DAO и токеномикой",
+      icon: Smartphone,
+      color: "blue",
+      bgGradient: "from-blue-500/20 via-indigo-500/20 to-purple-500/20",
+      visualization: "network",
+      details: {
+        overview: "CivilizationProtocol App - это комплексная веб-платформа, объединяющая управление водными ресурсами, социальное взаимодействие, децентрализованное управление и экономические механизмы. Платформа предоставляет уникальные интерфейсы для разных типов пользователей через систему кабинетов.",
+        features: [
+          "7 специализированных кабинетов (Пользователь, Правительство, Инвестор, Корпорация, Ученый, Администратор, Безопасность)",
+          "Встроенная социальная сеть с лентой, сообщениями, группами",
+          "DAO Governance система с голосованием и предложениями",
+          "Токеномика с VOD токенами, стейкингом и наградами",
+          "Интерактивная карта с 3D визуализацией",
+          "Образовательные игры и квесты",
+          "Мобильная адаптация для всех устройств"
+        ],
+        technologies: [
+          "Next.js 16 с App Router",
+          "React 19 и TypeScript",
+          "Tailwind CSS 4",
+          "Framer Motion для анимаций",
+          "Three.js для 3D визуализации",
+          "WebSocket для real-time",
+          "PWA поддержка"
+        ],
+        useCases: [
+          "Управление водными ресурсами правительствами",
+          "Инвестирование в водные проекты",
+          "Научные исследования и анализ данных",
+          "Социальное взаимодействие пользователей",
+          "Образование и геймификация"
+        ],
+        metrics: [
+          { label: "Кабинетов", value: "7" },
+          { label: "Страниц", value: "50+" },
+          { label: "Компонентов", value: "100+" },
+          { label: "Поддерживаемых языков", value: "7" }
+        ]
+      }
+    },
+    {
+      id: "ecosystem",
+      title: "Экосистема платформы",
+      subtitle: "Комплексная экосистема взаимодействия",
+      description: "Объединение технологий, людей и ресурсов для устойчивого управления водными ресурсами",
+      icon: Globe,
+      color: "green",
+      bgGradient: "from-green-500/20 via-emerald-500/20 to-teal-500/20",
+      visualization: "globe",
+      details: {
+        overview: "Экосистема CivilizationProtocol объединяет различные компоненты: водные объекты, инфраструктуру, IoT датчики, пользователей разных типов, проекты, партнерства и исследования. Все компоненты взаимодействуют через единую платформу, создавая синергетический эффект.",
+        features: [
+          "Интеграция водных объектов и инфраструктуры",
+          "Сеть IoT датчиков для мониторинга",
+          "Цифровые двойники реальных объектов",
+          "Многоуровневая система пользователей",
+          "Инвестиционные проекты и финансирование",
+          "Международные партнерства",
+          "Научные исследования и разработки"
+        ],
+        technologies: [
+          "Геопространственная база данных (PostGIS)",
+          "IoT протоколы (MQTT, CoAP)",
+          "3D моделирование (Three.js)",
+          "Blockchain для прозрачности",
+          "AI/ML для анализа",
+          "API интеграции"
+        ],
+        useCases: [
+          "Мониторинг водных ресурсов в реальном времени",
+          "Управление инфраструктурой",
+          "Инвестирование в проекты",
+          "Научные исследования",
+          "Международное сотрудничество"
+        ],
+        metrics: [
+          { label: "Водных объектов", value: "500+" },
+          { label: "IoT датчиков", value: "1000+" },
+          { label: "Пользователей", value: "10K+" },
+          { label: "Проектов", value: "50+" }
+        ]
+      }
+    },
+    {
+      id: "objects",
+      title: "Объекты платформы",
+      subtitle: "Водные и инфраструктурные объекты",
+      description: "Регистрация, управление и мониторинг всех типов объектов водной инфраструктуры",
+      icon: Droplets,
+      color: "cyan",
+      bgGradient: "from-cyan-500/20 via-blue-500/20 to-teal-500/20",
+      visualization: "diagram",
+      details: {
+        overview: "Платформа управляет различными типами объектов: водными объектами (реки, озера, водохранилища), инфраструктурными объектами (насосные станции, очистные сооружения, трубопроводы) и цифровыми объектами (NFT, токены, смарт-контракты). Каждый объект имеет цифрового двойника и может быть токенизирован.",
+        features: [
+          "Реестр водных объектов с геоданными",
+          "Инфраструктурные объекты (насосные станции, очистные)",
+          "Цифровые двойники для моделирования",
+          "NFT представление активов",
+          "Токенизация водных прав",
+          "Мониторинг состояния в реальном времени",
+          "Исторические данные и аналитика"
+        ],
+        technologies: [
+          "PostGIS для геоданных",
+          "IoT интеграция",
+          "3D моделирование",
+          "Blockchain для NFT",
+          "Смарт-контракты",
+          "Time-series базы данных"
+        ],
+        useCases: [
+          "Регистрация новых водных объектов",
+          "Мониторинг состояния инфраструктуры",
+          "Токенизация прав на воду",
+          "Торговля NFT активами",
+          "Прогнозирование и планирование"
+        ],
+        metrics: [
+          { label: "Водных объектов", value: "500+" },
+          { label: "Инфраструктурных объектов", value: "200+" },
+          { label: "NFT активов", value: "1000+" },
+          { label: "Датчиков на объектах", value: "2000+" }
+        ]
+      }
+    },
+    {
+      id: "subjects",
+      title: "Субъекты платформы",
+      subtitle: "Участники экосистемы",
+      description: "Различные типы пользователей и их роли в управлении водными ресурсами",
+      icon: Users,
+      color: "purple",
+      bgGradient: "from-purple-500/20 via-pink-500/20 to-rose-500/20",
+      visualization: "network",
+      details: {
+        overview: "Платформа объединяет различные типы субъектов: правительства, корпорации, инвесторов, ученых, операторов инфраструктуры и граждан. Каждый субъект имеет свои права, обязанности и возможности в рамках экосистемы. Система ролей определяет доступ к функциям и уровень влияния на принятие решений.",
+        features: [
+          "7 типов ролей пользователей",
+          "Система верификации и репутации",
+          "Специализированные кабинеты для каждой роли",
+          "Уровни доступа и разрешения",
+          "Социальное взаимодействие",
+          "Участие в DAO Governance",
+          "Инвестиционные возможности"
+        ],
+        technologies: [
+          "JWT аутентификация",
+          "Role-Based Access Control (RBAC)",
+          "Репутационная система",
+          "Социальный граф",
+          "DAO контракты",
+          "Wallet интеграция"
+        ],
+        useCases: [
+          "Управление ресурсами правительствами",
+          "Инвестирование корпорациями",
+          "Научные исследования учеными",
+          "Оперативное управление операторами",
+          "Участие граждан в управлении"
+        ],
+        metrics: [
+          { label: "Типов ролей", value: "7" },
+          { label: "Активных пользователей", value: "10K+" },
+          { label: "Верифицированных", value: "2K+" },
+          { label: "DAO участников", value: "5K+" }
+        ]
+      }
+    },
+    {
+      id: "products",
+      title: "Продукты экосистемы",
+      subtitle: "Основные продукты платформы",
+      description: "Ключевые продукты и сервисы, предоставляемые платформой",
+      icon: Package,
+      color: "yellow",
+      bgGradient: "from-yellow-500/20 via-amber-500/20 to-orange-500/20",
+      visualization: "chart",
+      details: {
+        overview: "CivilizationProtocol предлагает комплексный набор продуктов: основную платформу, мобильное приложение, DAO систему, Water Bank, Investment Hub, систему мониторинга и исследовательские инструменты. Каждый продукт решает специфические задачи в области управления водными ресурсами.",
+        features: [
+          "VODeco Platform - основная веб-платформа",
+          "VODeco App - мобильное приложение",
+          "VODeco DAO - децентрализованное управление",
+          "VOD Water Bank - банк водных ресурсов",
+          "VOD Investment Hub - инвестиционная платформа",
+          "VOD Monitoring System - система мониторинга",
+          "VOD Research & Analytics - исследовательские инструменты"
+        ],
+        technologies: [
+          "Next.js для веб-платформы",
+          "React Native для мобильного приложения",
+          "Blockchain для DAO",
+          "IoT для мониторинга",
+          "AI/ML для аналитики",
+          "3D визуализация"
+        ],
+        useCases: [
+          "Управление водными ресурсами",
+          "Инвестирование в проекты",
+          "Мониторинг качества воды",
+          "Научные исследования",
+          "Образование и обучение"
+        ],
+        metrics: [
+          { label: "Продуктов", value: "7" },
+          { label: "Активных пользователей", value: "10K+" },
+          { label: "Обработанных транзакций", value: "1M+" },
+          { label: "Собранных данных", value: "10TB+" }
+        ]
+      }
+    },
+    {
+      id: "projects",
+      title: "Проекты экосистемы",
+      subtitle: "Инвестиционные и инфраструктурные проекты",
+      description: "Активные и планируемые проекты в области водных ресурсов",
+      icon: Target,
+      color: "orange",
+      bgGradient: "from-orange-500/20 via-red-500/20 to-rose-500/20",
+      visualization: "chart",
+      details: {
+        overview: "Платформа поддерживает различные типы проектов: инфраструктурные (строительство очистных сооружений, насосных станций), экологические (восстановление водных объектов), исследовательские (научные программы) и инвестиционные (коммерческие проекты). Каждый проект проходит через этапы анализа, финансирования, реализации и мониторинга.",
+        features: [
+          "Реестр инвестиционных проектов",
+          "Финансирование через TokenHub",
+          "DAO голосование по проектам",
+          "Мониторинг реализации",
+          "Расчет IRR и ROI",
+          "Прозрачная отчетность",
+          "Интеграция с цифровыми двойниками"
+        ],
+        technologies: [
+          "Blockchain для финансирования",
+          "Smart contracts для автоматизации",
+          "IoT для мониторинга",
+          "AI для прогнозирования",
+          "3D моделирование",
+          "Финансовые модели"
+        ],
+        useCases: [
+          "Финансирование инфраструктурных проектов",
+          "Экологические инициативы",
+          "Научные исследования",
+          "Коммерческие проекты",
+          "Международное сотрудничество"
+        ],
+        metrics: [
+          { label: "Активных проектов", value: "50+" },
+          { label: "Привлечено инвестиций", value: "$50M+" },
+          { label: "Завершенных проектов", value: "20+" },
+          { label: "Средний IRR", value: "15-25%" }
+        ]
+      }
+    }
+  ];
 
   return (
-    <div className="min-h-screen bg-ocean-deep relative overflow-hidden">
-      {/* Background Elements */}
-      <div className="fixed inset-0 pointer-events-none overflow-hidden">
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[1200px] h-[1200px] bg-cyan-glow/3 rounded-full blur-[200px]" />
-        <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-purple-500/5 rounded-full blur-[150px]" />
-      </div>
-
-      <div className="relative z-10 flex">
-        {/* Main Content - Left Side */}
-        <div ref={containerRef} className="flex-1 overflow-y-auto" style={{ maxHeight: '100vh' }}>
-          <div className="max-w-5xl mx-auto px-6 py-20 space-y-32">
-            {/* Hero Section */}
-            <section className="text-center space-y-8">
-              <motion.div
-                initial={{ opacity: 0, y: 30 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6 }}
-              >
-                <h1 className="text-6xl md:text-8xl font-black mb-6 bg-gradient-to-r from-white via-cyan-200 to-cyan-glow bg-clip-text text-transparent">
-                  Архитектура платформы
-                </h1>
-                <p className="text-2xl text-slate-400 max-w-3xl mx-auto">
-                  Подробное описание архитектуры, приложения и экосистемы CivilizationProtocol
-                </p>
-              </motion.div>
-            </section>
-
-            {/* Architecture Overview */}
-            <ArchitectureSection />
-
-            {/* Application Description */}
-            <ApplicationSection />
-
-            {/* Ecosystem Description */}
-            <EcosystemSection />
-
-            {/* Technology Stack */}
-            <TechnologyStackSection />
-
-            {/* Integration Points */}
-            <IntegrationSection />
-
-            {/* CTA Section */}
-            <section className="text-center space-y-6 py-20">
-              <motion.div
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                className="space-y-6"
-              >
-                <h2 className="text-4xl font-black text-cyan-glow">Готовы начать?</h2>
-                <p className="text-xl text-slate-400">Присоединяйтесь к революции в управлении водными ресурсами</p>
-                <div className="flex gap-4 justify-center">
-                  <Link
-                    href="/dashboard"
-                    className="px-8 py-4 bg-cyan-glow text-ocean-deep font-bold rounded-xl hover:scale-105 transition-transform flex items-center gap-2 shadow-[0_0_30px_rgba(34,211,238,0.3)]"
-                  >
-                    Начать работу <ArrowRight size={20} />
-                  </Link>
-                  <Link
-                    href="/whitepaper"
-                    className="px-8 py-4 glass text-white font-bold rounded-xl hover:bg-white/10 transition-colors"
-                  >
-                    White Paper
-                  </Link>
-                </div>
-              </motion.div>
-            </section>
-          </div>
-        </div>
-
-        {/* Roadmap Sidebar - Right Side */}
-        <RoadmapSidebar
-          stages={roadmapStages}
-          totalCost={totalCost}
-          completedCost={completedCost}
-          inProgressCost={inProgressCost}
-          scrollProgress={scrollYProgress}
-        />
+    <div className="min-h-screen bg-ocean-deep relative overflow-x-hidden">
+      {/* Full-screen blocks */}
+      <div ref={containerRef} className="relative">
+        {blocks.map((block, index) => (
+          <FullScreenBlock
+            key={block.id}
+            block={block}
+            index={index}
+            total={blocks.length}
+            isActive={activeBlock === block.id}
+            onActivate={() => setActiveBlock(block.id)}
+            onDeactivate={() => setActiveBlock(null)}
+          />
+        ))}
       </div>
     </div>
   );
 }
 
-// Architecture Section
-function ArchitectureSection() {
-  const layers = [
-    {
-      name: "Презентационный слой",
-      desc: "Web и мобильные интерфейсы, визуализация данных",
-      icon: Monitor,
-      color: "bg-blue-500",
-      components: ["Next.js 16", "React", "TypeScript", "Tailwind CSS", "Framer Motion"]
-    },
-    {
-      name: "API Gateway",
-      desc: "RESTful API, GraphQL, WebSocket для real-time данных",
-      icon: Server,
-      color: "bg-cyan-500",
-      components: ["Next.js API Routes", "REST API", "WebSocket", "GraphQL"]
-    },
-    {
-      name: "Бизнес-логика",
-      desc: "Обработка данных, валидация, бизнес-правила",
-      icon: Code,
-      color: "bg-purple-500",
-      components: ["TypeScript Services", "Validation", "Business Rules", "Workflows"]
-    },
-    {
-      name: "База данных",
-      desc: "PostgreSQL с Prisma ORM, геопространственные данные",
-      icon: Database,
-      color: "bg-green-500",
-      components: ["PostgreSQL", "Prisma ORM", "PostGIS", "Redis Cache"]
-    },
-    {
-      name: "Блокчейн слой",
-      desc: "VOD Chain, смарт-контракты, Web3 интеграция",
-      icon: Network,
-      color: "bg-yellow-500",
-      components: ["Ethereum L2", "Solidity", "Web3.js", "IPFS"]
-    },
-    {
-      name: "IoT и датчики",
-      desc: "Интеграция с IoT устройствами, сбор данных в реальном времени",
-      icon: Activity,
-      color: "bg-orange-500",
-      components: ["MQTT", "IoT Protocols", "Sensor Networks", "Data Streaming"]
-    },
-    {
-      name: "AI/ML слой",
-      desc: "Машинное обучение, прогнозирование, аналитика",
-      icon: Cpu,
-      color: "bg-pink-500",
-      components: ["TensorFlow", "ML Models", "Predictive Analytics", "AI Services"]
-    },
-    {
-      name: "Безопасность",
-      desc: "Аутентификация, авторизация, шифрование",
-      icon: Shield,
-      color: "bg-red-500",
-      components: ["JWT", "OAuth2", "Encryption", "Security Policies"]
-    },
-    {
-      name: "Цифровые двойники",
-      desc: "Виртуальные модели водных объектов и инфраструктуры",
-      icon: Layers,
-      color: "bg-indigo-500",
-      components: ["Digital Twins", "3D Models", "Simulation", "Visualization"]
-    },
-    {
-      name: "DAO Governance",
-      desc: "Децентрализованное управление, голосование, предложения",
-      icon: Vote,
-      color: "bg-teal-500",
-      components: ["DAO Contracts", "Voting System", "Proposals", "Governance"]
-    },
-    {
-      name: "Токеномика",
-      desc: "VOD токены, стейкинг, награды, экономика платформы",
-      icon: Coins,
-      color: "bg-amber-500",
-      components: ["Token Contracts", "Staking", "Rewards", "Economics"]
-    },
-    {
-      name: "Интеграции",
-      desc: "Внешние API, партнерские системы, экспорт данных",
-      icon: GitBranch,
-      color: "bg-rose-500",
-      components: ["External APIs", "Partner Systems", "Data Export", "Webhooks"]
-    }
-  ];
-
-  return (
-    <motion.section
-      initial={{ opacity: 0, y: 50 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true }}
-      transition={{ duration: 0.6 }}
-      className="space-y-8"
-    >
-      <div className="text-center mb-12">
-        <h2 className="text-5xl font-black mb-4 bg-gradient-to-r from-cyan-400 to-blue-500 bg-clip-text text-transparent">
-          12-уровневая архитектура
-        </h2>
-        <p className="text-xl text-slate-400 max-w-3xl mx-auto">
-          Многослойная архитектура платформы обеспечивает масштабируемость, безопасность и гибкость
-        </p>
-      </div>
-
-      <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {layers.map((layer, i) => (
-          <motion.div
-            key={i}
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ delay: i * 0.1 }}
-            className="glass-card p-6 hover:border-cyan-glow/50 transition-all group"
-          >
-            <div className="flex items-start gap-4 mb-4">
-              <div className={`w-12 h-12 ${layer.color} rounded-xl flex items-center justify-center flex-shrink-0`}>
-                <layer.icon size={24} className="text-white" />
-              </div>
-              <div className="flex-1">
-                <h3 className="font-bold text-lg mb-1">{layer.name}</h3>
-                <p className="text-sm text-slate-400">{layer.desc}</p>
-              </div>
-            </div>
-            <div className="flex flex-wrap gap-2">
-              {layer.components.map((comp, j) => (
-                <span key={j} className="text-xs px-2 py-1 bg-white/5 rounded text-slate-400">
-                  {comp}
-                </span>
-              ))}
-            </div>
-          </motion.div>
-        ))}
-      </div>
-    </motion.section>
-  );
+interface FullScreenBlockProps {
+  block: BlockData;
+  index: number;
+  total: number;
+  isActive: boolean;
+  onActivate: () => void;
+  onDeactivate: () => void;
 }
 
-// Application Section
-function ApplicationSection() {
-  const features = [
-    {
-      title: "7 Специализированных кабинетов",
-      desc: "Уникальные интерфейсы для разных типов пользователей",
-      items: [
-        "Кабинет пользователя - личный профиль и активность",
-        "Кабинет правительства - управление ресурсами",
-        "Кабинет инвестора - инвестиционные возможности",
-        "Кабинет корпорации - корпоративное управление",
-        "Кабинет ученого - исследовательские инструменты",
-        "Кабинет администратора - системное управление",
-        "Кабинет безопасности - защита данных"
-      ],
-      icon: Building2,
-      color: "cyan"
-    },
-    {
-      title: "Социальная сеть",
-      desc: "Встроенная социальная платформа для взаимодействия",
-      items: [
-        "Лента новостей и постов",
-        "Система сообщений",
-        "Группы и сообщества",
-        "Друзья и подписки",
-        "Реакции и комментарии",
-        "Медиа-контент"
-      ],
-      icon: Users,
-      color: "blue"
-    },
-    {
-      title: "DAO Governance",
-      desc: "Децентрализованное управление платформой",
-      items: [
-        "Создание и голосование по предложениям",
-        "Делегирование голосов",
-        "Управление бюджетом",
-        "Избрание представителей",
-        "Прозрачное голосование",
-        "История решений"
-      ],
-      icon: Vote,
-      color: "purple"
-    },
-    {
-      title: "Токеномика",
-      desc: "Экономическая система платформы",
-      items: [
-        "VOD токены - нативная валюта",
-        "Стейкинг и получение наград",
-        "Токен-хаб для проектов",
-        "Транзакции и переводы",
-        "Инвестиционные возможности",
-        "Эмиссия и распределение"
-      ],
-      icon: Coins,
-      color: "yellow"
-    },
-    {
-      title: "Карта и визуализация",
-      desc: "Интерактивная карта водных ресурсов",
-      items: [
-        "3D глобус с точками данных",
-        "Геопространственная визуализация",
-        "Слои карты и фильтры",
-        "Детальная информация об объектах",
-        "Исторические данные",
-        "Прогнозы и аналитика"
-      ],
-      icon: MapPin,
-      color: "green"
-    },
-    {
-      title: "Образование и геймификация",
-      desc: "Обучение и вовлечение через игры",
-      items: [
-        "Интерактивные презентации",
-        "Обучающие игры",
-        "Квесты и миссии",
-        "Достижения и награды",
-        "Рейтинги и лидеры",
-        "Образовательный контент"
-      ],
-      icon: GraduationCap,
-      color: "indigo"
-    }
-  ];
+function FullScreenBlock({ block, index, total, isActive, onActivate, onDeactivate }: FullScreenBlockProps) {
+  const blockRef = useRef<HTMLDivElement>(null);
+  const { scrollYProgress } = useScroll({
+    target: blockRef,
+    offset: ["start end", "end start"]
+  });
+
+  const opacity = useTransform(scrollYProgress, [0, 0.3, 0.7, 1], [0, 1, 1, 0]);
+  const y = useTransform(scrollYProgress, [0, 0.3, 0.7, 1], [100, 0, 0, -100]);
 
   return (
     <motion.section
-      initial={{ opacity: 0, y: 50 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true }}
-      transition={{ duration: 0.6 }}
-      className="space-y-8"
+      ref={blockRef}
+      style={{ opacity }}
+      className="min-h-screen flex items-center justify-center px-4 md:px-6 lg:px-8 relative"
     >
-      <div className="text-center mb-12">
-        <h2 className="text-5xl font-black mb-4 bg-gradient-to-r from-cyan-400 to-blue-500 bg-clip-text text-transparent">
-          Описание приложения
-        </h2>
-        <p className="text-xl text-slate-400 max-w-3xl mx-auto">
-          Многофункциональная платформа для управления водными ресурсами с социальными, экономическими и образовательными возможностями
-        </p>
-      </div>
-
-      <div className="space-y-8">
-        {features.map((feature, i) => (
-          <motion.div
-            key={i}
-            initial={{ opacity: 0, x: i % 2 === 0 ? -50 : 50 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            transition={{ delay: i * 0.1 }}
-            className="glass-card p-8"
-          >
-            <div className="flex items-start gap-6 mb-6">
+      <motion.div
+        style={{ y }}
+        className={cn(
+          "w-full max-w-7xl mx-auto",
+          "grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center",
+          "min-h-[80vh] py-12 lg:py-20"
+        )}
+      >
+        {/* Left side - Content */}
+        <div className="space-y-6 lg:space-y-8">
+          {/* Header */}
+          <div className="space-y-4">
+            <div className="flex items-center gap-3">
               <div className={cn(
-                "w-16 h-16 rounded-2xl flex items-center justify-center flex-shrink-0",
-                feature.color === "cyan" && "bg-cyan-500/20",
-                feature.color === "blue" && "bg-blue-500/20",
-                feature.color === "purple" && "bg-purple-500/20",
-                feature.color === "yellow" && "bg-yellow-500/20",
-                feature.color === "green" && "bg-green-500/20",
-                feature.color === "indigo" && "bg-indigo-500/20"
+                "w-16 h-16 lg:w-20 lg:h-20 rounded-2xl flex items-center justify-center",
+                block.color === "cyan" && "bg-cyan-500/20",
+                block.color === "blue" && "bg-blue-500/20",
+                block.color === "green" && "bg-green-500/20",
+                block.color === "purple" && "bg-purple-500/20",
+                block.color === "yellow" && "bg-yellow-500/20",
+                block.color === "orange" && "bg-orange-500/20"
               )}>
-                <feature.icon size={32} className={cn(
-                  feature.color === "cyan" && "text-cyan-400",
-                  feature.color === "blue" && "text-blue-400",
-                  feature.color === "purple" && "text-purple-400",
-                  feature.color === "yellow" && "text-yellow-400",
-                  feature.color === "green" && "text-green-400",
-                  feature.color === "indigo" && "text-indigo-400"
+                <block.icon size={index % 2 === 0 ? 32 : 40} className={cn(
+                  block.color === "cyan" && "text-cyan-400",
+                  block.color === "blue" && "text-blue-400",
+                  block.color === "green" && "text-green-400",
+                  block.color === "purple" && "text-purple-400",
+                  block.color === "yellow" && "text-yellow-400",
+                  block.color === "orange" && "text-orange-400"
                 )} />
               </div>
-              <div className="flex-1">
-                <h3 className="text-2xl font-bold mb-2">{feature.title}</h3>
-                <p className="text-slate-400 mb-4">{feature.desc}</p>
-                <ul className="space-y-2">
-                  {feature.items.map((item, j) => (
-                    <li key={j} className="flex items-center gap-3 text-slate-300">
-                      <CheckCircle2 size={16} className={cn(
-                        "flex-shrink-0",
-                        feature.color === "cyan" && "text-cyan-400",
-                        feature.color === "blue" && "text-blue-400",
-                        feature.color === "purple" && "text-purple-400",
-                        feature.color === "yellow" && "text-yellow-400",
-                        feature.color === "green" && "text-green-400",
-                        feature.color === "indigo" && "text-indigo-400"
-                      )} />
-                      <span>{item}</span>
-                    </li>
-                  ))}
-                </ul>
+              <div>
+                <div className="text-sm lg:text-base text-slate-400 mb-1">
+                  Блок {index + 1} из {total}
+                </div>
+                <h2 className="text-3xl lg:text-5xl xl:text-6xl font-black bg-gradient-to-r from-white via-cyan-200 to-cyan-glow bg-clip-text text-transparent">
+                  {block.title}
+                </h2>
               </div>
             </div>
-          </motion.div>
-        ))}
-      </div>
-    </motion.section>
-  );
-}
+            
+            <h3 className="text-xl lg:text-2xl text-cyan-glow/80 font-bold">
+              {block.subtitle}
+            </h3>
+            
+            <p className="text-base lg:text-lg text-slate-400 leading-relaxed">
+              {block.description}
+            </p>
+          </div>
 
-// Ecosystem Section
-function EcosystemSection() {
-  const ecosystemComponents = [
-    {
-      name: "Водные объекты",
-      desc: "Регистрация и управление реками, озерами, водохранилищами",
-      icon: Droplets,
-      color: "cyan"
-    },
-    {
-      name: "Инфраструктура",
-      desc: "Водоочистные сооружения, насосные станции, трубопроводы",
-      icon: Building2,
-      color: "blue"
-    },
-    {
-      name: "Датчики и IoT",
-      desc: "Сеть датчиков для мониторинга качества и количества воды",
-      icon: Activity,
-      color: "green"
-    },
-    {
-      name: "Цифровые двойники",
-      desc: "Виртуальные модели реальных водных объектов",
-      icon: Layers,
-      color: "purple"
-    },
-    {
-      name: "Пользователи",
-      desc: "Правительства, корпорации, инвесторы, ученые, граждане",
-      icon: Users,
-      color: "yellow"
-    },
-    {
-      name: "Проекты",
-      desc: "Инвестиционные проекты в области водных ресурсов",
-      icon: Target,
-      color: "orange"
-    },
-    {
-      name: "Партнерства",
-      desc: "Международные организации, правительства, НПО",
-      icon: Globe,
-      color: "indigo"
-    },
-    {
-      name: "Исследования",
-      desc: "Научные исследования и разработки",
-      icon: Beaker,
-      color: "pink"
-    }
-  ];
+          {/* Key Features */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            {block.details.features.slice(0, 4).map((feature, i) => (
+              <motion.div
+                key={i}
+                initial={{ opacity: 0, x: -20 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: i * 0.1 }}
+                className="glass-card p-4 hover:border-cyan-glow/50 transition-all cursor-pointer group"
+                onClick={onActivate}
+              >
+                <div className="flex items-start gap-3">
+                  <CheckCircle2 size={20} className={cn(
+                    "flex-shrink-0 mt-0.5",
+                    block.color === "cyan" && "text-cyan-400",
+                    block.color === "blue" && "text-blue-400",
+                    block.color === "green" && "text-green-400",
+                    block.color === "purple" && "text-purple-400",
+                    block.color === "yellow" && "text-yellow-400",
+                    block.color === "orange" && "text-orange-400"
+                  )} />
+                  <p className="text-sm lg:text-base text-slate-300 group-hover:text-white transition-colors">
+                    {feature}
+                  </p>
+                </div>
+              </motion.div>
+            ))}
+          </div>
 
-  return (
-    <motion.section
-      initial={{ opacity: 0, y: 50 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true }}
-      transition={{ duration: 0.6 }}
-      className="space-y-8"
-    >
-      <div className="text-center mb-12">
-        <h2 className="text-5xl font-black mb-4 bg-gradient-to-r from-cyan-400 to-blue-500 bg-clip-text text-transparent">
-          Экосистема платформы
-        </h2>
-        <p className="text-xl text-slate-400 max-w-3xl mx-auto">
-          Комплексная экосистема, объединяющая технологии, людей и ресурсы для устойчивого управления водой
-        </p>
-      </div>
-
-      <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-        {ecosystemComponents.map((component, i) => (
-          <motion.div
-            key={i}
-            initial={{ opacity: 0, scale: 0.9 }}
-            whileInView={{ opacity: 1, scale: 1 }}
-            viewport={{ once: true }}
-            transition={{ delay: i * 0.1 }}
-            className="glass-card p-6 text-center hover:border-cyan-glow/50 transition-all group"
-          >
-            <div className={cn(
-              "w-16 h-16 rounded-2xl flex items-center justify-center mx-auto mb-4 transition-colors",
-              component.color === "cyan" && "bg-cyan-500/20 group-hover:bg-cyan-500/30",
-              component.color === "blue" && "bg-blue-500/20 group-hover:bg-blue-500/30",
-              component.color === "green" && "bg-green-500/20 group-hover:bg-green-500/30",
-              component.color === "purple" && "bg-purple-500/20 group-hover:bg-purple-500/30",
-              component.color === "yellow" && "bg-yellow-500/20 group-hover:bg-yellow-500/30",
-              component.color === "orange" && "bg-orange-500/20 group-hover:bg-orange-500/30",
-              component.color === "indigo" && "bg-indigo-500/20 group-hover:bg-indigo-500/30",
-              component.color === "pink" && "bg-pink-500/20 group-hover:bg-pink-500/30"
-            )}>
-              <component.icon size={32} className={cn(
-                component.color === "cyan" && "text-cyan-400",
-                component.color === "blue" && "text-blue-400",
-                component.color === "green" && "text-green-400",
-                component.color === "purple" && "text-purple-400",
-                component.color === "yellow" && "text-yellow-400",
-                component.color === "orange" && "text-orange-400",
-                component.color === "indigo" && "text-indigo-400",
-                component.color === "pink" && "text-pink-400"
-              )} />
-            </div>
-            <h3 className="font-bold text-lg mb-2">{component.name}</h3>
-            <p className="text-sm text-slate-400">{component.desc}</p>
-          </motion.div>
-        ))}
-      </div>
-    </motion.section>
-  );
-}
-
-// Technology Stack Section
-function TechnologyStackSection() {
-  const stacks = [
-    {
-      category: "Frontend",
-      technologies: ["Next.js 16", "React 18", "TypeScript", "Tailwind CSS", "Framer Motion", "Zustand"]
-    },
-    {
-      category: "Backend",
-      technologies: ["Next.js API Routes", "Prisma ORM", "PostgreSQL", "Redis", "Node.js"]
-    },
-    {
-      category: "Blockchain",
-      technologies: ["Ethereum L2", "Solidity", "Web3.js", "IPFS", "Hardhat"]
-    },
-    {
-      category: "DevOps",
-      technologies: ["Vercel", "Docker", "GitHub Actions", "CI/CD", "Monitoring"]
-    },
-    {
-      category: "AI/ML",
-      technologies: ["TensorFlow", "Python", "ML Models", "Predictive Analytics"]
-    },
-    {
-      category: "IoT",
-      technologies: ["MQTT", "IoT Protocols", "Sensor Networks", "Data Streaming"]
-    }
-  ];
-
-  return (
-    <motion.section
-      initial={{ opacity: 0, y: 50 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true }}
-      transition={{ duration: 0.6 }}
-      className="space-y-8"
-    >
-      <div className="text-center mb-12">
-        <h2 className="text-5xl font-black mb-4 bg-gradient-to-r from-cyan-400 to-blue-500 bg-clip-text text-transparent">
-          Технологический стек
-        </h2>
-        <p className="text-xl text-slate-400 max-w-3xl mx-auto">
-          Современные технологии для построения масштабируемой и надежной платформы
-        </p>
-      </div>
-
-      <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {stacks.map((stack, i) => (
-          <motion.div
-            key={i}
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ delay: i * 0.1 }}
-            className="glass-card p-6"
-          >
-            <h3 className="font-bold text-xl mb-4 text-cyan-glow">{stack.category}</h3>
-            <div className="flex flex-wrap gap-2">
-              {stack.technologies.map((tech, j) => (
-                <span key={j} className="px-3 py-1 bg-white/5 rounded-lg text-sm text-slate-300">
-                  {tech}
-                </span>
+          {/* Metrics */}
+          {block.details.metrics && (
+            <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+              {block.details.metrics.map((metric, i) => (
+                <motion.div
+                  key={i}
+                  initial={{ opacity: 0, scale: 0.9 }}
+                  whileInView={{ opacity: 1, scale: 1 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: i * 0.1 }}
+                  className="glass-card p-4 text-center"
+                >
+                  <div className={cn(
+                    "text-2xl lg:text-3xl font-black mb-1",
+                    block.color === "cyan" && "text-cyan-400",
+                    block.color === "blue" && "text-blue-400",
+                    block.color === "green" && "text-green-400",
+                    block.color === "purple" && "text-purple-400",
+                    block.color === "yellow" && "text-yellow-400",
+                    block.color === "orange" && "text-orange-400"
+                  )}>
+                    {metric.value}
+                  </div>
+                  <div className="text-xs lg:text-sm text-slate-400">
+                    {metric.label}
+                  </div>
+                </motion.div>
               ))}
             </div>
-          </motion.div>
-        ))}
-      </div>
-    </motion.section>
-  );
-}
+          )}
 
-// Integration Section
-function IntegrationSection() {
-  const integrations = [
-    {
-      name: "Правительственные системы",
-      desc: "Интеграция с государственными системами управления водными ресурсами",
-      icon: Building2
-    },
-    {
-      name: "Международные организации",
-      desc: "Партнерства с UN-Water, World Bank, Green Climate Fund",
-      icon: Globe
-    },
-    {
-      name: "Научные институты",
-      desc: "Интеграция с исследовательскими центрами и университетами",
-      icon: Beaker
-    },
-    {
-      name: "IoT платформы",
-      desc: "Подключение к различным IoT платформам и датчикам",
-      icon: Activity
-    },
-    {
-      name: "Блокчейн сети",
-      desc: "Интеграция с другими блокчейн сетями и протоколами",
-      icon: Network
-    },
-    {
-      name: "Финансовые системы",
-      desc: "Интеграция с платежными системами и банками",
-      icon: Wallet
-    }
-  ];
-
-  return (
-    <motion.section
-      initial={{ opacity: 0, y: 50 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true }}
-      transition={{ duration: 0.6 }}
-      className="space-y-8"
-    >
-      <div className="text-center mb-12">
-        <h2 className="text-5xl font-black mb-4 bg-gradient-to-r from-cyan-400 to-blue-500 bg-clip-text text-transparent">
-          Точки интеграции
-        </h2>
-        <p className="text-xl text-slate-400 max-w-3xl mx-auto">
-          Платформа интегрируется с различными системами и сервисами для расширения функциональности
-        </p>
-      </div>
-
-      <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {integrations.map((integration, i) => (
-          <motion.div
-            key={i}
-            initial={{ opacity: 0, scale: 0.9 }}
-            whileInView={{ opacity: 1, scale: 1 }}
-            viewport={{ once: true }}
-            transition={{ delay: i * 0.1 }}
-            className="glass-card p-6 hover:border-cyan-glow/50 transition-all"
-          >
-            <integration.icon className="text-cyan-glow mb-4" size={32} />
-            <h3 className="font-bold text-lg mb-2">{integration.name}</h3>
-            <p className="text-sm text-slate-400">{integration.desc}</p>
-          </motion.div>
-        ))}
-      </div>
-    </motion.section>
-  );
-}
-
-// Roadmap Sidebar Component
-interface RoadmapSidebarProps {
-  stages: RoadmapStage[];
-  totalCost: number;
-  completedCost: number;
-  inProgressCost: number;
-  scrollProgress: any;
-}
-
-function RoadmapSidebar({ stages, totalCost, completedCost, inProgressCost, scrollProgress }: RoadmapSidebarProps) {
-  const [expandedStage, setExpandedStage] = useState<string | null>(null);
-
-  const progressBarHeight = useTransform(scrollProgress, [0, 1], ['0%', '100%']);
-
-  return (
-    <div className="w-96 bg-black/40 backdrop-blur-xl border-l border-white/10 fixed right-0 top-0 bottom-0 overflow-y-auto">
-      <div className="sticky top-0 bg-black/60 backdrop-blur-xl border-b border-white/10 z-10 p-6">
-        <h2 className="text-2xl font-black mb-4 bg-gradient-to-r from-cyan-400 to-blue-500 bg-clip-text text-transparent">
-          Дорожная карта
-        </h2>
-        
-        {/* Progress Bar */}
-        <div className="relative h-2 bg-white/10 rounded-full mb-4 overflow-hidden">
-          <motion.div
-            className="absolute inset-0 bg-gradient-to-r from-cyan-glow to-blue-500"
-            style={{ height: progressBarHeight }}
+          {/* CTA Button */}
+          <InfoPopup
+            title={block.title}
+            size="xl"
+            content={
+              <DetailedBlockContent block={block} />
+            }
+            trigger={
+              <motion.button
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                className={cn(
+                  "w-full lg:w-auto px-8 py-4 rounded-xl font-bold",
+                  "bg-gradient-to-r from-cyan-glow to-blue-500 text-ocean-deep",
+                  "hover:shadow-[0_0_30px_rgba(34,211,238,0.4)] transition-all",
+                  "flex items-center justify-center gap-2"
+                )}
+              >
+                <Info size={20} />
+                Подробное описание
+              </motion.button>
+            }
           />
         </div>
 
-        {/* Cost Summary */}
-        <div className="space-y-2 text-sm">
-          <div className="flex justify-between">
-            <span className="text-slate-400">Общая стоимость:</span>
-            <span className="font-bold text-cyan-glow">${(totalCost / 1000).toFixed(0)}K</span>
-          </div>
-          <div className="flex justify-between">
-            <span className="text-slate-400">Завершено:</span>
-            <span className="font-bold text-green-400">${(completedCost / 1000).toFixed(0)}K</span>
-          </div>
-          <div className="flex justify-between">
-            <span className="text-slate-400">В процессе:</span>
-            <span className="font-bold text-yellow-400">${(inProgressCost / 1000).toFixed(0)}K</span>
-          </div>
+        {/* Right side - Visualization */}
+        <div className="relative h-[400px] lg:h-[600px] xl:h-[700px]">
+          <BlockVisualization block={block} />
+        </div>
+      </motion.div>
+
+      {/* Scroll indicator */}
+      {index < total - 1 && (
+        <motion.div
+          className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2"
+          animate={{ y: [0, 10, 0] }}
+          transition={{ duration: 2, repeat: Infinity }}
+        >
+          <span className="text-xs text-slate-500 uppercase tracking-widest">Scroll</span>
+          <ArrowRight size={20} className="text-slate-500 rotate-90" />
+        </motion.div>
+      )}
+    </motion.section>
+  );
+}
+
+// Detailed content for popup
+function DetailedBlockContent({ block }: { block: BlockData }) {
+  return (
+    <div className="space-y-6">
+      {/* Overview */}
+      <div className="bg-gradient-to-r rounded-lg p-4 border border-cyan-500/30" style={{
+        background: `linear-gradient(90deg, ${block.color === 'cyan' ? '#22d3ee20' : block.color === 'blue' ? '#3b82f620' : block.color === 'green' ? '#10b98120' : block.color === 'purple' ? '#a855f720' : block.color === 'yellow' ? '#eab30820' : '#f9731620'}, transparent)`
+      }}>
+        <h4 className="font-bold mb-2 text-cyan-400">Обзор</h4>
+        <p className="text-sm text-slate-300 leading-relaxed">{block.details.overview}</p>
+      </div>
+
+      {/* Features */}
+      <div className="bg-white/5 rounded-lg p-4 border border-white/10">
+        <h4 className="font-bold mb-3 text-cyan-400">✨ Основные функции:</h4>
+        <ul className="space-y-2">
+          {block.details.features.map((feature, i) => (
+            <li key={i} className="flex items-start gap-2 text-sm text-slate-300">
+              <CheckCircle2 size={16} className={cn(
+                "flex-shrink-0 mt-0.5",
+                block.color === "cyan" && "text-cyan-400",
+                block.color === "blue" && "text-blue-400",
+                block.color === "green" && "text-green-400",
+                block.color === "purple" && "text-purple-400",
+                block.color === "yellow" && "text-yellow-400",
+                block.color === "orange" && "text-orange-400"
+              )} />
+              <span>{feature}</span>
+            </li>
+          ))}
+        </ul>
+      </div>
+
+      {/* Technologies */}
+      <div className="bg-white/5 rounded-lg p-4 border border-white/10">
+        <h4 className="font-bold mb-3 text-cyan-400">🔧 Технологии:</h4>
+        <div className="flex flex-wrap gap-2">
+          {block.details.technologies.map((tech, i) => (
+            <span key={i} className="px-3 py-1 bg-white/5 rounded-lg text-xs text-slate-300">
+              {tech}
+            </span>
+          ))}
         </div>
       </div>
 
-      <div className="p-6 space-y-6">
-        {stages.map((stage, i) => (
-          <motion.div
-            key={stage.id}
-            initial={{ opacity: 0, x: 50 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ delay: i * 0.1 }}
-            className={cn(
-              "glass-card p-5 cursor-pointer transition-all",
-              expandedStage === stage.id && "border-cyan-glow/50",
-              stage.status === "completed" && "border-green-500/30",
-              stage.status === "in-progress" && "border-yellow-500/30"
-            )}
-            onClick={() => setExpandedStage(expandedStage === stage.id ? null : stage.id)}
-          >
-            {/* Stage Header */}
-            <div className="flex items-start gap-4 mb-3">
-              <div className={cn(
-                "w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0",
-                stage.color === "cyan" && "bg-cyan-500/20",
-                stage.color === "blue" && "bg-blue-500/20",
-                stage.color === "purple" && "bg-purple-500/20",
-                stage.color === "emerald" && "bg-emerald-500/20",
-                stage.color === "yellow" && "bg-yellow-500/20"
-              )}>
-                <stage.icon size={24} className={cn(
-                  stage.color === "cyan" && "text-cyan-400",
-                  stage.color === "blue" && "text-blue-400",
-                  stage.color === "purple" && "text-purple-400",
-                  stage.color === "emerald" && "text-emerald-400",
-                  stage.color === "yellow" && "text-yellow-400"
-                )} />
-              </div>
-              <div className="flex-1 min-w-0">
-                <div className="flex items-center gap-2 mb-1">
-                  <span className="text-xs font-bold text-slate-400">{stage.phase}</span>
-                  {stage.status === "completed" && (
-                    <CheckCircle2 size={14} className="text-green-400" />
-                  )}
-                  {stage.status === "in-progress" && (
-                    <Activity size={14} className="text-yellow-400 animate-pulse" />
-                  )}
-                  {stage.status === "planned" && (
-                    <Clock size={14} className="text-slate-400" />
-                  )}
-                </div>
-                <h3 className="font-bold text-lg mb-1">{stage.title}</h3>
-                <div className="flex items-center gap-3 text-xs text-slate-400">
-                  <div className="flex items-center gap-1">
-                    <Calendar size={12} />
-                    <span>{stage.period}</span>
-                  </div>
-                  <div className="flex items-center gap-1">
-                    <DollarSign size={12} />
-                    <span>${(stage.cost / 1000).toFixed(0)}K</span>
-                  </div>
-                </div>
-              </div>
-            </div>
+      {/* Use Cases */}
+      <div className="bg-white/5 rounded-lg p-4 border border-white/10">
+        <h4 className="font-bold mb-3 text-cyan-400">🎯 Применение:</h4>
+        <ul className="space-y-2">
+          {block.details.useCases.map((useCase, i) => (
+            <li key={i} className="flex items-start gap-2 text-sm text-slate-300">
+              <Target size={16} className={cn(
+                "flex-shrink-0 mt-0.5",
+                block.color === "cyan" && "text-cyan-400",
+                block.color === "blue" && "text-blue-400",
+                block.color === "green" && "text-green-400",
+                block.color === "purple" && "text-purple-400",
+                block.color === "yellow" && "text-yellow-400",
+                block.color === "orange" && "text-orange-400"
+              )} />
+              <span>{useCase}</span>
+            </li>
+          ))}
+        </ul>
+      </div>
 
-            {/* Expanded Milestones */}
-            {expandedStage === stage.id && (
+      {/* Metrics */}
+      {block.details.metrics && (
+        <div className="bg-white/5 rounded-lg p-4 border border-white/10">
+          <h4 className="font-bold mb-3 text-cyan-400">📊 Метрики:</h4>
+          <div className="grid grid-cols-2 gap-4">
+            {block.details.metrics.map((metric, i) => (
+              <div key={i} className="text-center p-3 bg-white/5 rounded-lg">
+                <div className={cn(
+                  "text-2xl font-black mb-1",
+                  block.color === "cyan" && "text-cyan-400",
+                  block.color === "blue" && "text-blue-400",
+                  block.color === "green" && "text-green-400",
+                  block.color === "purple" && "text-purple-400",
+                  block.color === "yellow" && "text-yellow-400",
+                  block.color === "orange" && "text-orange-400"
+                )}>
+                  {metric.value}
+                </div>
+                <div className="text-xs text-slate-400">{metric.label}</div>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+
+// Visualization component
+function BlockVisualization({ block }: { block: BlockData }) {
+  switch (block.visualization) {
+    case "globe":
+      return (
+        <div className="w-full h-full rounded-2xl overflow-hidden glass-card border border-white/10">
+          <Globe3D />
+        </div>
+      );
+    
+    case "layers":
+      return <LayersVisualization block={block} />;
+    
+    case "network":
+      return <NetworkVisualization block={block} />;
+    
+    case "chart":
+      return <ChartVisualization block={block} />;
+    
+    case "diagram":
+      return <DiagramVisualization block={block} />;
+    
+    default:
+      return <DefaultVisualization block={block} />;
+  }
+}
+
+// Layers Visualization
+function LayersVisualization({ block }: { block: BlockData }) {
+  const layers = [
+    { name: "Презентация", color: "bg-blue-500", height: "h-12" },
+    { name: "API Gateway", color: "bg-cyan-500", height: "h-14" },
+    { name: "Бизнес-логика", color: "bg-purple-500", height: "h-16" },
+    { name: "База данных", color: "bg-green-500", height: "h-18" },
+    { name: "Блокчейн", color: "bg-yellow-500", height: "h-20" },
+    { name: "IoT", color: "bg-orange-500", height: "h-18" },
+    { name: "AI/ML", color: "bg-pink-500", height: "h-16" },
+    { name: "Безопасность", color: "bg-red-500", height: "h-14" },
+    { name: "Двойники", color: "bg-indigo-500", height: "h-16" },
+    { name: "DAO", color: "bg-teal-500", height: "h-18" },
+    { name: "Токеномика", color: "bg-amber-500", height: "h-20" },
+    { name: "Интеграции", color: "bg-rose-500", height: "h-14" },
+  ];
+
+  return (
+    <div className="w-full h-full rounded-2xl overflow-hidden glass-card border border-white/10 p-6 flex flex-col justify-center gap-2">
+      {layers.map((layer, i) => (
+        <motion.div
+          key={i}
+          initial={{ opacity: 0, x: -50 }}
+          whileInView={{ opacity: 1, x: 0 }}
+          viewport={{ once: true }}
+          transition={{ delay: i * 0.05 }}
+          className={cn("rounded-lg flex items-center px-4 text-white font-medium text-sm", layer.color, layer.height)}
+          style={{ marginLeft: `${i * 8}px` }}
+        >
+          {layer.name}
+        </motion.div>
+      ))}
+    </div>
+  );
+}
+
+// Network Visualization
+function NetworkVisualization({ block }: { block: BlockData }) {
+  return (
+    <div className="w-full h-full rounded-2xl overflow-hidden glass-card border border-white/10 p-6 relative">
+      <div className="absolute inset-0 flex items-center justify-center">
+        <div className="relative w-full h-full">
+          {/* Central node */}
+          <motion.div
+            animate={{ scale: [1, 1.1, 1] }}
+            transition={{ duration: 2, repeat: Infinity }}
+            className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-20 h-20 bg-cyan-500/30 rounded-full border-2 border-cyan-400 flex items-center justify-center"
+          >
+            <block.icon size={32} className="text-cyan-400" />
+          </motion.div>
+          
+          {/* Connected nodes */}
+          {[0, 1, 2, 3, 4, 5].map((i) => {
+            const angle = (i * 60) * Math.PI / 180;
+            const radius = 150;
+            const x = Math.cos(angle) * radius;
+            const y = Math.sin(angle) * radius;
+            
+            return (
               <motion.div
-                initial={{ opacity: 0, height: 0 }}
-                animate={{ opacity: 1, height: "auto" }}
-                exit={{ opacity: 0, height: 0 }}
-                className="mt-4 pt-4 border-t border-white/10"
+                key={i}
+                initial={{ opacity: 0, scale: 0 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ delay: i * 0.2 }}
+                className="absolute top-1/2 left-1/2 w-12 h-12 bg-blue-500/30 rounded-full border border-blue-400 flex items-center justify-center"
+                style={{
+                  transform: `translate(calc(-50% + ${x}px), calc(-50% + ${y}px))`
+                }}
               >
-                <h4 className="font-bold text-sm mb-3 text-cyan-glow">Основные этапы:</h4>
-                <ul className="space-y-2">
-                  {stage.milestones.map((milestone, j) => (
-                    <li key={j} className="flex items-start gap-2 text-sm text-slate-300">
-                      <CheckCircle2 size={14} className={cn(
-                        "mt-0.5 flex-shrink-0",
-                        stage.color === "cyan" && "text-cyan-400",
-                        stage.color === "blue" && "text-blue-400",
-                        stage.color === "purple" && "text-purple-400",
-                        stage.color === "emerald" && "text-emerald-400",
-                        stage.color === "yellow" && "text-yellow-400"
-                      )} />
-                      <span>{milestone}</span>
-                    </li>
-                  ))}
-                </ul>
+                <div className="w-2 h-2 bg-blue-400 rounded-full" />
               </motion.div>
+            );
+          })}
+          
+          {/* Connection lines */}
+          <svg className="absolute inset-0 w-full h-full">
+            {[0, 1, 2, 3, 4, 5].map((i) => {
+              const angle = (i * 60) * Math.PI / 180;
+              const radius = 150;
+              const x = Math.cos(angle) * radius;
+              const y = Math.sin(angle) * radius;
+              
+              return (
+                <motion.line
+                  key={i}
+                  initial={{ pathLength: 0 }}
+                  animate={{ pathLength: 1 }}
+                  transition={{ delay: i * 0.2, duration: 0.5 }}
+                  x1="50%"
+                  y1="50%"
+                  x2={`calc(50% + ${x}px)`}
+                  y2={`calc(50% + ${y}px)`}
+                  stroke="rgba(34, 211, 238, 0.3)"
+                  strokeWidth="2"
+                />
+              );
+            })}
+          </svg>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// Chart Visualization
+function ChartVisualization({ block }: { block: BlockData }) {
+  const data = [65, 72, 68, 80, 75, 85, 90];
+  const maxValue = Math.max(...data);
+  
+  return (
+    <div className="w-full h-full rounded-2xl overflow-hidden glass-card border border-white/10 p-6">
+      <div className="h-full flex items-end justify-center gap-2">
+        {data.map((value, i) => (
+          <motion.div
+            key={i}
+            initial={{ height: 0 }}
+            whileInView={{ height: `${(value / maxValue) * 100}%` }}
+            viewport={{ once: true }}
+            transition={{ delay: i * 0.1, duration: 0.5 }}
+            className={cn(
+              "flex-1 rounded-t-lg",
+              block.color === "cyan" && "bg-gradient-to-t from-cyan-500/50 to-cyan-400/30",
+              block.color === "blue" && "bg-gradient-to-t from-blue-500/50 to-blue-400/30",
+              block.color === "green" && "bg-gradient-to-t from-green-500/50 to-green-400/30",
+              block.color === "purple" && "bg-gradient-to-t from-purple-500/50 to-purple-400/30",
+              block.color === "yellow" && "bg-gradient-to-t from-yellow-500/50 to-yellow-400/30",
+              block.color === "orange" && "bg-gradient-to-t from-orange-500/50 to-orange-400/30"
             )}
+          />
+        ))}
+      </div>
+    </div>
+  );
+}
+
+// Diagram Visualization
+function DiagramVisualization({ block }: { block: BlockData }) {
+  return (
+    <div className="w-full h-full rounded-2xl overflow-hidden glass-card border border-white/10 p-6">
+      <div className="h-full flex flex-col justify-center gap-4">
+        {[
+          { label: "Водные объекты", value: 500, color: "cyan" },
+          { label: "Инфраструктура", value: 200, color: "blue" },
+          { label: "NFT активы", value: 1000, color: "purple" },
+          { label: "Датчики", value: 2000, color: "green" },
+        ].map((item, i) => (
+          <motion.div
+            key={i}
+            initial={{ opacity: 0, x: -50 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: i * 0.1 }}
+            className="space-y-2"
+          >
+            <div className="flex justify-between text-sm">
+              <span className="text-slate-300">{item.label}</span>
+              <span className={cn(
+                "font-bold",
+                item.color === "cyan" && "text-cyan-400",
+                item.color === "blue" && "text-blue-400",
+                item.color === "green" && "text-green-400",
+                item.color === "purple" && "text-purple-400",
+                item.color === "yellow" && "text-yellow-400",
+                item.color === "orange" && "text-orange-400"
+              )}>{item.value}+</span>
+            </div>
+            <div className="h-2 bg-white/10 rounded-full overflow-hidden">
+              <motion.div
+                initial={{ width: 0 }}
+                whileInView={{ width: "100%" }}
+                viewport={{ once: true }}
+                transition={{ delay: i * 0.1 + 0.3, duration: 0.5 }}
+                className={cn(
+                  "h-full rounded-full",
+                  item.color === "cyan" && "bg-cyan-500",
+                  item.color === "blue" && "bg-blue-500",
+                  item.color === "green" && "bg-green-500",
+                  item.color === "purple" && "bg-purple-500",
+                  item.color === "yellow" && "bg-yellow-500",
+                  item.color === "orange" && "bg-orange-500"
+                )}
+                style={{ width: `${Math.min((item.value / 2000) * 100, 100)}%` }}
+              />
+            </div>
           </motion.div>
         ))}
       </div>
@@ -911,3 +869,34 @@ function RoadmapSidebar({ stages, totalCost, completedCost, inProgressCost, scro
   );
 }
 
+// Default Visualization
+function DefaultVisualization({ block }: { block: BlockData }) {
+  return (
+    <div className="w-full h-full rounded-2xl overflow-hidden glass-card border border-white/10 p-6 flex items-center justify-center">
+      <motion.div
+        animate={{ rotate: 360 }}
+        transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
+        className={cn(
+          "w-32 h-32 lg:w-48 lg:h-48 rounded-full border-4",
+          block.color === "cyan" && "border-cyan-500/30",
+          block.color === "blue" && "border-blue-500/30",
+          block.color === "green" && "border-green-500/30",
+          block.color === "purple" && "border-purple-500/30",
+          block.color === "yellow" && "border-yellow-500/30",
+          block.color === "orange" && "border-orange-500/30"
+        )}
+      >
+        <div className="w-full h-full flex items-center justify-center">
+          <block.icon size={64} className={cn(
+            block.color === "cyan" && "text-cyan-400",
+            block.color === "blue" && "text-blue-400",
+            block.color === "green" && "text-green-400",
+            block.color === "purple" && "text-purple-400",
+            block.color === "yellow" && "text-yellow-400",
+            block.color === "orange" && "text-orange-400"
+          )} />
+        </div>
+      </motion.div>
+    </div>
+  );
+}
