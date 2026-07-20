@@ -160,6 +160,7 @@ export default function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
                     <Section title="ИНСТРУМЕНТЫ">
                         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '6px' }}>
                             <MenuItem href="/ai" icon={<Brain size={16} />} label="AI" onClose={onClose} compact />
+                            <MenuItem href="/planet-research" icon={<Brain size={16} />} label="ИИ-Симулятор" onClose={onClose} compact badge="New" />
                             <MenuItem href="/security" icon={<Shield size={16} />} label="Security" onClose={onClose} compact />
                             <MenuItem href="/education" icon={<BookOpen size={16} />} label="Education" onClose={onClose} compact />
                             <MenuItem href="/gaming" icon={<Gamepad2 size={16} />} label="Gaming" onClose={onClose} compact />
