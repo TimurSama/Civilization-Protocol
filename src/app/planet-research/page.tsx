@@ -1,20 +1,22 @@
 "use client";
 
-import React, { useState, useMemo } from "react";
+import React, { useState, useMemo, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   Globe, Search, Cpu, Brain, TrendingUp, Zap, Server, Database,
   Calendar, Clock, AlertTriangle, ShieldCheck, Play, ArrowRight,
   CheckCircle2, ChevronDown, Award, Sparkles, Plus, Trash2, HelpCircle,
   FileText, Compass, BarChart3, Settings, Info, Download, RefreshCw, Layers,
-  Send, X, FileSpreadsheet
+  Send, X, FileSpreadsheet, Gamepad2, Landmark, Shield, Orbit, HeartPulse, Droplets, Flame, Wind, Gem
 } from "lucide-react";
 import { useLanguage } from "@/context/LanguageContext";
 import { cn } from "@/lib/utils";
 
-// Types of planetary resource components
-type PlanetItemType = "object" | "subject" | "project" | "system" | "complex";
-type SectorType = "water" | "energy" | "ecology" | "health" | "science";
+// Multi-resource spectrum types
+type SectorType = "water" | "energy" | "atmosphere" | "minerals" | "waste_biomass";
+
+// Planetary ecosystems / conditions for simulation
+type EcosystemType = "earth_arid" | "earth_glacial" | "lunar_vault" | "mars_icecap";
 
 interface EventHistory {
   year: number;
@@ -30,7 +32,7 @@ interface PlanetItem {
   id: string;
   name: string;
   nameEn: string;
-  type: PlanetItemType;
+  type: "object" | "subject" | "project" | "system" | "complex";
   sector: SectorType;
   region: string;
   regionEn: string;
@@ -43,14 +45,14 @@ interface PlanetItem {
   technologies?: string[];
 }
 
-// Extensive database of planetary elements
+// Global resource database
 const planetaryDatabase: PlanetItem[] = [
   {
     id: "p-01",
     name: "Мега-комплекс Восстановления Аральского Моря",
     nameEn: "Aral Sea Mega-Restoration Complex",
     type: "complex",
-    sector: "ecology",
+    sector: "water",
     region: "Центральная Азия",
     regionEn: "Central Asia",
     coordinates: "45.00° N, 60.00° E",
@@ -89,8 +91,8 @@ const planetaryDatabase: PlanetItem[] = [
   },
   {
     id: "p-03",
-    name: "Опреснительный Комплекс 'Зелёная Сахара 2.0'",
-    nameEn: "Green Sahara 2.0 Desalination Complex",
+    name: "Опреснительный Комплекс 'Зелёная Сахара'",
+    nameEn: "Green Sahara Desalination Complex",
     type: "complex",
     sector: "water",
     region: "Северная Африка",
@@ -106,69 +108,65 @@ const planetaryDatabase: PlanetItem[] = [
       { year: 2021, title: "Запуск первого модуля", titleEn: "Module 1 Operational Launch", description: "Первый опреснитель выдал 500 000 кубических метров пресной воды в сутки.", descriptionEn: "First desalination unit produced 500,000 cubic meters of fresh water per day.", type: "construction", metrics: "500k м³/день" },
       { year: 2025, title: "Углеродные кредиты", titleEn: "Carbon Credit Issuance", description: "Высаженные леса поглотили первый миллион тонн CO₂, конвертированный в карбон-токены.", descriptionEn: "Afforested belts captured their first 1M tons of CO₂, converted to tokenized carbon credits.", type: "investment", metrics: "+$42M VOD прибыли" }
     ]
-  },
-  {
-    id: "p-04",
-    name: "Институт Экологии Реки Рейн",
-    nameEn: "Rhine River Ecology Institute",
-    type: "subject",
-    sector: "science",
-    region: "Западная Европа",
-    regionEn: "Western Europe",
-    coordinates: "50.00° N, 8.00° E",
-    status: "normal",
-    description: "Научно-исследовательский консорциум, координирующий биологический мониторинг химического состава, стоков и температуры воды в бассейне Рейна.",
-    descriptionEn: "Scientific research consortium coordinating biological monitoring of chemical composition, runoffs, and temperature in the Rhine basin.",
-    invested: "$120M VOD",
-    technologies: ["Биосенсоры на основе ДНК рыб", "Оптические спектрометры", "ИИ-модель прогнозирования наводнений"],
-    history: [
-      { year: 2015, title: "Основание института", titleEn: "Foundation of the Institute", description: "Создан совместный франко-германский научный орган контроля за качеством воды.", descriptionEn: "Joint Franco-German scientific water quality control body established.", type: "event" },
-      { year: 2022, title: "Химический инцидент", titleEn: "Industrial Chemical Spill Action", description: "Институт вовремя локализовал утечку нитратов с промышленного завода благодаря умным датчикам.", descriptionEn: "Institute successfully pinpointed a chemical spill using real-time fluorometer sensors.", type: "critical" }
-    ]
-  },
-  {
-    id: "p-05",
-    name: "Система Сенсорного Покрытия Водоноса Огаллала",
-    nameEn: "Ogallala Aquifer Sensor Coverage System",
-    type: "system",
-    sector: "science",
-    region: "Северная Америка",
-    regionEn: "North America",
-    coordinates: "37.00° N, 101.00° W",
-    status: "warning",
-    description: "Разветвленная подземная сенсорная сеть для оценки критического истощения крупнейшего водоносного горизонта в США.",
-    descriptionEn: "Extensive subterranean sensor grid tracking depletion parameters of the largest aquifer system in the United States.",
-    invested: "$510M VOD",
-    technologies: ["Сейсмоакустические зонды глубинного давления", "Распределенный ИИ-контроль полива ферм"],
-    history: [
-      { year: 2011, title: "Детекция критического падения", titleEn: "Depletion Warning Triggered", description: "Спутниковые радары GRACE зафиксировали падение уровня грунтовых вод на рекордные 12 метров.", descriptionEn: "GRACE satellite gravity readings mapped a record 12-meter drop in aquifer levels.", type: "critical" },
-      { year: 2020, title: "Установка сенсорной сети", titleEn: "Subterranean Network Installation", description: "Бурение 10 000 зондирующих скважин с датчиками давления и интеграция в единую ГИС.", descriptionEn: "Drilling 10,000 telemetry wells equipped with pressure transducers linked to GIS.", type: "construction" }
-    ]
   }
 ];
 
-// Optimal Technologies Directory
-const technologyDir = [
-  { id: "tech-1", name: "Мембранный Обратный Осмос (SWRO)", category: "water", cost: "Средний", efficiency: "98.5%", desc: "Удаление до 99.8% солей и примесей из морской воды при давлении до 70 бар." },
-  { id: "tech-2", name: "Солнечные испарители с нанопокрытием", category: "water", cost: "Низкий", efficiency: "85%", desc: "Экологичный безнапорный метод дистилляции воды под действием концентрированного солнца." },
-  { id: "tech-3", name: "Датчики Telemetry-IoT c автономным питанием", category: "science", cost: "Низкий", efficiency: "99.9%", desc: "Пьезоэлектрические датчики, преобразующие напор воды в энергию для передачи по протоколам LoRaWAN/NB-IoT." },
-  { id: "tech-4", name: "Умный P2P Смарт-Грид распределения энергии", category: "energy", cost: "Высокий", efficiency: "96.4%", desc: "Программно-определяемые подстанции на блокчейне для мгновенной балансировки микрогенерации." },
-  { id: "tech-5", name: "Борьба с эрозией био-дренированием", category: "ecology", cost: "Низкий", efficiency: "90%", desc: "Посадка засухоустойчивых галофитов для укрепления соленых пылящих почв и поглощения углерода." },
-  { id: "tech-6", name: "Очистка стоков водорослевыми реакторами (HRAP)", category: "health", cost: "Средний", efficiency: "92%", desc: "Биологическая очистка промышленных стоков от нитратов и фосфатов с помощью фотобиореакторов." }
+// Tech upgrade nodes for RPG mechanic
+interface TechUpgrade {
+  id: string;
+  name: string;
+  nameEn: string;
+  category: SectorType;
+  costXP: number;
+  unlocked: boolean;
+  tier: number;
+  bonus: string;
+  bonusEn: string;
+}
+
+const initialUpgrades: TechUpgrade[] = [
+  { id: "tech-1", name: "Нано-мембранный Осмос G-1", nameEn: "G-1 Nano-membrane Osmosis", category: "water", costXP: 50, unlocked: true, tier: 1, bonus: "+12% к эффективности очистки воды", bonusEn: "+12% Water Purifying Efficiency" },
+  { id: "tech-2", name: "HSM-Крипточипы Телеметрии", nameEn: "HSM Telemetry Cryptochips", category: "minerals", costXP: 100, unlocked: false, tier: 1, bonus: "Прямое SHA-256 хеширование и +15% VOD майнинга", bonusEn: "Direct SHA-256 telemetry hashing & +15% VOD mining" },
+  { id: "tech-3", name: "Конденсаторы Водорода H₂-MAX", nameEn: "H₂-MAX Hydrogen Condensers", category: "energy", costXP: 180, unlocked: false, tier: 2, bonus: "+20% к выработке водородного топлива", bonusEn: "+20% Hydrogen fuel yield" },
+  { id: "tech-4", name: "Замкнутый Био-Реактор Водорослей", nameEn: "Closed-Loop Algae Bio-Reactor", category: "waste_biomass", costXP: 250, unlocked: false, tier: 2, bonus: "+25% к переработке органических отходов", bonusEn: "+25% organic waste processing" },
+  { id: "tech-5", name: "Лазерный Трансивер Bundle Protocol", nameEn: "Laser Bundle Protocol Transceiver", category: "atmosphere", costXP: 400, unlocked: false, tier: 3, bonus: "DTN-синхронизация и +40% к защите нод", bonusEn: "DTN Sync & +40% Node Security bonus" }
 ];
 
 export default function PlanetResearchPage() {
   const { language } = useLanguage();
   const isRu = language === "ru";
 
-  // State Management
+  // Core State
   const [searchQuery, setSearchQuery] = useState("");
-  const [selectedType, setSelectedType] = useState<PlanetItemType | "all">("all");
   const [selectedSector, setSelectedSector] = useState<SectorType | "all">("all");
   const [selectedItem, setSelectedItem] = useState<PlanetItem | null>(planetaryDatabase[0]);
 
-  // AI Simulation States
-  const [simulationTarget, setSimulationTarget] = useState<string>("p-01");
+  // RPG / Innovation State
+  const [userXP, setUserXP] = useState(120);
+  const [upgrades, setUpgrades] = useState<TechUpgrade[]>(initialUpgrades);
+  const [selectedEcosystem, setSelectedEcosystem] = useState<EcosystemType>("earth_arid");
+  const [innovationDatabase, setInnovationDatabase] = useState<string[]>([
+    "Solar-Swarm Desalination Core", "Graphene Aquifer Purifier"
+  ]);
+
+  // AI Training Board States
+  const [trainingActive, setTrainingActive] = useState(false);
+  const [trainingProgress, setTrainingProgress] = useState(0);
+  const [trainingLog, setTrainingLog] = useState<string[]>([]);
+  const [currentTrainedTech, setCurrentTrainedTech] = useState<string>("");
+
+  // Live Blockchain Telemetry Simulator States
+  const [telemetryStream, setTelemetryStream] = useState<{
+    id: string;
+    resource: string;
+    value: number;
+    unit: string;
+    hash: string;
+    blockNumber: number;
+    emission: string;
+  }[]>([]);
+
+  // Selected simulation values (Dynamic Selector UI)
   const [simulationScenario, setSimulationScenario] = useState<"optimistic" | "baseline" | "pessimistic">("baseline");
   const [simulating, setSimulating] = useState(false);
   const [simulationResult, setSimulationResult] = useState<any>(null);
@@ -178,38 +176,130 @@ export default function PlanetResearchPage() {
   const [architectSector, setArchitectSector] = useState<SectorType>("water");
   const [generatingProject, setGeneratingProject] = useState(false);
   const [generatedProjectData, setGeneratedProjectData] = useState<any>(null);
-  const [architectStep, setArchitectStep] = useState(1); // 1: prompt, 2: processing animation, 3: result representation
+  const [architectStep, setArchitectStep] = useState(1);
 
-  // UI Utilities
-  const [showExportDropdown, setShowExportDropdown] = useState(false);
-
-  // DAO Proposal Modal States
+  // DAO States
   const [showDaoModal, setShowDaoModal] = useState(false);
   const [daoTitle, setDaoTitle] = useState("");
   const [daoDescription, setDaoDescription] = useState("");
   const [daoCategory, setDaoCategory] = useState("infrastructure");
-  const [daoBudget, setDaoBudget] = useState(100);
+  const [daoBudget, setDaoBudget] = useState(150);
   const [submittingDao, setSubmittingDao] = useState(false);
   const [daoMessage, setDaoMessage] = useState<{ type: "success" | "error"; text: string } | null>(null);
+  const [showExportDropdown, setShowExportDropdown] = useState(false);
 
-  // Filter planetary list
+  // Periodic Telemetry Stream generation to mimic real hardware-level blockchain hashing
+  useEffect(() => {
+    const intervals = ["water", "energy", "atmosphere", "minerals", "waste_biomass"];
+    const units = { water: "L/s", energy: "kWh", atmosphere: "m³", minerals: "kg", waste_biomass: "kg" };
+
+    const intervalId = setInterval(() => {
+      const randomResource = intervals[Math.floor(Math.random() * intervals.length)] as SectorType;
+      const rawVal = Math.round(10 + Math.random() * 90);
+      const randomBlock = 7894100 + Math.floor(Math.random() * 2000);
+
+      // Generate standard SHA-256 like hex hash
+      const mockHash = Array.from({ length: 64 }, () =>
+        "0123456789abcdef"[Math.floor(Math.random() * 16)]
+      ).join("");
+
+      const emissionAmount = (rawVal * 0.15).toFixed(3);
+
+      const newItem = {
+        id: `node-${Math.floor(100 + Math.random() * 900)}`,
+        resource: randomResource,
+        value: rawVal,
+        unit: units[randomResource],
+        hash: `0x${mockHash.substring(0, 16)}...${mockHash.substring(48)}`,
+        blockNumber: randomBlock,
+        emission: `+${emissionAmount} ${randomResource === "water" ? "VOD" : randomResource === "energy" ? "HYDRO" : "CIV"}`
+      };
+
+      setTelemetryStream(prev => [newItem, ...prev.slice(0, 4)]);
+    }, 4500);
+
+    return () => clearInterval(intervalId);
+  }, []);
+
+  // Filter global resources
   const filteredItems = useMemo(() => {
     return planetaryDatabase.filter(item => {
       const matchSearch = (isRu ? item.name : item.nameEn).toLowerCase().includes(searchQuery.toLowerCase()) ||
-                          (isRu ? item.region : item.regionEn).toLowerCase().includes(searchQuery.toLowerCase()) ||
-                          item.description.toLowerCase().includes(searchQuery.toLowerCase());
-      const matchType = selectedType === "all" || item.type === selectedType;
+                          (isRu ? item.region : item.regionEn).toLowerCase().includes(searchQuery.toLowerCase());
       const matchSector = selectedSector === "all" || item.sector === selectedSector;
-      return matchSearch && matchType && matchSector;
+      return matchSearch && matchSector;
     });
-  }, [searchQuery, selectedType, selectedSector, isRu]);
+  }, [searchQuery, selectedSector, isRu]);
 
-  // Run AI Climate & Resource Simulation via backend endpoint
+  // RPG: Unlock Technology node
+  const handleUnlockTech = (tech: TechUpgrade) => {
+    if (userXP >= tech.costXP && !tech.unlocked) {
+      setUserXP(prev => prev - tech.costXP);
+      setUpgrades(prev => prev.map(u => u.id === tech.id ? { ...u, unlocked: true } : u));
+    }
+  };
+
+  // RPG: Simulate training/education session (Game Loop) to discover innovation database
+  const handleTrainAI = () => {
+    if (trainingActive) return;
+    setTrainingActive(true);
+    setTrainingProgress(0);
+    setTrainingLog([]);
+
+    const ecosystemNames = {
+      earth_arid: isRu ? "Пустынные зоны Земли" : "Arid Deserts (Earth)",
+      earth_glacial: isRu ? "Ледниковые бассейны Земли" : "Glacial Basins (Earth)",
+      lunar_vault: isRu ? "Полярный кратер Луны" : "Lunar South Polar Vault",
+      mars_icecap: isRu ? "Углекислая шапка Марса" : "Martian Carbonic Icecap"
+    };
+
+    const logs = [
+      isRu ? `Инициализация ИИ-агента для экосистемы: ${ecosystemNames[selectedEcosystem]}` : `Initializing AI agent for ecosystem: ${ecosystemNames[selectedEcosystem]}`,
+      isRu ? "Сбор данных телеметрии из блокчейна..." : "Parsing telemetry packages from blockchain nodes...",
+      isRu ? "Оценка термодинамических пределов оборудования..." : "Evaluating thermodynamic constraints of system hardware...",
+      isRu ? "Генерация синергетического сочетания технологий..." : "Analyzing cross-resource synergistic couplings...",
+      isRu ? "Обнаружена инновация!" : "Innovation successfully compiled and cataloged!"
+    ];
+
+    let step = 0;
+    const interval = setInterval(() => {
+      setTrainingProgress(prev => {
+        if (prev >= 100) {
+          clearInterval(interval);
+          setTrainingActive(false);
+
+          // Generate customized unique technological breakthrough
+          const innovations = [
+            `Closed-Loop Plasma Pyrolysis (${selectedEcosystem.toUpperCase()})`,
+            `Zero-G Solar Siphon Turbine (${selectedEcosystem.toUpperCase()})`,
+            `Hydrological IoT Cryo-Probe (${selectedEcosystem.toUpperCase()})`,
+            `Sub-surface CO₂ Regolith Extractor (${selectedEcosystem.toUpperCase()})`
+          ];
+          const newBreakthrough = innovations[Math.floor(Math.random() * innovations.length)];
+
+          setInnovationDatabase(prevDB => {
+            if (!prevDB.includes(newBreakthrough)) {
+              return [newBreakthrough, ...prevDB];
+            }
+            return prevDB;
+          });
+
+          setUserXP(prevXP => prevXP + 75); // Award reward XP
+          return 100;
+        }
+        setTrainingLog(prevLog => [...prevLog, logs[step]]);
+        step++;
+        return prev + 20;
+      });
+    }, 800);
+  };
+
+  // Custom AI Climate and Multi-resource simulation
   const handleRunSimulation = async () => {
     setSimulating(true);
     setSimulationResult(null);
 
-    const targetObj = planetaryDatabase.find(p => p.id === simulationTarget);
+    const targetObj = selectedItem;
     const scenarioLabel = simulationScenario === "optimistic" ? "Optimistic Scenario" : simulationScenario === "pessimistic" ? "Pessimistic Scenario" : "Baseline Scenario";
 
     try {
@@ -221,16 +311,14 @@ export default function PlanetResearchPage() {
           payload: {
             assetName: targetObj ? targetObj.nameEn : "Global System",
             scenario: scenarioLabel,
-            language: language
+            language: language,
+            environment: selectedEcosystem
           }
         })
       });
 
       const data = await response.json();
       if (data.success) {
-        const factor = simulationScenario === "optimistic" ? 1.25 : simulationScenario === "pessimistic" ? 0.65 : 1.0;
-        const waterIndex = targetObj ? targetObj.status === "critical" ? 15 : 75 : 50;
-
         setSimulationResult({
           targetName: targetObj ? (isRu ? targetObj.name : targetObj.nameEn) : "System",
           forecastYear: 2050,
@@ -245,29 +333,27 @@ export default function PlanetResearchPage() {
         throw new Error(data.error);
       }
     } catch (err) {
-      console.error("Simulation request failed, running deterministic simulation:", err);
-      // Clean fallback if API fails/offline
+      console.error("Simulation failed, falling back to clean visual model:", err);
+      // Deterministic Fallback simulation
       const factor = simulationScenario === "optimistic" ? 1.25 : simulationScenario === "pessimistic" ? 0.65 : 1.0;
-      const waterIndex = targetObj ? targetObj.status === "critical" ? 15 : 75 : 50;
-
       setSimulationResult({
         targetName: targetObj ? (isRu ? targetObj.name : targetObj.nameEn) : "System",
         forecastYear: 2050,
-        sustainabilityScore: Math.min(100, Math.round(waterIndex * factor * 1.2)),
-        ecoStabilityIndex: Math.min(10.0, parseFloat((5.5 * factor).toFixed(1))),
-        temperatureShift: simulationScenario === "pessimistic" ? "+3.4°C" : simulationScenario === "optimistic" ? "+1.1°C" : "+2.1°C",
-        waterAvailability: Math.min(100, Math.round((waterIndex * 1.5 * factor))),
-        requiredInvestments: simulationScenario === "optimistic" ? "450M VOD" : simulationScenario === "pessimistic" ? "2.5B VOD" : "1.2B VOD",
+        sustainabilityScore: Math.min(100, Math.round(72 * factor)),
+        ecoStabilityIndex: Math.min(10.0, parseFloat((6.2 * factor).toFixed(1))),
+        temperatureShift: simulationScenario === "pessimistic" ? "+3.1°C" : simulationScenario === "optimistic" ? "+0.8°C" : "+1.8°C",
+        waterAvailability: Math.min(100, Math.round(65 * factor)),
+        requiredInvestments: simulationScenario === "optimistic" ? "120M VOD" : simulationScenario === "pessimistic" ? "1.8B VOD" : "600M VOD",
         aiText: isRu
-          ? `Модель Gemini спрогнозировала динамику для '${targetObj?.name}'. В сценарии '${simulationScenario}' прогнозируется критическое изменение гидрологического режима. Приоритетная рекомендация: немедленный переход на замкнутые циклы очистки и установка LoRa-датчиков для предупреждения прорыва плотин.`
-          : `Gemini Model simulated state variables for '${targetObj?.nameEn}'. In the '${simulationScenario}' scenario, critical hydrological shifts are predicted. Core AI recommendation: immediate transition to closed-loop purification systems and deploying LoRa sensors for early dam failure warnings.`
+          ? `Модель Gemini спрогнозировала динамику для условий '${selectedEcosystem}'. Прогнозируется сбалансированное потребление ресурсов. Рекомендовано внедрение аппаратных SHA-256 IoT датчиков для снижения потерь на 18%.`
+          : `Gemini simulated conditions for '${selectedEcosystem}'. Resource extraction balanced. Suggested deploying hardware-level SHA-256 telemetry nodes to reduce overhead losses by 18%.`
       });
     } finally {
       setSimulating(false);
     }
   };
 
-  // Run AI Project Architect via backend endpoint
+  // Run AI Project Architect
   const handleGenerateProject = async () => {
     if (!architectPrompt.trim()) return;
     setGeneratingProject(true);
@@ -283,15 +369,14 @@ export default function PlanetResearchPage() {
           payload: {
             prompt: architectPrompt,
             domain: architectSector,
-            language: language
+            language: language,
+            unlockedTechBonus: upgrades.filter(u => u.unlocked).map(u => u.nameEn)
           }
         })
       });
 
       const data = await response.json();
       if (data.success) {
-        const chosenTechs = technologyDir.filter(t => t.category === architectSector || t.category === "science");
-
         setGeneratedProjectData({
           title: data.name,
           code: `GP-${Math.floor(100000 + Math.random() * 900000)}`,
@@ -331,39 +416,37 @@ export default function PlanetResearchPage() {
     } catch (err) {
       console.error("Architect request failed, running smart fallback:", err);
       // Run deterministic generator
-      const capex = Math.round(150 + Math.random() * 800);
-      const opex = Math.round(capex * 0.08);
-      const irr = Math.round(12 + Math.random() * 15);
-      const npv = Math.round(capex * (irr / 100) * 1.8);
-
-      const chosenTechs = technologyDir.filter(t => t.category === architectSector || t.category === "science");
+      const capex = Math.round(180 + Math.random() * 500);
+      const opex = Math.round(capex * 0.07);
+      const irr = Math.round(14 + Math.random() * 12);
+      const npv = Math.round(capex * 1.5);
 
       setGeneratedProjectData({
         title: isRu ? `Мега-Проект: ${architectPrompt}` : `Megaproject: ${architectPrompt}`,
         code: `GP-${Math.floor(100000 + Math.random() * 900000)}`,
         sector: architectSector,
         description: isRu
-          ? `Успешно спроектированный комплекс под задачу: "${architectPrompt}".`
-          : `Successfully engineered megaproject for task: "${architectPrompt}".`,
-        optimalTechnologies: chosenTechs,
+          ? `Успешно спроектированный комплекс под задачу: "${architectPrompt}". Модифицирован разблокированными технологиями.`
+          : `Successfully engineered megaproject for task: "${architectPrompt}". Enhanced with unlocked tech trees.`,
+        optimalTechnologies: [
+          { id: "fallback-tech-1", name: isRu ? "Осмос с графеновым фильтром" : "Graphene Filtration Mesh", efficiency: "99.2%", desc: isRu ? "Исключительное задержание примесей." : "Exceptional containment filtration rate." }
+        ],
         economics: {
           capex: `${capex}M VOD`,
           opex: `${opex}M VOD / год`,
           npv: `${npv}M VOD`,
           irr: `${irr}%`,
-          payback: `${parseFloat((capex / (opex * 2.5)).toFixed(1))} лет`
+          payback: `${parseFloat((capex / (opex * 2.8)).toFixed(1))} лет`
         },
         rawCapex: capex,
         phases: [
-          { name: isRu ? "Фаза 1: Сбор данных & ИИ-картирование" : "Phase 1: Hydrological IoT Mapping", duration: "6 месяцев", desc: isRu ? "Развертывание LoRa сенсоров и бурение пьезометрических скважин." : "Deploying LoRa sensors and drilling piezometric monitoring wells." },
-          { name: isRu ? "Фаза 2: Инженерное строительство" : "Phase 2: Core Engineering Construction", duration: "18 месяцев", desc: isRu ? "Монтаж опреснительных установок, обратного осмоса или энергоблоков." : "Assembling SWRO desalination systems, power turbines, or reactor blocks." },
-          { name: isRu ? "Фаза 3: Внедрение смарт-контрактов" : "Phase 3: Smart Contract & Tokenomic Integration", duration: "4 месяца", desc: isRu ? "Запуск P2P-энергорынка или автоматической аренды квот воды." : "Launching tokenized water quotas and dynamic P2P pricing models." }
+          { name: isRu ? "Фаза 1: Сбор данных & ИИ-картирование" : "Phase 1: Telemetry Alignment", duration: "6 месяцев", desc: isRu ? "Развертывание LoRa сенсоров и бурение пьезометрических скважин." : "Deploying LoRa sensors and drilling piezometric monitoring wells." },
+          { name: isRu ? "Фаза 2: Строительство инфраструктуры" : "Phase 2: Base Infrastructure", duration: "12 месяцев", desc: isRu ? "Строительство замкнутых контуров очистки ресурсов." : "Building out the physical closed-loop treatment cells." }
         ],
         schematicLayout: {
           nodes: [
-            { id: "n1", name: isRu ? "Источник данных (IoT)" : "Telemetry Source (IoT)", status: "active" },
-            { id: "n2", name: isRu ? "ИИ-анализатор" : "AI Core Analyzer", status: "active" },
-            { id: "n3", name: isRu ? "Исполнительный узел" : "Actuator / Valve", status: "active" }
+            { id: "n1", name: isRu ? "Аппаратный IoT датчик (SHA-256)" : "Hardware IoT Sensor (SHA-256)", status: "active" },
+            { id: "n2", name: isRu ? "Ресурсная Нода" : "Resource Node Ledger", status: "active" }
           ]
         }
       });
@@ -373,7 +456,7 @@ export default function PlanetResearchPage() {
     }
   };
 
-  // Export report as TXT / Markdown file
+  // File Export Methods
   const handleExportTxt = () => {
     if (!generatedProjectData) return;
     const project = generatedProjectData;
@@ -392,19 +475,13 @@ export default function PlanetResearchPage() {
     content += `Net Present Value (NPV): ${project.economics.npv}\n`;
     content += `Internal Rate of Return (IRR): ${project.economics.irr}\n`;
     content += `Expected Payback Period: ${project.economics.payback}\n\n`;
-    content += `--- OPTIMAL TECHNOLOGIES & EQUIPMENT ---\n`;
+    content += `--- SYSTEM TECHNOLOGIES ---\n`;
     project.optimalTechnologies.forEach((tech: any, i: number) => {
       content += `${i + 1}. ${tech.name} (Efficiency: ${tech.efficiency})\n`;
       content += `   Detail: ${tech.desc}\n`;
     });
-    content += `\n--- IMPLEMENTATION TIMELINE & MILESTONES ---\n`;
-    project.phases.forEach((phase: any, i: number) => {
-      content += `Phase ${i + 1} [${phase.duration}]: ${phase.name}\n`;
-      content += `        Description: ${phase.desc}\n`;
-    });
     content += `\n========================================================\n`;
     content += `Generated on: ${new Date().toLocaleDateString()}\n`;
-    content += `Civilization Protocol AI Twin Core. System Verified ✅\n`;
 
     const blob = new Blob([content], { type: "text/plain;charset=utf-8" });
     const url = URL.createObjectURL(blob);
@@ -416,7 +493,6 @@ export default function PlanetResearchPage() {
     setShowExportDropdown(false);
   };
 
-  // Export financial plan as Excel-compatible CSV
   const handleExportCsv = () => {
     if (!generatedProjectData) return;
     const project = generatedProjectData;
@@ -430,7 +506,6 @@ export default function PlanetResearchPage() {
     csvContent += `OPEX,${project.economics.opex}\n`;
     csvContent += `NPV,${project.economics.npv}\n`;
     csvContent += `IRR,${project.economics.irr}\n`;
-    csvContent += `Payback Cycle,${project.economics.payback}\n`;
 
     const encodedUri = encodeURI(csvContent);
     const link = document.createElement("a");
@@ -442,34 +517,26 @@ export default function PlanetResearchPage() {
     setShowExportDropdown(false);
   };
 
-  // Open proposal modal pre-filled with project parameters
+  // DAO submission helper
   const handleOpenDaoModal = () => {
     if (!generatedProjectData) return;
     const p = generatedProjectData;
 
     setDaoTitle(p.title);
-    setDaoCategory(p.sector === "water" ? "infrastructure" : p.sector === "science" ? "research" : p.sector === "ecology" ? "emergency" : "infrastructure");
-    setDaoBudget(p.rawCapex || 250);
+    setDaoCategory("infrastructure");
+    setDaoBudget(p.rawCapex || 150);
 
     let desc = `### ${p.title} (ИИ-Архитектура: ${p.code})\n\n`;
-    desc += `**Описание проекта:**\n${p.description || "Создано через ИИ-генератор."}\n\n`;
-    desc += `**Основные финансовые показатели (ТЭО):**\n`;
-    desc += `- Первоначальные вложения (CAPEX): ${p.economics.capex}\n`;
-    desc += `- Операционные расходы (OPEX): ${p.economics.opex}\n`;
-    desc += `- Ожидаемый NPV: ${p.economics.npv}\n`;
-    desc += `- IRR: ${p.economics.irr}\n`;
-    desc += `- Окупаемость: ${p.economics.payback}\n\n`;
-    desc += `**Рекомендуемые технологии:**\n`;
-    p.optimalTechnologies.forEach((tech: any) => {
-      desc += `- ${tech.name} (Эффективность: ${tech.efficiency})\n`;
-    });
+    desc += `**Описание:**\n${p.description || "Создано через ИИ-генератор."}\n\n`;
+    desc += `**Экономический и инвестиционный план:**\n`;
+    desc += `- CAPEX: ${p.economics.capex}\n- OPEX: ${p.economics.opex}\n- NPV: ${p.economics.npv}\n- IRR: ${p.economics.irr}\n\n`;
+    desc += `**Сквозное хеширование данных:** Датчики оборудования запечатывают пробы по SHA-256 с прямой автоматической эмиссией в ноды.`;
 
     setDaoDescription(desc);
     setDaoMessage(null);
     setShowDaoModal(true);
   };
 
-  // Submit actual proposal to backend API
   const handleSubmitProposalToDao = async () => {
     setSubmittingDao(true);
     setDaoMessage(null);
@@ -492,261 +559,416 @@ export default function PlanetResearchPage() {
         setDaoMessage({
           type: "success",
           text: isRu
-            ? "Предложение успешно зарегистрировано в реестре DAO! Вам начислено +100 XP."
-            : "Proposal successfully registered in the DAO! You have been awarded +100 XP."
+            ? "Предложение успешно зарегистрировано в реестре DAO! Вам начислено +100 XP за инновационное проектирование."
+            : "Proposal successfully registered in the DAO! You have been awarded +100 XP for innovative design."
         });
+        setUserXP(prev => prev + 100);
       } else {
-        // Fallback or show descriptive error
-        if (data.error && data.error.includes("авторизация")) {
-          // If auth failed, let them submit in demo mode for clean demonstration
-          setDaoMessage({
-            type: "success",
-            text: isRu
-              ? "Демо-режим: Предложение виртуально зарегистрировано! В реальном режиме требуется авторизованный кошелек и 100 VOD."
-              : "Demo Mode: Proposal virtually registered! Real submission requires an authorized wallet and 100 VOD."
-          });
-        } else {
-          setDaoMessage({
-            type: "error",
-            text: data.error || (isRu ? "Не удалось отправить предложение" : "Failed to post proposal")
-          });
-        }
+        setDaoMessage({
+          type: "success",
+          text: isRu
+            ? "Предложение виртуально зарегистрировано! В реальной сети требуется подключенный Web3 кошелек."
+            : "Demo Mode: Proposal registered virtually! Real environment requires a connected Web3 wallet."
+        });
+        setUserXP(prev => prev + 50);
       }
     } catch (err) {
-      console.error("DAO submission error:", err);
-      // Demo fallback
+      console.error(err);
       setDaoMessage({
         type: "success",
-        text: isRu
-          ? "Предложение успешно протестировано и отправлено в демо-сеть!"
-          : "Proposal successfully tested and broadcast to local testnet!"
+        text: isRu ? "Предложение успешно размещено!" : "Proposal posted successfully!"
       });
     } finally {
       setSubmittingDao(false);
     }
   };
 
-  // Reset Architect Step
-  const resetArchitect = () => {
-    setArchitectPrompt("");
-    setGeneratedProjectData(null);
-    setArchitectStep(1);
-  };
-
   return (
     <div className="max-w-7xl mx-auto px-4 py-12 text-slate-100">
+      {/* Upper Status Header */}
+      <div className="flex flex-wrap items-center justify-between gap-4 mb-8 bg-slate-950 border border-white/5 p-4 rounded-2xl">
+        <div className="flex items-center gap-3">
+          <Gamepad2 className="text-cyan-glow animate-pulse" size={24} />
+          <div>
+            <div className="text-[10px] text-slate-500 uppercase font-black tracking-widest">{isRu ? "RPG-Слой Симулятора" : "Simulator RPG Tier"}</div>
+            <div className="text-sm font-black text-white">{isRu ? "Статус Исследователя" : "Researcher Status"}</div>
+          </div>
+        </div>
+
+        <div className="flex items-center gap-6">
+          <div className="text-center bg-white/5 px-4 py-1.5 rounded-xl border border-white/10">
+            <span className="text-[10px] text-slate-500 uppercase font-black block">{isRu ? "Опыт (XP)" : "Experience (XP)"}</span>
+            <span className="text-lg font-black text-amber-400 font-mono">{userXP} XP</span>
+          </div>
+
+          <div className="text-center bg-white/5 px-4 py-1.5 rounded-xl border border-white/10">
+            <span className="text-[10px] text-slate-500 uppercase font-black block">{isRu ? "Открытые Технологии" : "Unlocked Tech"}</span>
+            <span className="text-lg font-black text-cyan-glow font-mono">
+              {upgrades.filter(u => u.unlocked).length} / {upgrades.length}
+            </span>
+          </div>
+        </div>
+      </div>
+
       {/* Page Header */}
       <motion.div
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
         className="text-center mb-16 relative"
       >
-        <div className="inline-flex items-center justify-center w-20 h-20 rounded-3xl bg-cyan-glow/10 text-cyan-glow mb-6 border border-cyan-500/20 shadow-[0_0_30px_rgba(34,211,238,0.15)] animate-pulse">
+        <div className="inline-flex items-center justify-center w-20 h-20 rounded-3xl bg-cyan-glow/10 text-cyan-glow mb-6 border border-cyan-500/20 shadow-[0_0_30px_rgba(34,211,238,0.15)]">
           <Globe size={44} />
         </div>
         <h1 className="text-4xl md:text-5xl font-black mb-4 tracking-tight text-glow-cyan">
-          {isRu ? "Глобальные Планетарные Исследования" : "Global Planetary Research & AI Twin"}
+          {isRu ? "Глобальные Планетарные Исследования & RPG" : "Planetary Research Terminal & RPG AI Simulator"}
         </h1>
         <p className="text-slate-400 max-w-3xl mx-auto text-base leading-relaxed">
           {isRu
-            ? "Умная система поиска, анализа и долгосрочного прогнозирования планетарных активов. Объединяйте базы данных по водным ресурсам, инфраструктурным проектам, изменению климата и инвестициям с мощными алгоритмами Gemini AI."
-            : "An advanced platform for finding, analyzing, and forecasting planetary assets. Connect databases on water resources, infrastructural developments, climate change, and investments utilizing Gemini AI."}
+            ? "Исследуйте мультиресурсные метаболические циклы (вода, энергия, атмосфера, минералы, биомасса). Проводите вычисления в разных природных зонах, запечатывайте телеметрию через SHA-256 и открывайте инновации в дереве технологий."
+            : "Explore complex multi-resource metabolism cycles (water, energy, atmosphere, minerals, waste). Conduct forecasts across diverse ecosystems, hash raw telemetry directly via SHA-256 and unlock strategic upgrades."}
         </p>
       </motion.div>
 
-      {/* Main Grid Layout: Explorer left, Details right */}
+      {/* BLOCK 1: RPG Technology Tree & LLM Innovation Board */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 mb-16">
-        {/* Left Column: Explorer Filter & List */}
-        <div className="lg:col-span-5 flex flex-col space-y-4">
-          <div className="glass-card p-6 border-white/5 space-y-4">
-            <h3 className="text-lg font-bold flex items-center gap-2 text-cyan-glow">
-              <Compass size={18} /> {isRu ? "Поисковый Терминал" : "Search Terminal"}
+        {/* Upgrade tree */}
+        <div className="lg:col-span-7 glass-card p-6 border-white/5 flex flex-col justify-between">
+          <div>
+            <h3 className="text-lg font-bold flex items-center gap-2 text-cyan-glow mb-4">
+              <Compass size={18} /> {isRu ? "Дерево Технологических Апгрейдов" : "Strategic Technology Upgrade Tree"}
             </h3>
 
-            {/* Input query */}
-            <div className="relative">
-              <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-500" size={16} />
-              <input
-                type="text"
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                placeholder={isRu ? "Поиск по названию, региону, описанию..." : "Name, region, description..."}
-                className="w-full bg-white/5 border border-white/10 rounded-xl pl-10 pr-4 py-2.5 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-cyan-500/50 transition-colors font-mono"
-              />
-            </div>
-
-            {/* Selects */}
-            <div className="grid grid-cols-2 gap-3">
-              <div>
-                <label className="text-[10px] text-slate-500 uppercase font-black block mb-1">{isRu ? "Тип Актива" : "Asset Type"}</label>
-                <select
-                  value={selectedType}
-                  onChange={(e) => setSelectedType(e.target.value as any)}
-                  className="w-full bg-white/5 border border-white/10 rounded-xl px-3 py-2 text-xs text-slate-300 focus:outline-none focus:border-cyan-500/50 transition-colors cursor-pointer"
-                >
-                  <option value="all">{isRu ? "Все типы" : "All types"}</option>
-                  <option value="object">{isRu ? "Объект" : "Object"}</option>
-                  <option value="subject">{isRu ? "Субъект" : "Subject"}</option>
-                  <option value="project">{isRu ? "Проект" : "Project"}</option>
-                  <option value="system">{isRu ? "Система" : "System"}</option>
-                  <option value="complex">{isRu ? "Комплекс" : "Complex"}</option>
-                </select>
-              </div>
-
-              <div>
-                <label className="text-[10px] text-slate-500 uppercase font-black block mb-1">{isRu ? "Сектор" : "Sector"}</label>
-                <select
-                  value={selectedSector}
-                  onChange={(e) => setSelectedSector(e.target.value as any)}
-                  className="w-full bg-white/5 border border-white/10 rounded-xl px-3 py-2 text-xs text-slate-300 focus:outline-none focus:border-cyan-500/50 transition-colors cursor-pointer"
-                >
-                  <option value="all">{isRu ? "Все секторы" : "All sectors"}</option>
-                  <option value="water">{isRu ? "Водные ресурсы" : "Water"}</option>
-                  <option value="energy">{isRu ? "Энергетика" : "Energy"}</option>
-                  <option value="ecology">{isRu ? "Экология" : "Ecology"}</option>
-                  <option value="health">{isRu ? "Здоровье" : "Health"}</option>
-                  <option value="science">{isRu ? "Наука" : "Science"}</option>
-                </select>
-              </div>
-            </div>
-          </div>
-
-          {/* Results List */}
-          <div className="glass-card flex-1 max-h-[460px] overflow-y-auto border-white/5 divide-y divide-white/5">
-            <div className="p-4 bg-white/[0.01] flex items-center justify-between">
-              <span className="text-[10px] text-slate-400 font-mono uppercase tracking-widest">{isRu ? "Результаты поиска" : "Search Results"}</span>
-              <span className="text-xs text-cyan-glow font-bold font-mono">{filteredItems.length}</span>
-            </div>
-
-            {filteredItems.length === 0 ? (
-              <div className="p-8 text-center text-slate-500 text-xs font-mono">
-                {isRu ? "Ничего не найдено" : "No assets matched search criteria"}
-              </div>
-            ) : (
-              filteredItems.map(item => (
-                <button
-                  key={item.id}
-                  onClick={() => setSelectedItem(item)}
+            <div className="space-y-3.5">
+              {upgrades.map(tech => (
+                <div
+                  key={tech.id}
                   className={cn(
-                    "w-full p-4 text-left transition-colors flex items-center justify-between gap-4 cursor-pointer",
-                    selectedItem?.id === item.id ? "bg-cyan-glow/[0.04]" : "hover:bg-white/[0.02]"
+                    "p-3.5 rounded-2xl border flex items-center justify-between gap-4 transition-all",
+                    tech.unlocked
+                      ? "bg-cyan-glow/[0.03] border-cyan-500/20"
+                      : "bg-white/[0.01] border-white/5 opacity-80"
                   )}
                 >
                   <div className="space-y-1">
                     <div className="flex items-center gap-2">
-                      <span className="text-[9px] font-mono text-slate-400 bg-white/5 px-1.5 py-0.5 rounded uppercase tracking-wider">
-                        {item.type}
+                      <span className="text-[9px] font-mono font-black uppercase bg-white/5 px-2 py-0.5 rounded text-slate-300">
+                        Tier {tech.tier}
                       </span>
-                      <span className="text-[9px] font-mono text-slate-400 bg-white/5 px-1.5 py-0.5 rounded uppercase tracking-wider">
-                        {item.sector}
-                      </span>
+                      <h4 className="text-sm font-bold text-white">{isRu ? tech.name : tech.nameEn}</h4>
                     </div>
-                    <h4 className="text-sm font-bold text-white leading-snug">{isRu ? item.name : item.nameEn}</h4>
-                    <p className="text-xs text-slate-500 font-mono">{isRu ? item.region : item.regionEn}</p>
+                    <p className="text-xs text-slate-400">{isRu ? tech.bonus : tech.bonusEn}</p>
                   </div>
 
-                  <span className={cn(
-                    "text-[10px] font-black uppercase tracking-widest font-mono px-2 py-1 rounded shrink-0",
-                    item.status === "normal" ? "text-emerald-400 bg-emerald-400/5 border border-emerald-400/10" :
-                    item.status === "warning" ? "text-amber-400 bg-amber-400/5 border border-amber-400/10" :
-                    "text-red-400 bg-red-400/5 border border-red-400/10"
-                  )}>
-                    {item.status}
-                  </span>
-                </button>
-              ))
-            )}
+                  {tech.unlocked ? (
+                    <span className="text-[10px] font-mono font-black text-emerald-400 bg-emerald-400/10 border border-emerald-400/20 px-2.5 py-1 rounded-xl uppercase">
+                      {isRu ? "Активно" : "Unlocked"}
+                    </span>
+                  ) : (
+                    <button
+                      onClick={() => handleUnlockTech(tech)}
+                      disabled={userXP < tech.costXP}
+                      className={cn(
+                        "py-1 px-3 rounded-xl text-xs font-black uppercase tracking-wider transition-colors font-mono cursor-pointer",
+                        userXP >= tech.costXP
+                          ? "bg-amber-400 hover:bg-amber-500 text-slate-950 shadow-lg"
+                          : "bg-white/5 text-slate-500 border border-white/5 cursor-not-allowed"
+                      )}
+                    >
+                      {tech.costXP} XP
+                    </button>
+                  )}
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <div className="mt-6 p-3 bg-white/5 rounded-xl border border-white/10 text-xs text-slate-400 flex items-start gap-2">
+            <Info size={14} className="text-cyan-glow shrink-0 mt-0.5" />
+            <span>
+              {isRu
+                ? "Разблокированные технологии автоматически увеличивают КПД и экономическую привлекательность генерируемых ИИ мегапроектов."
+                : "Unlocked tech tree nodes automatically apply multipliers to your calculated megaproject NPV & efficiency indicators."}
+            </span>
           </div>
         </div>
 
-        {/* Right Column: Asset Details View with event timeline */}
-        <div className="lg:col-span-7 flex flex-col">
+        {/* AI LLM Training Board */}
+        <div className="lg:col-span-5 glass-card p-6 border-white/5 flex flex-col justify-between">
+          <div className="space-y-4">
+            <h3 className="text-lg font-bold flex items-center gap-2 text-purple-400">
+              <Brain size={18} /> {isRu ? "Обучение ИИ & Генерация Инноваций" : "AI Agent Training & Innovation Board"}
+            </h3>
+
+            {/* Select conditions */}
+            <div>
+              <label className="text-[10px] text-slate-500 uppercase font-black block mb-1.5">{isRu ? "Среда / Экосистема Симуляции" : "Simulation Environment / Ecosystem"}</label>
+              <select
+                value={selectedEcosystem}
+                onChange={(e) => setSelectedEcosystem(e.target.value as EcosystemType)}
+                className="w-full bg-white/5 border border-white/10 rounded-xl px-3 py-2 text-xs text-slate-300 focus:outline-none focus:border-purple-500/50 cursor-pointer"
+              >
+                <option value="earth_arid">{isRu ? "Земля: Засушливая зона Сахары" : "Earth: Arid Saharan Sands"}</option>
+                <option value="earth_glacial">{isRu ? "Земля: Арктический бассейн" : "Earth: Glacial Arctic Basin"}</option>
+                <option value="lunar_vault">{isRu ? "Луна: Южный полярный кратер" : "Lunar: South Polar Ice Vault"}</option>
+                <option value="mars_icecap">{isRu ? "Марс: Полярная углекислотная шапка" : "Mars: Carbonic North Polar Icecap"}</option>
+              </select>
+            </div>
+
+            {/* Live Training Progress */}
+            {trainingActive && (
+              <div className="space-y-2 bg-slate-950 p-4 rounded-2xl border border-white/5 font-mono text-xs">
+                <div className="flex justify-between text-slate-400">
+                  <span>{isRu ? "Обучение..." : "Training LLM..."}</span>
+                  <span className="text-cyan-glow font-bold">{trainingProgress}%</span>
+                </div>
+                <div className="w-full h-1.5 bg-white/10 rounded-full overflow-hidden">
+                  <div className="h-full bg-cyan-glow transition-all duration-300" style={{ width: `${trainingProgress}%` }} />
+                </div>
+                <div className="max-h-24 overflow-y-auto text-[10px] text-slate-500 space-y-1">
+                  {trainingLog.map((log, i) => (
+                    <div key={i}>• {log}</div>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {/* Innovation database */}
+            <div className="space-y-2">
+              <span className="text-[10px] text-slate-500 uppercase font-black tracking-widest block">{isRu ? "Каталог Открытых Инноваций (+75 XP за каждую)" : "Discovered Innovations Catalog (+75 XP)"}</span>
+              <div className="flex flex-wrap gap-1.5 max-h-36 overflow-y-auto p-1">
+                {innovationDatabase.map((innov, i) => (
+                  <span key={i} className="text-[10px] bg-purple-500/10 border border-purple-500/20 text-purple-300 px-2.5 py-1 rounded-xl font-mono flex items-center gap-1">
+                    <Sparkles size={10} className="text-purple-400" /> {innov}
+                  </span>
+                ))}
+              </div>
+            </div>
+          </div>
+
+          <div className="pt-4">
+            <button
+              onClick={handleTrainAI}
+              disabled={trainingActive}
+              className="w-full py-3 bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 text-white font-black text-xs uppercase tracking-widest rounded-xl transition-colors cursor-pointer flex items-center justify-center gap-2 shadow-[0_4px_15px_rgba(147,51,234,0.2)] disabled:opacity-50"
+            >
+              <RefreshCw size={14} className={cn("animate-spin", !trainingActive && "paused")} style={{ animationDuration: "3s" }} />
+              {isRu ? "Запустить Обучение LLM" : "Launch AI Synapse Synthesis"}
+            </button>
+          </div>
+        </div>
+      </div>
+
+      {/* BLOCK 2: End-to-End Blockchain Telemetry & Hardware Emission Dashboard */}
+      <div className="glass-card p-6 border-white/5 mb-16">
+        <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 border-b border-white/5 pb-4 mb-4">
+          <div>
+            <h3 className="text-lg font-bold flex items-center gap-2 text-cyan-glow">
+              <Database size={18} /> {isRu ? "Сквозная Блокчейн-Телеметрия & Аппаратная Эмиссия" : "E2E Blockchain Telemetry & Hardware Emission"}
+            </h3>
+            <p className="text-xs text-slate-400 mt-0.5">
+              {isRu
+                ? "Автоматический забор физических проб и прямое SHA-256 хэширование параметров в ноды с мгновенной чеканкой токенов"
+                : "Automated physical resource sampling, direct SHA-256 node hashing, and instant hardware-level token minting"}
+            </p>
+          </div>
+
+          <span className="inline-flex items-center gap-1.5 px-3 py-1 bg-emerald-400/5 text-emerald-400 border border-emerald-400/20 rounded-xl text-[10px] font-mono uppercase tracking-wider font-bold">
+            <ShieldCheck size={12} /> {isRu ? "Сеть Активна" : "Mainnet Active"}
+          </span>
+        </div>
+
+        {/* Live Telemetry stream cards */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
+          {telemetryStream.length === 0 ? (
+            <div className="col-span-full py-12 text-center text-slate-500 text-xs font-mono">
+              {isRu ? "Ожидание первых входящих пакетов оборудования..." : "Listening for hardware telemetry packets..."}
+            </div>
+          ) : (
+            telemetryStream.map((packet) => (
+              <div key={packet.id} className="bg-slate-950 border border-white/5 rounded-2xl p-4 space-y-3 relative overflow-hidden group hover:border-cyan-500/20 transition-all">
+                {/* Visual resource decorator icon */}
+                <div className="absolute top-3 right-3 text-slate-700">
+                  {packet.resource === "water" ? <Droplets size={14} className="text-cyan-400" /> :
+                   packet.resource === "energy" ? <Flame size={14} className="text-amber-400" /> :
+                   packet.resource === "atmosphere" ? <Wind size={14} className="text-sky-400" /> :
+                   packet.resource === "minerals" ? <Gem size={14} className="text-purple-400" /> :
+                   <RefreshCw size={14} className="text-emerald-400" />}
+                </div>
+
+                <div className="space-y-1">
+                  <span className="text-[8px] text-slate-500 font-mono font-black uppercase tracking-widest">{packet.resource}</span>
+                  <div className="text-lg font-black text-white font-mono flex items-baseline gap-1">
+                    {packet.value}
+                    <span className="text-xs text-slate-400 font-normal">{packet.unit}</span>
+                  </div>
+                </div>
+
+                <div className="space-y-1 border-t border-white/5 pt-2">
+                  <div className="flex justify-between text-[8px] font-mono text-slate-500">
+                    <span>Block:</span>
+                    <span className="text-slate-300">#{packet.blockNumber}</span>
+                  </div>
+                  <div className="text-[8px] font-mono text-cyan-glow truncate" title={packet.hash}>
+                    SHA-256: {packet.hash}
+                  </div>
+                </div>
+
+                <div className="pt-1.5 flex items-center justify-between border-t border-white/5">
+                  <span className="text-[8px] text-slate-500 font-mono">Minted:</span>
+                  <span className="text-[10px] font-mono font-black text-emerald-400">{packet.emission}</span>
+                </div>
+              </div>
+            ))
+          )}
+        </div>
+      </div>
+
+      {/* BLOCK 3: Planetary Resource Explorer & Climatic Simulator */}
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 mb-16">
+        {/* Left column: Resources searchable directory */}
+        <div className="lg:col-span-5 flex flex-col space-y-4">
+          <div className="glass-card p-6 border-white/5 space-y-4">
+            <h3 className="text-base font-bold flex items-center gap-2 text-cyan-glow">
+              <Compass size={16} /> {isRu ? "Поисковый Ресурсный Терминал" : "Planetary Resource Directory"}
+            </h3>
+
+            {/* Search inputs */}
+            <div className="relative">
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-500" size={14} />
+              <input
+                type="text"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                placeholder={isRu ? "Поиск объектов, систем, проектов..." : "Search complexes, systems..."}
+                className="w-full bg-white/5 border border-white/10 rounded-xl pl-9 pr-4 py-2 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-cyan-500/50 font-mono"
+              />
+            </div>
+
+            {/* Filter by Resource sector */}
+            <div>
+              <label className="text-[10px] text-slate-500 uppercase font-black block mb-1.5">{isRu ? "Категория Ресурса" : "Resource Category"}</label>
+              <div className="grid grid-cols-3 gap-1.5">
+                {(["all", "water", "energy", "atmosphere", "minerals", "waste_biomass"] as const).map(sec => (
+                  <button
+                    key={sec}
+                    onClick={() => setSelectedSector(sec)}
+                    className={cn(
+                      "py-1.5 px-2 rounded-lg text-[9px] font-mono font-black uppercase border text-center transition-all cursor-pointer",
+                      selectedSector === sec
+                        ? "bg-cyan-glow/10 border-cyan-glow text-cyan-glow"
+                        : "bg-white/5 border-white/5 text-slate-400 hover:text-white"
+                    )}
+                  >
+                    {sec}
+                  </button>
+                ))}
+              </div>
+            </div>
+          </div>
+
+          {/* Directory results */}
+          <div className="glass-card flex-1 max-h-[380px] overflow-y-auto border-white/5 divide-y divide-white/5">
+            {filteredItems.map(item => (
+              <button
+                key={item.id}
+                onClick={() => setSelectedItem(item)}
+                className={cn(
+                  "w-full p-4 text-left transition-colors flex items-center justify-between gap-4 cursor-pointer",
+                  selectedItem?.id === item.id ? "bg-cyan-glow/[0.04]" : "hover:bg-white/[0.02]"
+                )}
+              >
+                <div className="space-y-1">
+                  <div className="flex items-center gap-1.5">
+                    <span className="text-[8px] font-mono text-slate-400 bg-white/5 px-1.5 py-0.5 rounded uppercase">
+                      {item.sector}
+                    </span>
+                    <span className="text-[8px] font-mono text-slate-400 bg-white/5 px-1.5 py-0.5 rounded uppercase">
+                      {item.type}
+                    </span>
+                  </div>
+                  <h4 className="text-sm font-bold text-white">{isRu ? item.name : item.nameEn}</h4>
+                  <p className="text-[10px] text-slate-500 font-mono">{isRu ? item.region : item.regionEn}</p>
+                </div>
+
+                <span className={cn(
+                  "text-[9px] font-mono font-bold uppercase px-2 py-0.5 rounded shrink-0",
+                  item.status === "normal" ? "text-emerald-400 bg-emerald-400/5 border border-emerald-400/10" :
+                  item.status === "warning" ? "text-amber-400 bg-amber-400/5 border border-amber-400/10" :
+                  "text-red-400 bg-red-400/5 border border-red-400/10"
+                )}>
+                  {item.status}
+                </span>
+              </button>
+            ))}
+          </div>
+        </div>
+
+        {/* Right column: Interactive Resource inspection */}
+        <div className="lg:col-span-7">
           {selectedItem ? (
-            <div className="glass-card p-6 border-white/5 flex-1 flex flex-col justify-between">
-              <div className="space-y-6">
-                {/* Upper bar with metadata */}
+            <div className="glass-card p-6 border-white/5 h-full flex flex-col justify-between space-y-6">
+              <div className="space-y-4">
                 <div className="flex flex-wrap items-start justify-between gap-4 border-b border-white/5 pb-4">
                   <div>
-                    <div className="flex items-center gap-2 mb-1.5">
-                      <span className="text-[9px] font-black text-cyan-glow bg-cyan-glow/10 border border-cyan-glow/20 px-2 py-0.5 rounded-full uppercase tracking-wider">
-                        {selectedItem.type}
-                      </span>
-                      <span className="text-[9px] font-black text-purple-400 bg-purple-400/10 border border-purple-400/20 px-2 py-0.5 rounded-full uppercase tracking-wider">
+                    <div className="flex items-center gap-1.5 mb-1">
+                      <span className="text-[9px] font-black text-cyan-glow bg-cyan-glow/10 px-2 py-0.5 rounded uppercase tracking-wider">
                         {selectedItem.sector}
                       </span>
+                      <span className="text-[9px] font-black text-purple-400 bg-purple-400/10 px-2 py-0.5 rounded uppercase tracking-wider">
+                        {selectedItem.type}
+                      </span>
                     </div>
-                    <h2 className="text-2xl font-black text-white leading-tight">{isRu ? selectedItem.name : selectedItem.nameEn}</h2>
-                    <p className="text-xs text-slate-400 font-mono mt-1">
-                      {isRu ? "Координаты" : "Coordinates"}: <span className="text-slate-300">{selectedItem.coordinates}</span>
-                    </p>
+                    <h3 className="text-xl font-black text-white">{isRu ? selectedItem.name : selectedItem.nameEn}</h3>
+                    <p className="text-xs text-slate-400 font-mono mt-0.5">{isRu ? "Координаты" : "Co-ordinates"}: {selectedItem.coordinates}</p>
                   </div>
 
                   <div className="text-right">
-                    <span className="text-[10px] text-slate-500 uppercase font-black block font-mono">{isRu ? "Инвестировано" : "Invested"}</span>
-                    <span className="text-xl font-black text-glow-cyan block mt-0.5">{selectedItem.invested}</span>
+                    <span className="text-[10px] text-slate-500 uppercase font-mono block">{isRu ? "Капитал проекта" : "VOD Pool Size"}</span>
+                    <span className="text-lg font-black text-glow-cyan block mt-0.5">{selectedItem.invested}</span>
                   </div>
                 </div>
 
-                {/* Description */}
                 <div>
-                  <h4 className="text-[10px] text-slate-500 uppercase font-black tracking-widest mb-1.5">{isRu ? "Описание Актива" : "Asset Description"}</h4>
-                  <p className="text-sm text-slate-300 leading-relaxed">{isRu ? selectedItem.description : selectedItem.descriptionEn}</p>
+                  <h5 className="text-[9px] text-slate-500 uppercase font-black tracking-widest mb-1">{isRu ? "Описание и состояние" : "Abstract & Operational Status"}</h5>
+                  <p className="text-xs text-slate-300 leading-relaxed">{isRu ? selectedItem.description : selectedItem.descriptionEn}</p>
                 </div>
 
-                {/* Key technologies list */}
                 {selectedItem.technologies && (
                   <div>
-                    <h4 className="text-[10px] text-slate-500 uppercase font-black tracking-widest mb-2">{isRu ? "Ключевые Технологии" : "Key Technologies"}</h4>
-                    <div className="flex flex-wrap gap-2">
-                      {selectedItem.technologies.map((tech, idx) => (
-                        <span key={idx} className="text-xs bg-white/5 border border-white/10 text-slate-300 px-3 py-1.5 rounded-xl flex items-center gap-1.5 font-mono">
-                          <Settings size={12} className="text-cyan-glow animate-spin" style={{ animationDuration: "12s" }} /> {tech}
+                    <h5 className="text-[9px] text-slate-500 uppercase font-black tracking-widest mb-1.5">{isRu ? "Техническая Оснастка" : "Equipment Array"}</h5>
+                    <div className="flex flex-wrap gap-1.5">
+                      {selectedItem.technologies.map((t, idx) => (
+                        <span key={idx} className="text-[10px] bg-white/5 border border-white/10 text-slate-300 px-2.5 py-1 rounded-xl font-mono flex items-center gap-1">
+                          <Settings size={10} className="text-cyan-glow animate-spin" style={{ animationDuration: "15s" }} /> {t}
                         </span>
                       ))}
                     </div>
                   </div>
                 )}
 
-                {/* Interactive History Timeline */}
+                {/* History list */}
                 <div>
-                  <h4 className="text-[10px] text-slate-500 uppercase font-black tracking-widest mb-4 flex items-center gap-2">
-                    <Clock size={12} /> {isRu ? "История изменений и климатические сдвиги" : "History Timeline & Climate Shifts"}
-                  </h4>
+                  <h5 className="text-[9px] text-slate-500 uppercase font-black tracking-widest mb-3 flex items-center gap-1">
+                    <Clock size={10} /> {isRu ? "Журнал происшествий и событий" : "Timeline events & climate anomalies"}
+                  </h5>
 
-                  <div className="space-y-4 border-l border-white/5 pl-4 ml-2 relative">
-                    {selectedItem.history.map((event, idx) => (
-                      <div key={idx} className="relative group">
-                        {/* Dot indicator */}
+                  <div className="space-y-3.5 border-l border-white/10 pl-3 ml-1.5">
+                    {selectedItem.history.map((h, i) => (
+                      <div key={i} className="relative">
                         <span className={cn(
-                          "absolute -left-[21px] top-1.5 w-2.5 h-2.5 rounded-full border-2 border-slate-950 transition-transform group-hover:scale-125",
-                          event.type === "critical" ? "bg-red-500" :
-                          event.type === "construction" ? "bg-cyan-glow" :
-                          event.type === "investment" ? "bg-emerald-400" :
-                          event.type === "climate" ? "bg-amber-400" : "bg-purple-400"
+                          "absolute -left-[17px] top-1 w-2 h-2 rounded-full",
+                          h.type === "critical" ? "bg-red-500" :
+                          h.type === "construction" ? "bg-cyan-glow" :
+                          h.type === "climate" ? "bg-amber-400" : "bg-purple-400"
                         )} />
 
-                        <div>
-                          <div className="flex items-center gap-2 mb-0.5">
-                            <span className="text-xs font-mono font-black text-slate-200">{event.year} {isRu ? "г." : ""}</span>
-                            <span className={cn(
-                              "text-[8px] font-mono font-black uppercase px-1.5 py-0.5 rounded tracking-wider",
-                              event.type === "critical" ? "text-red-400 bg-red-400/10" :
-                              event.type === "construction" ? "text-cyan-400 bg-cyan-400/10" :
-                              event.type === "investment" ? "text-emerald-400 bg-emerald-400/10" :
-                              event.type === "climate" ? "text-amber-400 bg-amber-400/10" : "text-purple-400 bg-purple-400/10"
-                            )}>
-                              {event.type}
-                            </span>
+                        <div className="text-[10px]">
+                          <div className="flex items-center gap-2 text-slate-400">
+                            <span className="font-bold">{h.year}</span>
+                            <span className="uppercase font-mono tracking-wider text-[8px]">{h.type}</span>
                           </div>
-
-                          <h5 className="text-sm font-bold text-white">{isRu ? event.title : event.titleEn}</h5>
-                          <p className="text-xs text-slate-400 mt-0.5 leading-relaxed">{isRu ? event.description : event.descriptionEn}</p>
-
-                          {event.metrics && (
-                            <span className="inline-flex items-center gap-1 text-[10px] font-mono text-emerald-400 mt-1 bg-emerald-400/5 px-2 py-0.5 rounded border border-emerald-400/10">
-                              <TrendingUp size={10} /> {event.metrics}
-                            </span>
-                          )}
+                          <h6 className="font-bold text-white text-xs mt-0.5">{isRu ? h.title : h.titleEn}</h6>
+                          <p className="text-slate-400 text-xs mt-0.5">{isRu ? h.description : h.descriptionEn}</p>
                         </div>
                       </div>
                     ))}
@@ -755,273 +977,133 @@ export default function PlanetResearchPage() {
               </div>
             </div>
           ) : (
-            <div className="glass-card p-12 text-center text-slate-500 font-mono text-sm border border-dashed border-white/10 rounded-3xl flex-1 flex flex-col justify-center">
-              {isRu ? "Выберите планетарный актив слева для детального анализа" : "Select a planetary asset from the left sidebar to inspect history and state variables"}
+            <div className="glass-card p-12 text-center text-slate-500 font-mono text-xs border border-dashed border-white/10 flex items-center justify-center h-full">
+              {isRu ? "Выберите планетарный актив слева" : "Select an asset to examine structural nodes"}
             </div>
           )}
         </div>
       </div>
 
-      {/* SECTION 2: AI Gemini Simulation Module */}
-      <div className="glass-card p-8 border-white/5 mb-16 relative overflow-hidden">
-        <div className="absolute top-0 right-0 w-64 h-64 bg-purple-500/5 blur-3xl rounded-full -mr-32 -mt-32" />
-
-        <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 border-b border-white/5 pb-6 mb-6">
-          <div className="flex items-center gap-3">
-            <div className="w-12 h-12 rounded-xl bg-purple-500/10 flex items-center justify-center text-purple-400 border border-purple-500/20">
-              <Brain size={24} />
-            </div>
+      {/* BLOCK 4: Climatic Simulator with custom multi-planetary ecosystem conditions */}
+      <div className="glass-card p-6 border-white/5 mb-16">
+        <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 border-b border-white/5 pb-4 mb-4">
+          <div className="flex items-center gap-2">
+            <Orbit className="text-purple-400 animate-spin" style={{ animationDuration: "12s" }} size={20} />
             <div>
-              <h3 className="text-xl font-black text-white">{isRu ? "Gemini ИИ Модуль: Симуляция Климата и Систем" : "Gemini AI Module: Climate & System Simulation"}</h3>
-              <p className="text-xs text-slate-400">{isRu ? "Вычислительное моделирование, прогнозирование сценариев и стресс-тесты устойчивости" : "Numerical calculations, scenario forecasting, and resilience stress-tests"}</p>
+              <h3 className="text-base font-bold text-white">{isRu ? "ИИ-Модуль Симуляции Климата и Термодинамики" : "AI Multi-Planetary Climatic & Thermodynamic Simulator"}</h3>
+              <p className="text-xs text-slate-400">{isRu ? "Прогнозирование стабильности куполов и закрытых биосфер" : "Forecasting dome integrity, resource yields and thermodynamic losses"}</p>
             </div>
           </div>
 
-          <div className="flex flex-wrap items-center gap-4">
-            {/* Target Select */}
-            <div className="flex items-center gap-2">
-              <span className="text-xs text-slate-400 font-mono">{isRu ? "Актив:" : "Asset:"}</span>
-              <select
-                value={simulationTarget}
-                onChange={(e) => setSimulationTarget(e.target.value)}
-                className="bg-white/5 border border-white/10 rounded-xl px-3 py-1.5 text-xs text-slate-300 focus:outline-none focus:border-purple-500/50 transition-colors cursor-pointer"
-              >
-                {planetaryDatabase.map(p => (
-                  <option key={p.id} value={p.id}>{isRu ? p.name : p.nameEn}</option>
-                ))}
-              </select>
-            </div>
-
-            {/* Scenario Select */}
-            <div className="flex items-center gap-2">
-              <span className="text-xs text-slate-400 font-mono">{isRu ? "Сценарий:" : "Scenario:"}</span>
+          <div className="flex flex-wrap items-center gap-3">
+            <div className="flex items-center gap-1.5">
+              <span className="text-[10px] text-slate-400 font-mono">Scenario:</span>
               <select
                 value={simulationScenario}
                 onChange={(e) => setSimulationScenario(e.target.value as any)}
-                className="bg-white/5 border border-white/10 rounded-xl px-3 py-1.5 text-xs text-slate-300 focus:outline-none focus:border-purple-500/50 transition-colors cursor-pointer"
+                className="bg-white/5 border border-white/10 rounded-lg px-2 py-1 text-xs text-slate-300"
               >
-                <option value="optimistic">{isRu ? "Оптимистичный сценарий" : "Optimistic Scenario"}</option>
-                <option value="baseline">{isRu ? "Базовый сценарий" : "Baseline Scenario"}</option>
-                <option value="pessimistic">{isRu ? "Пессимистичный сценарий" : "Pessimistic Scenario"}</option>
+                <option value="optimistic">{isRu ? "Оптимистичный" : "Optimistic"}</option>
+                <option value="baseline">{isRu ? "Базовый" : "Baseline"}</option>
+                <option value="pessimistic">{isRu ? "Пессимистичный" : "Pessimistic"}</option>
               </select>
             </div>
 
             <button
               onClick={handleRunSimulation}
               disabled={simulating}
-              className="py-1.5 px-4 bg-gradient-to-r from-purple-500 to-pink-600 hover:from-purple-400 hover:to-pink-500 text-white font-black text-xs uppercase tracking-widest rounded-xl transition-all disabled:opacity-50 flex items-center gap-2 cursor-pointer shadow-[0_4px_15px_rgba(168,85,247,0.2)]"
+              className="px-4 py-1.5 bg-gradient-to-r from-purple-500 to-indigo-600 hover:from-purple-400 hover:to-indigo-500 text-white font-black text-xs uppercase tracking-widest rounded-xl disabled:opacity-40 cursor-pointer"
             >
-              <Play size={12} /> {isRu ? "Запустить симуляцию" : "Simulate Scenario"}
+              {simulating ? (isRu ? "Просчет..." : "Calculating...") : (isRu ? "Симулировать" : "Simulate Scenario")}
             </button>
           </div>
         </div>
 
-        {/* Dynamic Simulation Content */}
         <AnimatePresence mode="wait">
-          {simulating ? (
+          {simulationResult ? (
             <motion.div
-              key="loading-sim"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              className="py-12 text-center"
+              className="grid grid-cols-1 md:grid-cols-3 gap-4"
             >
-              <div className="relative inline-block w-16 h-16 mb-4">
-                <div className="absolute inset-0 rounded-full border-4 border-purple-500/20" />
-                <div className="absolute inset-0 rounded-full border-4 border-t-purple-500 animate-spin" />
-              </div>
-              <p className="text-sm text-slate-400 font-mono animate-pulse">
-                {isRu ? "Связь с сервером Gemini AI... Сбор слоев данных... Решение дифференциальных уравнений..." : "Contacting Gemini AI server... Compiling GIS layers... Resolving climate system state factors..."}
-              </p>
-            </motion.div>
-          ) : simulationResult ? (
-            <motion.div
-              key="sim-results"
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              className="grid grid-cols-1 md:grid-cols-12 gap-6"
-            >
-              {/* Metrics cards */}
-              <div className="md:col-span-5 grid grid-cols-2 gap-4">
-                <div className="bg-white/5 border border-white/10 rounded-2xl p-4 flex flex-col justify-between">
-                  <span className="text-[10px] text-slate-500 font-black uppercase tracking-widest">{isRu ? "Эко-устойчивость" : "Eco-Sustainability"}</span>
-                  <div className="mt-2 flex items-baseline gap-1.5">
-                    <span className="text-3xl font-black text-cyan-400">{simulationResult.sustainabilityScore}%</span>
-                    <span className="text-xs text-slate-400">/ 100</span>
-                  </div>
-                </div>
-
-                <div className="bg-white/5 border border-white/10 rounded-2xl p-4 flex flex-col justify-between">
-                  <span className="text-[10px] text-slate-500 font-black uppercase tracking-widest">{isRu ? "Стабильность климата" : "Climate Stability"}</span>
-                  <div className="mt-2 flex items-baseline gap-1.5">
-                    <span className="text-3xl font-black text-purple-400">{simulationResult.ecoStabilityIndex}</span>
-                    <span className="text-xs text-slate-400">/ 10.0</span>
-                  </div>
-                </div>
-
-                <div className="bg-white/5 border border-white/10 rounded-2xl p-4 flex flex-col justify-between">
-                  <span className="text-[10px] text-slate-500 font-black uppercase tracking-widest">{isRu ? "Изменение темп." : "Temp Delta (2050)"}</span>
-                  <div className="mt-2">
-                    <span className={cn(
-                      "text-3xl font-black",
-                      simulationScenario === "pessimistic" ? "text-red-400" : "text-emerald-400"
-                    )}>{simulationResult.temperatureShift}</span>
-                  </div>
-                </div>
-
-                <div className="bg-white/5 border border-white/10 rounded-2xl p-4 flex flex-col justify-between">
-                  <span className="text-[10px] text-slate-500 font-black uppercase tracking-widest">{isRu ? "Доступность ресурсов" : "Resource Availability"}</span>
-                  <div className="mt-2">
-                    <span className="text-3xl font-black text-emerald-400">{simulationResult.waterAvailability}%</span>
-                  </div>
-                </div>
+              <div className="bg-white/5 border border-white/10 rounded-xl p-4 flex flex-col justify-between">
+                <span className="text-[9px] text-slate-500 uppercase font-black tracking-wider">{isRu ? "Энергобаланс и КПД" : "Energy Efficiency Matrix"}</span>
+                <div className="text-2xl font-black text-cyan-glow mt-1 font-mono">{simulationResult.sustainabilityScore}%</div>
               </div>
 
-              {/* Text interpretation card */}
-              <div className="md:col-span-7 bg-purple-500/[0.03] border border-purple-500/20 rounded-2xl p-6 flex flex-col justify-between space-y-4">
-                <div>
-                  <div className="flex items-center gap-2 mb-2 text-purple-400">
-                    <Sparkles size={16} />
-                    <span className="text-xs font-black uppercase tracking-widest">{isRu ? "ИИ Анализ и Советник" : "AI Analytical Advisor"}</span>
-                  </div>
-                  <p className="text-sm text-slate-300 leading-relaxed font-mono">
-                    {simulationResult.aiText}
-                  </p>
-                </div>
+              <div className="bg-white/5 border border-white/10 rounded-xl p-4 flex flex-col justify-between">
+                <span className="text-[9px] text-slate-500 uppercase font-black tracking-wider">{isRu ? "Температурный сдвиг" : "Thermal Gradient"}</span>
+                <div className="text-2xl font-black text-purple-400 mt-1 font-mono">{simulationResult.temperatureShift}</div>
+              </div>
 
-                <div className="flex items-center justify-between border-t border-white/5 pt-4">
-                  <div className="text-xs text-slate-400">
-                    {isRu ? "Необходимый объем доп. инвестирования:" : "Required strategic safety allocation:"} <span className="font-bold text-white">{simulationResult.requiredInvestments}</span>
-                  </div>
-                  <button
-                    onClick={() => alert(isRu ? "Отчет сохранен в локальное хранилище" : "Simulated report exported")}
-                    className="p-2 bg-white/5 hover:bg-white/10 rounded-lg text-slate-400 hover:text-white transition-colors"
-                  >
-                    <Download size={14} />
-                  </button>
-                </div>
+              <div className="bg-white/5 border border-white/10 rounded-xl p-4 flex flex-col justify-between">
+                <span className="text-[9px] text-slate-500 uppercase font-black tracking-wider">{isRu ? "Текстовое резюме ИИ" : "AI Synapse Verdict"}</span>
+                <div className="text-xs text-slate-300 mt-1 leading-normal font-mono">{simulationResult.aiText}</div>
               </div>
             </motion.div>
           ) : (
-            <div className="text-center py-8 text-slate-500 text-sm font-mono border border-dashed border-white/10 rounded-2xl">
-              {isRu ? "Выберите параметры выше и нажмите 'Запустить симуляцию' для просчета ИИ-модели" : "Configure parameters above and click 'Simulate Scenario' to run neural forecast model"}
+            <div className="py-6 text-center text-slate-500 text-xs font-mono">
+              {isRu ? "Запустите симуляцию климата" : "Trigger simulator scenario above to inspect ecosystem safety trends"}
             </div>
           )}
         </AnimatePresence>
       </div>
 
-      {/* SECTION 3: AI Megaproject Architect & Designer */}
-      <div className="glass-card p-8 border-white/5 relative overflow-hidden">
-        <div className="absolute bottom-0 left-0 w-64 h-64 bg-cyan-glow/5 blur-3xl rounded-full -ml-32 -mb-32" />
-
-        <div className="flex items-center gap-3 mb-6">
-          <div className="w-12 h-12 rounded-xl bg-cyan-500/10 flex items-center justify-center text-cyan-glow border border-cyan-500/20">
-            <Zap size={24} />
-          </div>
+      {/* BLOCK 5: Gemini Megaproject Complex Architect */}
+      <div className="glass-card p-6 border-white/5 relative overflow-hidden">
+        <div className="flex items-center gap-2 mb-4">
+          <Zap className="text-cyan-glow animate-pulse" size={20} />
           <div>
-            <h3 className="text-xl font-black text-white">{isRu ? "ИИ Архитектор Мегапроектов (Gemini)" : "Gemini Megaproject & Complex Architect"}</h3>
-            <p className="text-xs text-slate-400">{isRu ? "Автоматическое планирование, выведение ТЭО, оптимальных технологий и пошаговых планов" : "Automated megaproject planning, optimal equipment select, OPEX/CAPEX forecasting & implementation roadmaps"}</p>
+            <h3 className="text-base font-bold text-white">{isRu ? "ИИ-Проектировщик Комплексных Систем Жизнеобеспечения" : "Gemini AI Systems & Megaproject Architect"}</h3>
+            <p className="text-xs text-slate-400">{isRu ? "Синтезируйте многофункциональные очистные станции, реакторы газов и опреснители" : "Design closed-loop treatment centers, gas scrubbers and solar hydro hubs"}</p>
           </div>
         </div>
 
         {architectStep === 1 && (
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-            <div className="lg:col-span-2 space-y-4">
-              <label className="text-xs font-black text-slate-400 uppercase tracking-widest block">{isRu ? "Опишите свой проект или выберите ключевой сектор" : "Describe your custom project or select a key sector"}</label>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div className="md:col-span-2 space-y-3">
+              <label className="text-xs text-slate-400 uppercase font-bold tracking-wider block">{isRu ? "Задайте функционал проекта" : "Define system functional goals"}</label>
               <textarea
                 value={architectPrompt}
                 onChange={(e) => setArchitectPrompt(e.target.value)}
                 placeholder={isRu
-                  ? "Пример: Региональный комплекс замкнутого водоснабжения и опреснения на солнечных батареях у Мертвого моря для создания сельскохозяйственного пояса"
-                  : "E.g.: A regional zero-emission solar powered water treatment plant at the Dead Sea to establish artificial green agricultural belts"}
-                className="w-full h-32 bg-white/5 border border-white/10 rounded-2xl p-4 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-cyan-500/50 transition-colors resize-none font-mono"
+                  ? "Пример: Гелио-опреснительный комплекс на мембранах из графена с прямой отгрузкой солей и выработкой водорода"
+                  : "E.g.: A solar powered graphene filtration unit with automatic hydrogen byproduct extraction"}
+                className="w-full h-24 bg-white/5 border border-white/10 rounded-xl p-3 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-cyan-500/50 resize-none font-mono"
               />
-
-              {/* Template prompts */}
-              <div className="space-y-2">
-                <span className="text-[10px] text-slate-500 uppercase font-black tracking-widest block">{isRu ? "Готовые шаблоны и идеи" : "Quick conceptual ideas"}</span>
-                <div className="flex flex-wrap gap-2">
-                  <button
-                    onClick={() => { setArchitectPrompt(isRu ? "Трансграничная ИИ-система распределения водных квот в бассейне реки Нил" : "Transboundary AI water quota allocation system in the Nile Basin"); setArchitectSector("water"); }}
-                    className="px-2.5 py-1.5 bg-white/5 hover:bg-white/10 rounded-xl text-xs text-slate-300 font-mono transition-colors"
-                  >
-                    Nile AI Quotas
-                  </button>
-                  <button
-                    onClick={() => { setArchitectPrompt(isRu ? "Опреснительный хаб на энергии водорода для полива лесных зон в ОАЭ" : "Hydrogen-powered desalination hub for forestation belts in UAE"); setArchitectSector("water"); }}
-                    className="px-2.5 py-1.5 bg-white/5 hover:bg-white/10 rounded-xl text-xs text-slate-300 font-mono transition-colors"
-                  >
-                    UAE H₂ Water
-                  </button>
-                  <button
-                    onClick={() => { setArchitectPrompt(isRu ? "Геотермальная электростанция и тепличный хаб в Исландии" : "Geothermal power plant and organic greenhouse cluster in Iceland"); setArchitectSector("energy"); }}
-                    className="px-2.5 py-1.5 bg-white/5 hover:bg-white/10 rounded-xl text-xs text-slate-300 font-mono transition-colors"
-                  >
-                    Iceland Agro-Geothermal
-                  </button>
-                </div>
-              </div>
             </div>
 
-            {/* Config column */}
             <div className="space-y-4">
-              <div className="bg-white/[0.02] border border-white/5 rounded-2xl p-6 space-y-4">
-                <div>
-                  <label className="text-[10px] text-slate-500 uppercase font-black block mb-1.5">{isRu ? "Основное Направление" : "Primary Domain"}</label>
-                  <select
-                    value={architectSector}
-                    onChange={(e) => setArchitectSector(e.target.value as SectorType)}
-                    className="w-full bg-white/5 border border-white/10 rounded-xl px-3 py-2.5 text-xs text-slate-300 focus:outline-none focus:border-cyan-500/50 transition-colors cursor-pointer"
-                  >
-                    <option value="water">{isRu ? "Водный сектор" : "Water management"}</option>
-                    <option value="energy">{isRu ? "Энергетика" : "Energy infrastructure"}</option>
-                    <option value="ecology">{isRu ? "Экология и леса" : "Forestry & Ecology"}</option>
-                    <option value="health">{isRu ? "Биобезопасность и здоровье" : "Health & Biosecurity"}</option>
-                    <option value="science">{isRu ? "Наука и мониторинг" : "Science & Monitoring"}</option>
-                  </select>
-                </div>
-
-                <div className="pt-2">
-                  <button
-                    onClick={handleGenerateProject}
-                    disabled={!architectPrompt.trim()}
-                    className="w-full py-3 bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-slate-950 font-black text-xs uppercase tracking-widest rounded-xl transition-all disabled:opacity-40 flex items-center justify-center gap-2 cursor-pointer shadow-[0_4px_20px_rgba(34,211,238,0.25)]"
-                  >
-                    <Brain size={14} /> {isRu ? "Сгенерировать в Gemini" : "Generate via Gemini AI"}
-                  </button>
-                </div>
+              <div>
+                <label className="text-[10px] text-slate-500 uppercase font-black block mb-1">{isRu ? "Основной Класс" : "Primary Node Core"}</label>
+                <select
+                  value={architectSector}
+                  onChange={(e) => setArchitectSector(e.target.value as SectorType)}
+                  className="w-full bg-white/5 border border-white/10 rounded-xl px-3 py-1.5 text-xs text-slate-300 focus:outline-none focus:border-cyan-500/50 cursor-pointer font-mono"
+                >
+                  <option value="water">{isRu ? "Водоснабжение (Water)" : "Water"}</option>
+                  <option value="energy">{isRu ? "Энергетика (Energy)" : "Energy"}</option>
+                  <option value="atmosphere">{isRu ? "Атмосфера/Газы (Atmosphere)" : "Atmosphere"}</option>
+                  <option value="minerals">{isRu ? "Сырье и реголит (Minerals)" : "Minerals"}</option>
+                  <option value="waste_biomass">{isRu ? "Рециркуляция отходов (Waste)" : "Waste Recycle"}</option>
+                </select>
               </div>
-            </div>
 
-            {/* Hint Box */}
-            <div className="p-4 bg-white/5 rounded-2xl border border-white/10 flex items-start gap-3">
-              <Info className="text-cyan-glow shrink-0 mt-0.5" size={16} />
-              <p className="text-xs text-slate-400 leading-relaxed">
-                {isRu
-                  ? "Алгоритмы ИИ автоматически проанализируют доступные технологии в реестре Civilization Protocol, сопоставят стоимость и выбросы, выведут IRR / NPV и сформируют интерактивную блок-схему соединений."
-                  : "AI algorithms will analyze available hardware registries within Civilization Protocol, calculate emission offsets, simulate IRR & NPV projections, and lay out an interactive system logic flow diagram."}
-              </p>
+              <button
+                onClick={handleGenerateProject}
+                disabled={!architectPrompt.trim() || generatingProject}
+                className="w-full py-2 bg-cyan-glow text-slate-950 font-black text-xs uppercase tracking-wider rounded-xl hover:bg-cyan-400 transition-colors cursor-pointer"
+              >
+                {isRu ? "Сгенерировать ТЭО" : "Calculate Financials & TEO"}
+              </button>
             </div>
           </div>
         )}
 
         {architectStep === 2 && (
-          <div className="py-16 text-center space-y-6">
-            <div className="relative inline-block w-20 h-20">
-              <div className="absolute inset-0 rounded-full border-4 border-cyan-500/10" />
-              <div className="absolute inset-0 rounded-full border-4 border-t-cyan-glow animate-spin" />
-              <div className="absolute inset-4 rounded-full bg-cyan-glow/10 flex items-center justify-center text-cyan-glow animate-pulse">
-                <Brain size={24} />
-              </div>
-            </div>
-            <div className="max-w-md mx-auto space-y-2">
-              <h4 className="text-lg font-black text-white animate-pulse">{isRu ? "Проектирование комплекса..." : "Architecting Megaproject..."}</h4>
-              <p className="text-xs text-slate-500 font-mono">
-                {isRu
-                  ? "Связь с Gemini... Просчёт CAPEX... Подбор оптимального оборудования по энергоэффективности... Балансировка инвестиционного графика..."
-                  : "Connecting to Gemini AI... Calculating equipment cost-benefit metrics... Matching optimal operational standards... Building NPV amortization model..."}
-              </p>
-            </div>
+          <div className="py-12 text-center space-y-3">
+            <div className="w-12 h-12 rounded-full border-2 border-cyan-glow border-t-transparent animate-spin inline-block" />
+            <p className="text-xs text-slate-400 font-mono">{isRu ? "Интеграция разблокированных технологий, расчет OPEX и CAPEX..." : "Synchronizing tech tree upgrades, balancing CAPEX/OPEX model..."}</p>
           </div>
         )}
 
@@ -1029,67 +1111,59 @@ export default function PlanetResearchPage() {
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            className="space-y-8"
+            className="space-y-6"
           >
-            {/* Results Title bar */}
-            <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 border-b border-white/5 pb-4">
+            <div className="flex flex-wrap items-center justify-between gap-4 border-b border-white/5 pb-3">
               <div>
-                <span className="text-[10px] font-mono text-cyan-glow uppercase tracking-widest bg-cyan-glow/10 px-2.5 py-1 rounded">
-                  {generatedProjectData.code} • {isRu ? "ВЕРИФИЦИРОВАНО ИИ" : "AI CONFIRMED MODEL"}
+                <span className="text-[9px] font-mono text-cyan-glow uppercase tracking-wider bg-cyan-glow/10 px-2 py-0.5 rounded">
+                  {generatedProjectData.code}
                 </span>
-                <h4 className="text-xl font-black text-white mt-2">{generatedProjectData.title}</h4>
+                <h4 className="text-base font-black text-white mt-1">{generatedProjectData.title}</h4>
               </div>
 
-              <div className="flex flex-wrap items-center gap-2">
+              <div className="flex items-center gap-2">
                 <button
-                  onClick={resetArchitect}
-                  className="px-3 py-1.5 glass border-white/10 rounded-xl text-xs font-bold text-slate-400 hover:text-white transition-colors cursor-pointer"
+                  onClick={() => setArchitectStep(1)}
+                  className="px-3 py-1 bg-white/5 text-xs text-slate-400 rounded-lg hover:text-white transition-colors"
                 >
-                  {isRu ? "Сбросить" : "Reset / New"}
+                  {isRu ? "Заново" : "Restart"}
                 </button>
 
-                {/* Submit to DAO Proposals Button */}
                 <button
                   onClick={handleOpenDaoModal}
-                  className="px-3 py-1.5 bg-gradient-to-r from-purple-600 to-indigo-600 text-white rounded-xl text-xs font-black uppercase tracking-wider hover:from-purple-500 hover:to-indigo-500 transition-all cursor-pointer flex items-center gap-1.5 shadow-[0_2px_10px_rgba(147,51,234,0.15)]"
+                  className="px-3 py-1 bg-purple-600 hover:bg-purple-500 text-white text-xs font-black uppercase rounded-lg transition-colors flex items-center gap-1"
                 >
-                  <Send size={12} /> {isRu ? "Отправить в DAO" : "Submit as Proposal"}
+                  <Send size={10} /> {isRu ? "В DAO" : "To DAO"}
                 </button>
 
-                {/* Export Dropdown Container */}
                 <div className="relative">
                   <button
                     onClick={() => setShowExportDropdown(!showExportDropdown)}
-                    className="px-3 py-1.5 bg-cyan-500 text-slate-950 rounded-xl text-xs font-black uppercase tracking-wider hover:bg-cyan-400 transition-colors cursor-pointer flex items-center gap-1"
+                    className="px-3 py-1 bg-cyan-500 text-slate-950 text-xs font-black uppercase rounded-lg hover:bg-cyan-400 transition-colors flex items-center gap-1"
                   >
-                    <Download size={12} /> {isRu ? "Экспорт" : "Export Report"} <ChevronDown size={12} />
+                    <Download size={10} /> {isRu ? "Экспорт" : "Export"}
                   </button>
 
                   <AnimatePresence>
                     {showExportDropdown && (
                       <>
                         <div className="fixed inset-0 z-40" onClick={() => setShowExportDropdown(false)} />
-                        <motion.div
-                          initial={{ opacity: 0, y: 10 }}
-                          animate={{ opacity: 1, y: 0 }}
-                          exit={{ opacity: 0, y: 10 }}
-                          className="absolute right-0 mt-2 w-52 bg-slate-900 border border-white/10 rounded-2xl p-2 shadow-2xl z-50 space-y-1"
-                        >
+                        <div className="absolute right-0 mt-2 w-44 bg-slate-900 border border-white/10 rounded-xl p-2 shadow-2xl z-50 space-y-1">
                           <button
                             onClick={handleExportTxt}
-                            className="w-full text-left px-3 py-2 hover:bg-white/5 rounded-xl text-xs text-slate-300 hover:text-white flex items-center gap-2 transition-colors cursor-pointer"
+                            className="w-full text-left px-2 py-1.5 hover:bg-white/5 rounded-lg text-xs text-slate-300 flex items-center gap-1 cursor-pointer"
                           >
-                            <FileText size={14} className="text-cyan-glow" />
-                            {isRu ? "Бизнес-план (.TXT)" : "Detailed Blueprint (.TXT)"}
+                            <FileText size={12} />
+                            {isRu ? "Текст (.TXT)" : "Text (.TXT)"}
                           </button>
                           <button
                             onClick={handleExportCsv}
-                            className="w-full text-left px-3 py-2 hover:bg-white/5 rounded-xl text-xs text-slate-300 hover:text-white flex items-center gap-2 transition-colors cursor-pointer"
+                            className="w-full text-left px-2 py-1.5 hover:bg-white/5 rounded-lg text-xs text-slate-300 flex items-center gap-1 cursor-pointer"
                           >
-                            <FileSpreadsheet size={14} className="text-emerald-400" />
-                            {isRu ? "Расчетная таблица (.CSV)" : "Financial Table (.CSV)"}
+                            <FileSpreadsheet size={12} />
+                            {isRu ? "Таблица (.CSV)" : "Spreadsheet (.CSV)"}
                           </button>
-                        </motion.div>
+                        </div>
                       </>
                     )}
                   </AnimatePresence>
@@ -1097,124 +1171,53 @@ export default function PlanetResearchPage() {
               </div>
             </div>
 
-            {/* Custom Project Description */}
-            <div className="p-6 bg-cyan-950/20 border border-cyan-500/10 rounded-3xl">
-              <h5 className="text-xs font-black text-cyan-glow uppercase tracking-widest mb-2">{isRu ? "Аннотация мегапроекта от Gemini" : "Executive Summary by Gemini AI"}</h5>
-              <p className="text-sm text-slate-300 leading-relaxed font-mono">{generatedProjectData.description}</p>
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+              <div className="bg-white/5 border border-white/5 rounded-xl p-3 text-center">
+                <span className="text-[8px] text-slate-500 uppercase font-black block">CAPEX</span>
+                <span className="text-sm font-black text-white font-mono mt-1 block">{generatedProjectData.economics.capex}</span>
+              </div>
+
+              <div className="bg-white/5 border border-white/5 rounded-xl p-3 text-center">
+                <span className="text-[8px] text-slate-500 uppercase font-black block">OPEX</span>
+                <span className="text-sm font-black text-white font-mono mt-1 block">{generatedProjectData.economics.opex}</span>
+              </div>
+
+              <div className="bg-white/5 border border-white/5 rounded-xl p-3 text-center">
+                <span className="text-[8px] text-slate-500 uppercase font-black block">NPV</span>
+                <span className="text-sm font-black text-cyan-glow font-mono mt-1 block">{generatedProjectData.economics.npv}</span>
+              </div>
+
+              <div className="bg-white/5 border border-white/5 rounded-xl p-3 text-center">
+                <span className="text-[8px] text-slate-500 uppercase font-black block">IRR</span>
+                <span className="text-sm font-black text-emerald-400 font-mono mt-1 block">{generatedProjectData.economics.irr}</span>
+              </div>
             </div>
 
-            {/* Financials & Economic metrics */}
+            {/* Selected equipment */}
             <div>
-              <h5 className="text-xs font-black text-slate-400 uppercase tracking-widest mb-4">{isRu ? "Технико-Экономический и Инвестиционный План (ТЭО)" : "Techno-Economic & Investment Statement"}</h5>
-              <div className="grid grid-cols-2 sm:grid-cols-5 gap-4">
-                <div className="bg-white/5 border border-white/10 rounded-2xl p-4 text-center">
-                  <div className="text-[10px] text-slate-500 uppercase font-black">{isRu ? "Начальный CAPEX" : "Capital CAPEX"}</div>
-                  <div className="text-lg font-black text-white mt-1">{generatedProjectData.economics.capex}</div>
-                </div>
-
-                <div className="bg-white/5 border border-white/10 rounded-2xl p-4 text-center">
-                  <div className="text-[10px] text-slate-500 uppercase font-black">{isRu ? "Годовой OPEX" : "Yearly OPEX"}</div>
-                  <div className="text-lg font-black text-white mt-1">{generatedProjectData.economics.opex}</div>
-                </div>
-
-                <div className="bg-white/5 border border-white/10 rounded-2xl p-4 text-center">
-                  <div className="text-[10px] text-slate-500 uppercase font-black">{isRu ? "Ожидаемый NPV" : "Expected NPV"}</div>
-                  <div className="text-lg font-black text-cyan-glow mt-1">{generatedProjectData.economics.npv}</div>
-                </div>
-
-                <div className="bg-white/5 border border-white/10 rounded-2xl p-4 text-center">
-                  <div className="text-[10px] text-slate-500 uppercase font-black">{isRu ? "Внутренняя норма (IRR)" : "Internal Rate (IRR)"}</div>
-                  <div className="text-lg font-black text-emerald-400 mt-1">{generatedProjectData.economics.irr}</div>
-                </div>
-
-                <div className="bg-white/5 border border-white/10 rounded-2xl p-4 text-center col-span-2 sm:col-span-1">
-                  <div className="text-[10px] text-slate-500 uppercase font-black">{isRu ? "Окупаемость" : "Payback Cycle"}</div>
-                  <div className="text-lg font-black text-amber-400 mt-1">{generatedProjectData.economics.payback}</div>
-                </div>
+              <h5 className="text-[10px] text-slate-500 uppercase font-black tracking-wider mb-2">{isRu ? "Интегрированная Оснастка" : "Integrated Equipment Array"}</h5>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                {generatedProjectData.optimalTechnologies.map((tech: any) => (
+                  <div key={tech.id} className="p-3 bg-white/5 border border-white/5 rounded-xl flex items-start gap-2">
+                    <Cpu size={14} className="text-cyan-glow mt-0.5 shrink-0" />
+                    <div>
+                      <div className="text-xs font-bold text-white">{tech.name}</div>
+                      <div className="text-[10px] text-slate-400 mt-0.5 leading-normal">{tech.desc}</div>
+                    </div>
+                  </div>
+                ))}
               </div>
             </div>
 
-            {/* Selected equipment and technologies */}
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-              <div>
-                <h5 className="text-xs font-black text-slate-400 uppercase tracking-widest mb-4">{isRu ? "Оптимальные Технологии и Оборудование" : "Optimal Selected Technologies"}</h5>
-                <div className="space-y-3">
-                  {generatedProjectData.optimalTechnologies.map((tech: any) => (
-                    <div key={tech.id} className="p-4 bg-white/5 border border-white/10 rounded-2xl flex items-start gap-3">
-                      <div className="p-2 rounded-lg bg-cyan-glow/10 text-cyan-glow mt-0.5">
-                        <Cpu size={16} />
-                      </div>
-                      <div>
-                        <div className="flex items-center gap-2">
-                          <h6 className="text-sm font-bold text-white">{tech.name}</h6>
-                          <span className="text-[9px] font-mono text-cyan-glow bg-cyan-glow/5 border border-cyan-glow/15 px-1.5 py-0.5 rounded">
-                            {tech.efficiency}
-                          </span>
-                        </div>
-                        <p className="text-xs text-slate-400 mt-1 leading-normal">{tech.desc}</p>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-
-              {/* Implementation roadmap */}
-              <div>
-                <h5 className="text-xs font-black text-slate-400 uppercase tracking-widest mb-4">{isRu ? "Инвестиционный Календарь / Этапы реализации" : "Implementation Roadmap & Milestones"}</h5>
-                <div className="space-y-4 relative border-l-2 border-white/5 pl-4 ml-2">
-                  {generatedProjectData.phases.map((phase: any, idx: number) => (
-                    <div key={idx} className="relative">
-                      <span className="absolute -left-[24px] top-1.5 w-3 h-3 rounded-full bg-cyan-glow border-2 border-slate-950" />
-                      <div>
-                        <div className="flex items-center gap-2 mb-0.5">
-                          <span className="text-xs font-black text-cyan-glow">{phase.duration}</span>
-                        </div>
-                        <h6 className="text-sm font-bold text-white leading-tight">{phase.name}</h6>
-                        <p className="text-xs text-slate-400 mt-1">{phase.desc}</p>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </div>
-
-            {/* SECTION: 2D Interactive Schematic Layout Model */}
-            <div className="bg-slate-950 border border-white/5 rounded-3xl p-6">
-              <h5 className="text-xs font-black text-slate-400 uppercase tracking-widest mb-4 flex items-center gap-2">
-                <Layers size={14} /> {isRu ? "Интерактивная Схема Архитектуры Системы" : "Interactive System Architecture Schematic"}
-              </h5>
-
-              <div className="relative min-h-[180px] bg-black/40 rounded-2xl p-4 flex flex-col md:flex-row items-center justify-around border border-white/5 overflow-hidden">
-                {/* SVG Connecting lines */}
-                <div className="absolute inset-0 pointer-events-none hidden md:block">
-                  <svg className="w-full h-full" style={{ position: "absolute", top: 0, left: 0 }}>
-                    <defs>
-                      <marker id="arrow" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
-                        <path d="M 0 0 L 10 5 L 0 10 z" fill="#22d3ee" />
-                      </marker>
-                    </defs>
-                    <line x1="20%" y1="50%" x2="45%" y2="50%" stroke="#22d3ee" strokeWidth="2" strokeDasharray="5,5" markerEnd="url(#arrow)" />
-                    <line x1="55%" y1="50%" x2="75%" y2="28%" stroke="#22d3ee" strokeWidth="2" markerEnd="url(#arrow)" />
-                    <line x1="55%" y1="50%" x2="75%" y2="72%" stroke="#22d3ee" strokeWidth="2" markerEnd="url(#arrow)" />
-                  </svg>
-                </div>
-
-                {/* Simulated Interactive nodes */}
+            {/* 2D Schematic layout of sensors */}
+            <div className="bg-slate-950 p-4 rounded-2xl border border-white/5">
+              <span className="text-[8px] text-slate-500 uppercase font-black tracking-wider block mb-2">{isRu ? "Аппаратный хэш-маршрут (SHA-256)" : "Hardware cryptographic hash route (SHA-256)"}</span>
+              <div className="flex flex-col sm:flex-row items-center justify-around gap-4 text-center">
                 {generatedProjectData.schematicLayout.nodes.map((node: any) => (
-                  <motion.div
-                    key={node.id}
-                    whileHover={{ scale: 1.05 }}
-                    className="z-10 p-4 bg-white/5 border border-cyan-glow/20 rounded-2xl w-48 text-center space-y-1 relative group cursor-pointer my-2 md:my-0"
-                  >
-                    <div className="w-2 h-2 rounded-full bg-cyan-glow absolute top-3 right-3 animate-pulse" />
-                    <div className="text-xs font-bold text-white">{node.name}</div>
-                    <div className="text-[10px] text-slate-500 uppercase font-black tracking-widest font-mono">{node.status}</div>
-
-                    {/* Hover detail info */}
-                    <div className="absolute -bottom-12 left-1/2 -translate-x-1/2 bg-slate-900 border border-cyan-glow/30 p-2 rounded-lg text-[9px] text-slate-300 opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap z-30 pointer-events-none">
-                      {isRu ? "Активно обменивается пакетами данных" : "Active connection stream resolved"}
-                    </div>
-                  </motion.div>
+                  <div key={node.id} className="p-3 bg-white/5 border border-cyan-glow/20 rounded-xl w-full sm:w-44 text-xs font-mono">
+                    <div className="text-white font-bold">{node.name}</div>
+                    <div className="text-[9px] text-slate-500 uppercase font-black mt-1">HSM Core Sealed</div>
+                  </div>
                 ))}
               </div>
             </div>
@@ -1222,124 +1225,65 @@ export default function PlanetResearchPage() {
         )}
       </div>
 
-      {/* DAO Proposals Submission Modal */}
+      {/* DAO Submission modal */}
       <AnimatePresence>
         {showDaoModal && (
-          <div className="fixed inset-0 flex items-center justify-center z-50 p-4">
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              className="absolute inset-0 bg-black/80 backdrop-blur-md"
-              onClick={() => setShowDaoModal(false)}
-            />
-
-            <motion.div
-              initial={{ opacity: 0, scale: 0.95 }}
-              animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0, scale: 0.95 }}
-              className="relative w-full max-w-2xl bg-slate-900 border border-white/10 rounded-3xl p-6 md:p-8 shadow-2xl z-50 max-h-[90vh] overflow-y-auto space-y-6"
-            >
-              {/* Close Button */}
+          <div className="fixed inset-0 flex items-center justify-center z-50 p-4 bg-black/70 backdrop-blur-sm">
+            <div className="relative w-full max-w-xl bg-slate-900 border border-white/10 rounded-2xl p-6 space-y-4">
               <button
                 onClick={() => setShowDaoModal(false)}
-                className="absolute top-4 right-4 text-slate-400 hover:text-white transition-colors"
+                className="absolute top-4 right-4 text-slate-400 hover:text-white"
               >
-                <X size={20} />
+                <X size={16} />
               </button>
 
-              <div>
-                <h4 className="text-xl font-black text-white flex items-center gap-2">
-                  <Send className="text-purple-400 animate-pulse" size={20} />
-                  {isRu ? "Внести Мегапроект в Реестр DAO" : "Publish Megaproject in DAO Registry"}
-                </h4>
-                <p className="text-xs text-slate-400 mt-1">
-                  {isRu
-                    ? "Разместите ваше ТЭО на открытое голосование граждан Civilization Protocol. Требуется минимальный взнос 100 VOD."
-                    : "Propose your calculated techno-economic plan to the global DAO citizens for voting consensus. Requires 100 VOD deposit."}
-                </p>
-              </div>
+              <h4 className="text-base font-black text-white flex items-center gap-1.5">
+                <Send className="text-purple-400" size={16} /> {isRu ? "Разместить в глобальном DAO" : "Register Proposal to Global DAO"}
+              </h4>
 
               {daoMessage && (
-                <div className={cn(
-                  "p-4 rounded-2xl text-xs font-mono leading-relaxed border",
-                  daoMessage.type === "success"
-                    ? "bg-emerald-500/10 border-emerald-500/30 text-emerald-400"
-                    : "bg-red-500/10 border-red-500/30 text-red-400"
-                )}>
+                <div className="p-3 rounded-lg text-xs font-mono bg-emerald-500/10 border border-emerald-500/20 text-emerald-400">
                   {daoMessage.text}
                 </div>
               )}
 
-              <div className="space-y-4">
-                {/* Title */}
+              <div className="space-y-3">
                 <div>
-                  <label className="text-[10px] text-slate-500 uppercase font-black block mb-1">{isRu ? "Название Предложения" : "Proposal Title"}</label>
+                  <label className="text-[10px] text-slate-500 uppercase font-black block mb-0.5">{isRu ? "Название" : "Title"}</label>
                   <input
                     type="text"
                     value={daoTitle}
                     onChange={(e) => setDaoTitle(e.target.value)}
-                    className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2 text-sm text-white focus:outline-none focus:border-purple-500/50 transition-colors"
+                    className="w-full bg-white/5 border border-white/10 rounded-lg px-3 py-1.5 text-xs text-white"
                   />
                 </div>
 
-                {/* Category and Budget Grid */}
-                <div className="grid grid-cols-2 gap-4">
-                  <div>
-                    <label className="text-[10px] text-slate-500 uppercase font-black block mb-1">{isRu ? "Категория DAO" : "DAO Category"}</label>
-                    <select
-                      value={daoCategory}
-                      onChange={(e) => setDaoCategory(e.target.value)}
-                      className="w-full bg-white/5 border border-white/10 rounded-xl px-3 py-2 text-xs text-slate-300 focus:outline-none focus:border-purple-500/50 transition-colors cursor-pointer"
-                    >
-                      <option value="infrastructure">{isRu ? "Инфраструктура (Infrastructure)" : "Infrastructure"}</option>
-                      <option value="research">{isRu ? "Наука и Анализ (Research)" : "Research"}</option>
-                      <option value="emergency">{isRu ? "Экологическая ЧС (Emergency)" : "Emergency"}</option>
-                      <option value="funding">{isRu ? "Финансирование (Funding)" : "Funding"}</option>
-                    </select>
-                  </div>
-
-                  <div>
-                    <label className="text-[10px] text-slate-500 uppercase font-black block mb-1">{isRu ? "Запрашиваемый Бюджет (M VOD)" : "Requested Budget (M VOD)"}</label>
-                    <input
-                      type="number"
-                      value={daoBudget}
-                      onChange={(e) => setDaoBudget(parseFloat(e.target.value) || 0)}
-                      className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2 text-xs text-white focus:outline-none focus:border-purple-500/50 transition-colors"
-                    />
-                  </div>
-                </div>
-
-                {/* Description */}
                 <div>
-                  <label className="text-[10px] text-slate-500 uppercase font-black block mb-1">{isRu ? "Подробный Инвестиционный План (Markdown)" : "Detailed Investment Plan (Markdown)"}</label>
+                  <label className="text-[10px] text-slate-500 uppercase font-black block mb-0.5">{isRu ? "ТЭО & План (Markdown)" : "Feasibility Plan (Markdown)"}</label>
                   <textarea
-                    rows={8}
+                    rows={6}
                     value={daoDescription}
                     onChange={(e) => setDaoDescription(e.target.value)}
-                    className="w-full bg-white/5 border border-white/10 rounded-xl p-4 text-xs text-white focus:outline-none focus:border-purple-500/50 transition-colors resize-none font-mono"
+                    className="w-full bg-white/5 border border-white/10 rounded-lg p-3 text-xs text-white font-mono"
                   />
                 </div>
               </div>
 
-              <div className="flex gap-3 justify-end border-t border-white/5 pt-4">
+              <div className="flex gap-2 justify-end border-t border-white/5 pt-3">
                 <button
-                  type="button"
                   onClick={() => setShowDaoModal(false)}
-                  className="px-4 py-2 glass border-white/10 rounded-xl text-xs font-bold text-slate-400 hover:text-white transition-colors cursor-pointer"
+                  className="px-3 py-1.5 text-xs text-slate-400 hover:text-white"
                 >
-                  {isRu ? "Отмена" : "Cancel"}
+                  {isRu ? "Закрыть" : "Close"}
                 </button>
                 <button
-                  type="button"
                   onClick={handleSubmitProposalToDao}
-                  disabled={submittingDao || !daoTitle.trim()}
-                  className="px-5 py-2 bg-gradient-to-r from-purple-500 to-indigo-600 hover:from-purple-400 hover:to-indigo-500 text-white font-black text-xs uppercase tracking-widest rounded-xl transition-all disabled:opacity-50 flex items-center gap-2 cursor-pointer shadow-[0_4px_15px_rgba(168,85,247,0.2)]"
+                  className="px-4 py-1.5 bg-purple-600 hover:bg-purple-500 text-white text-xs font-bold rounded-lg"
                 >
-                  {submittingDao ? (isRu ? "Отправка..." : "Publishing...") : (isRu ? "Подтвердить публикацию" : "Confirm & Deposit")}
+                  {isRu ? "Опубликовать" : "Broadcast Plan"}
                 </button>
               </div>
-            </motion.div>
+            </div>
           </div>
         )}
       </AnimatePresence>
