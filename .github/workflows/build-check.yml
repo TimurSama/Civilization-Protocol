@@ -31,5 +31,7 @@ jobs:
         run: npm run build
 
       - name: Check Prisma Schema
+        env:
+          DATABASE_URL: "file:./dev.db"
         run: npx prisma validate
 
