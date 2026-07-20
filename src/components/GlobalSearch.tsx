@@ -5,7 +5,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { 
   Search, X, FileText, Users, Map, Vote, Briefcase, 
   MessageSquare, Target, Award, BarChart3, Droplets,
-  ChevronRight, Clock, TrendingUp, Hash, Zap
+  ChevronRight, Clock, TrendingUp, Hash, Zap, Brain
 } from "lucide-react";
 import Link from "next/link";
 import { useLanguage } from "@/context/LanguageContext";
@@ -59,6 +59,7 @@ const translations = {
 // Search index data
 const searchableItems = [
   // Pages
+  { type: "page", title: "Planetary Research & Gemini AI", titleRu: "ИИ-Симулятор исследований планеты", path: "/planet-research", icon: Brain, category: "pages" },
   { type: "page", title: "Dashboard", titleRu: "Панель управления", path: "/dashboard", icon: BarChart3, category: "pages" },
   { type: "page", title: "Map", titleRu: "Карта", path: "/map", icon: Map, category: "pages" },
   { type: "page", title: "DAO Governance", titleRu: "DAO Голосования", path: "/dao", icon: Vote, category: "pages" },

@@ -23,7 +23,8 @@ export const translations = {
             ecology: "Ecology",
             energy: "Energy",
             health: "Health",
-            science: "Science"
+            science: "Science",
+            planetResearch: "Gemini AI & Planet Research"
         },
         common: {
             loading: "Loading...",
@@ -868,7 +869,8 @@ export const translations = {
             ecology: "Экология",
             energy: "Энергия",
             health: "Здравоохранение",
-            science: "Наука"
+            science: "Наука",
+            planetResearch: "ИИ-Симулятор"
         },
         common: {
             loading: "Загрузка...",
@@ -1926,7 +1928,8 @@ export const translations = {
             ecology: "علم البيئة",
             energy: "الطاقة",
             health: "الصحة",
-            science: "العلم"
+            science: "العلم",
+            planetResearch: "أبحاث كوكب الجوزاء الذكاء الاصطناعي"
         },
         common: {
             loading: "جاري التحميل...",

@@ -6,7 +6,7 @@ import {
     Menu, Building2, Home, Vote, Target,
     Coins, User, Wallet, LogOut, BookOpen,
     Zap, Globe, TreePine, Heart, FlaskConical,
-    ChevronDown, Search, Bell, FileText, TrendingUp, Map
+    ChevronDown, Search, Bell, FileText, TrendingUp, Map, Brain
 } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -54,6 +54,7 @@ export default function Navbar() {
         { name: t("nav.map"), href: "/map", icon: Globe },
         { name: t("nav.tokenhub"), href: "/tokenhub", icon: Coins },
         { name: t("nav.nexus"), href: "/nexus", icon: Zap },
+        { name: t("nav.planetResearch"), href: "/planet-research", icon: Brain },
     ];
 
     const ecosystemItems = [
